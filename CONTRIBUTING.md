@@ -1,234 +1,106 @@
-# Contributing to EasyHealth (Sastho-Shohoj)
+# Project Progress & Development Checklist
 
-Welcome to **EasyHealth** (upstream: [Sastho-Shohoj](https://github.com/SasthoShohoj/Sastho-Shohoj)). We are building an integrated healthcare ecosystem for Bangladesh designed to make healthcare discovery, doctor appointments, emergency assistance, and digital health records accessible, fast, and organized.
-
-This document outlines our contribution guidelines, technical standards, and a phased **Development Plan** with tick boxes (`- [ ]`) to track implementation progress.
+Track implementation progress for EasyHealth / Sastho-Shohoj. Check off items with `- [x]` as each step is completed and deployed.
 
 ---
 
-## Table of Contents
+### Phase 1: Core Platform & Directory Setup
 
-1. [Code of Conduct & Core Principles](#code-of-conduct--core-principles)
-2. [Contribution Workflow](#contribution-workflow)
-3. [Repository Setup & Local Development](#repository-setup--local-development)
-4. [Master Development Plan & Checklist](#master-development-plan--checklist)
-   - [Phase 1: Project Scaffolding & Core Directory](#phase-1-project-scaffolding--core-directory)
-   - [Phase 2: Centralized Appointment Management](#phase-2-centralized-appointment-management)
-   - [Phase 3: Doctor Portal & Clinical Workflow](#phase-3-doctor-portal--clinical-workflow)
-   - [Phase 4: Electronic Health Records (EHR) & Patient Portal](#phase-4-electronic-health-records-ehr--patient-portal)
-   - [Phase 5: Notification & Communication Hub](#phase-5-notification--communication-hub)
-   - [Phase 6: Emergency Assistance & Resource Discovery](#phase-6-emergency-assistance--resource-discovery)
-   - [Phase 7: AI Healthcare Navigation & Multi-Platform Expansion](#phase-7-ai-healthcare-navigation--multi-platform-expansion)
-5. [Security, Privacy, and Data Integrity Standards](#security-privacy-and-data-integrity-standards)
-6. [Pull Request (PR) Checklist](#pull-request-pr-checklist)
-
----
-
-## Code of Conduct & Core Principles
-
-- **Zero Mock / Synthetic Data in Production:** Never inject speculative constants, fake doctor profiles, or simulated facility statuses into production databases.
-- **Privacy First (HIPAA / GDPR Aligned):** Health and patient data are strictly confidential. Personal Health Information (PHI) must never be logged, cached in plain text, or exposed to unauthorized roles.
-- **AI Safety Boundaries:** The integrated AI assistant serves purely for **navigation and specialty discovery** (in Bangla and English). It must never diagnose medical conditions, suggest treatments, or prescribe medication. Urgent symptoms must immediately route to emergency services.
-- **English-Only PRs & Commits:** Keep all pull request titles, commit messages, and code comments in clean, professional English for universal maintainability.
-
----
-
-## Contribution Workflow
-
-Follow these steps when contributing to the project:
-
-- [ ] **Step 1: Synchronize with Upstream**
-  ```bash
-  git remote add upstream https://github.com/SasthoShohoj/Sastho-Shohoj.git
-  git fetch upstream
-  git checkout main
-  git merge --ff-only upstream/main
-  ```
-- [ ] **Step 2: Create a Feature Branch**
-  - Use conventional naming: `feat/<feature-name>`, `fix/<bug-fix>`, `refactor/<module>`, `docs/<topic>`.
-  ```bash
-  git checkout -b feat/appointment-scheduling
-  ```
-- [ ] **Step 3: Implement & Test Changes**
-  - Write clean, modular code with functional comments.
-  - Implement unit and integration tests where applicable.
-  - Avoid committing scratch scripts, temporary dumps, or environment credentials.
-- [ ] **Step 4: Commit Using Conventional Commits**
-  - Examples:
-    - `feat(auth): implement role-based access control middleware`
-    - `fix(booking): prevent concurrent slot reservation collision`
-    - `docs(contributing): add development roadmap tick boxes`
-- [ ] **Step 5: Push & Open a Pull Request**
-  - Push your branch to your fork (`origin`).
-  - Open a pull request against the `main` branch.
-  - Complete the [PR Checklist](#pull-request-pr-checklist).
-
----
-
-## Repository Setup & Local Development
-
-- [ ] **Prerequisites**
-  - Node.js (v18.x or v20.x LTS)
-  - PostgreSQL 15+ (or SQLite 3 for early prototyping)
-  - Git
-- [ ] **Environment Configuration**
-  ```bash
-  cp .env.example .env
-  ```
-  Fill in the necessary environment parameters:
-  ```env
-  PORT=5000
-  NODE_ENV=development
-  DATABASE_URL=postgresql://user:password@localhost:5432/easyhealth
-  JWT_SECRET=your_jwt_secret_key
-  MAPS_API_KEY=your_maps_api_key
-  SMS_GATEWAY_API_KEY=your_sms_gateway_key
-  AI_API_KEY=your_gemini_or_llm_key
-  ```
-- [ ] **Install Dependencies**
-  ```bash
-  npm install
-  ```
-- [ ] **Run Migrations & Seeds**
-  ```bash
-  npm run db:migrate
-  npm run db:seed
-  ```
-- [ ] **Start Development Server**
-  ```bash
-  npm run dev
-  ```
-
----
-
-## Master Development Plan & Checklist
-
-Mark off tasks with `[x]` as they are completed and merged.
-
-### Phase 1: Project Scaffolding & Core Directory
-
-- [ ] **Architecture & Infrastructure**
-  - [ ] Initialize monorepo or modular folder structure (`/server`, `/client`, `/shared`).
-  - [ ] Set up code formatting and linting (ESLint, Prettier).
-  - [ ] Configure database ORM / query builder (e.g., Prisma, Drizzle, or Knex) with PostgreSQL & SQLite support.
-  - [ ] Set up automated database migration scripts.
-- [ ] **Authentication & Access Control**
-  - [ ] Implement user schema supporting multiple roles (`PATIENT`, `DOCTOR`, `HOSPITAL_ADMIN`, `PLATFORM_ADMIN`).
-  - [ ] Secure password hashing (bcrypt / argon2) and JWT / session management.
-  - [ ] Role-Based Access Control (RBAC) middleware for protected endpoints.
-  - [ ] Patient registration and onboarding workflow (phone number, email, DOB, basic medical vitals).
+- [ ] **Repository & Database Scaffolding**
+  - [ ] Initialize project monorepo/folder structure (`client`, `server`, `shared`)
+  - [ ] Configure database connection (PostgreSQL / SQLite)
+  - [ ] Set up database schema migrations and seed scripts
+- [ ] **Authentication & Roles**
+  - [ ] Implement user authentication (JWT / sessions)
+  - [ ] Implement role-based authorization (`Patient`, `Doctor`, `Hospital Admin`, `Platform Admin`)
+  - [ ] Build patient registration and profile onboarding flow
 - [ ] **Healthcare Directory & Discovery**
-  - [ ] Schema and CRUD APIs for healthcare facilities (hospitals, clinics, diagnostic centers, pharmacies).
-  - [ ] Schema and CRUD APIs for doctors (BMDC registration, qualifications, specialties, chamber affiliations).
-  - [ ] Map integration (Google Maps / OpenStreetMap) with address autocomplete and coordinate storage.
-  - [ ] Geolocation query engine: search facilities and doctors by proximity, radius, and division/district.
-  - [ ] Search & filtering engine (by doctor name, specialty, facility, fee, and availability).
+  - [ ] Database schema for healthcare facilities (hospitals, clinics, diagnostic centers, pharmacies)
+  - [ ] Database schema for doctors (qualifications, specialties, BMDC registration, chamber affiliations)
+  - [ ] Map integration (Google Maps / OpenStreetMap) for address selection and coordinate storage
+  - [ ] Location-aware radius search to find doctors and facilities nearby
+  - [ ] Multi-filter search (by name, specialty, location, fee, availability)
 
 ---
 
-### Phase 2: Centralized Appointment Management
+### Phase 2: Appointment Management
 
-- [ ] **Data Model & Scheduling Logic**
-  - [ ] Appointment state machine implementation (`PENDING_REVIEW`, `UNDER_REVIEW`, `CONFIRMED`, `RESCHEDULE_REQUESTED`, `CANCELLED`, `REJECTED`, `COMPLETED`).
-  - [ ] Doctor schedule and chamber availability slot modeling.
-  - [ ] Atomic booking engine with transaction locking to eliminate double bookings and race conditions.
-- [ ] **Patient Booking Interface**
-  - [ ] Doctor profile view with chamber schedules, consultation fees, and available time slots.
-  - [ ] Appointment request submission modal (selecting chamber, preferred date/time, chief complaints).
-  - [ ] Patient appointment tracking dashboard with live status indicators.
+- [ ] **Booking Engine & Conflict Prevention**
+  - [ ] Define appointment state machine (`Pending`, `Under Review`, `Confirmed`, `Rescheduled`, `Cancelled`, `Completed`, `Rejected`)
+  - [ ] Doctor schedule and chamber time-slot configuration
+  - [ ] Concurrency/collision prevention logic to prevent double booking of time slots
+- [ ] **Patient Booking Workflow**
+  - [ ] Doctor profile view with consultation fees and chamber time slots
+  - [ ] Appointment request submission modal (date, time slot, initial complaints)
+  - [ ] Patient dashboard to view and track submitted appointment requests
+  - [ ] Patient request workflow for rescheduling and cancellation
 - [ ] **Hospital & Clinic Admin Portal**
-  - [ ] Clinic admin dashboard displaying real-time incoming appointment queue.
-  - [ ] Triage actions: Confirm, propose alternative time, or reject with a structured reason.
-  - [ ] Rescheduling and cancellation request handling workflow.
-  - [ ] Phone-based appointment creation module for walk-in or phone-call patients with existing patient lookup.
+  - [ ] Admin dashboard showing live pending requests
+  - [ ] Admin triage controls (confirm, propose alternative time, reject with reason)
+  - [ ] Admin approval workflow for rescheduling and cancellations
+  - [ ] Phone-based appointment creation for walk-in/call-in patients (with patient lookup/registration)
 
 ---
 
-### Phase 3: Doctor Portal & Clinical Workflow
+### Phase 3: Doctor Portal
 
 - [ ] **Doctor Workspace**
-  - [ ] Doctor authentication and profile management (chambers, fees, vacation/leave schedule).
-  - [ ] Daily agenda and consultation queue view.
-  - [ ] Authorized view of patient medical background and consultation history prior to visit.
+  - [ ] Doctor login and dashboard
+  - [ ] Today's consultation agenda and upcoming appointment queue
+  - [ ] View patient history and documents shared for the consultation
 - [ ] **Consultation & Prescription System**
-  - [ ] Consultation completion workflow with clinical observation notes.
-  - [ ] Digital prescription generator (medication name, dosage, frequency, duration, special instructions).
-  - [ ] Diagnostic investigation / lab test requisition generator.
-  - [ ] Automated record linking to the patient's centralized medical timeline.
+  - [ ] Mark appointment as completed
+  - [ ] Record consultation notes and diagnosis
+  - [ ] Digital prescription generator (medicines, dosage, duration, instructions)
+  - [ ] Order/recommend diagnostic tests
+  - [ ] Automatically attach prescription and visit notes to the patient's medical history
 
 ---
 
-### Phase 4: Electronic Health Records (EHR) & Patient Portal
+### Phase 4: Patient Medical Records (EHR)
 
-- [ ] **Medical Timeline & Document Storage**
-  - [ ] Chronological medical history feed for patients (consultations, prescriptions, reports).
-  - [ ] Private cloud storage integration (S3 / Cloud Storage / Supabase) with signed URLs for medical documents.
-  - [ ] Diagnostic report upload interface for patients (PDF, images) with metadata tagging (test type, date, lab).
-- [ ] **Patient Privacy & Consent Matrix**
-  - [ ] Patient personal health profile (blood group, known allergies, chronic illnesses, emergency contacts).
-  - [ ] Granular permission system: patient explicitly authorizes a doctor to view past records for an active consultation.
-  - [ ] Audit log engine recording all medical record access and downloads.
-
----
-
-### Phase 5: Notification & Communication Hub
-
-- [ ] **Multi-Channel Notification Architecture**
-  - [ ] Centralized notification dispatcher with support for in-app, SMS, and email.
-  - [ ] In-app notification bell and notification center for web and mobile.
-- [ ] **Provider Integrations**
-  - [ ] SMS gateway integration for Bangladesh (transactional appointment confirmations, OTPs, schedule changes).
-  - [ ] Email service integration (Nodemailer / Resend / SendGrid) for appointment summaries and receipts.
-  - [ ] Automated scheduled reminders (cron jobs triggering reminders 24 hours and 2 hours before appointments).
-  - [ ] Notification delivery status logs and retry mechanism.
+- [ ] **Medical History Feed**
+  - [ ] Chronological medical timeline for patients (past visits, prescriptions, reports)
+  - [ ] Diagnostic report upload interface (PDFs, images) with metadata (test name, date, lab)
+  - [ ] Private file storage integration with secure, short-lived download links
+- [ ] **Privacy & Consent Management**
+  - [ ] Personal health card (blood group, allergies, chronic conditions, emergency contacts)
+  - [ ] Patient consent controls (granting a specific doctor temporary access to records)
+  - [ ] Access logs for sensitive medical document views
 
 ---
 
-### Phase 6: Emergency Assistance & Resource Discovery
+### Phase 5: Integrated Communication & Notifications
+
+- [ ] **Notification System**
+  - [ ] In-app notification center (status changes, upcoming visit reminders)
+  - [ ] SMS gateway integration for Bangladesh (booking confirmations, schedule changes, OTPs)
+  - [ ] Email notifications for appointment details and receipts
+- [ ] **Automated Reminders**
+  - [ ] Automated reminder alerts (24 hours and 2 hours before scheduled consultation)
+  - [ ] Notification delivery status logging and retry handling
+
+---
+
+### Phase 6: Emergency Assistance
 
 - [ ] **Emergency Directory**
-  - [ ] Prominent quick-dial UI for National Emergency Services (**999**).
-  - [ ] Geolocation-based discovery of 24/7 emergency rooms and trauma centers.
-  - [ ] Direct-dial ambulance provider directory with service radius and contact details.
-- [ ] **Emergency Request Coordination**
-  - [ ] Emergency location sharing payload generator for rapid patient dispatch.
-  - [ ] Urgent consultation request triage module for partner hospital emergency desks.
+  - [ ] National Emergency Services (**999**) direct-dial banner
+  - [ ] Location-based emergency room and urgent care hospital finder
+  - [ ] Verified ambulance provider directory with direct call contacts
+- [ ] **Emergency Dispatch Support**
+  - [ ] Emergency location sharing payload for quick assistance
+  - [ ] Urgent consultation triage flow for partnering emergency desks
 
 ---
 
-### Phase 7: AI Healthcare Navigation & Multi-Platform Expansion
+### Phase 7: AI Navigation & Multi-Platform Expansion
 
-- [ ] **AI-Assisted Navigation**
-  - [ ] Bilingual (Bangla & English) natural language search input.
-  - [ ] Symptom-to-specialty mapper using Gemini / LLM API with strict prompt engineering.
-  - [ ] Safety guardrails: non-diagnostic disclaimers and immediate emergency redirections for severe symptoms.
-- [ ] **Mobile Application**
-  - [ ] Cross-platform mobile app (React Native or Flutter) for iOS and Android.
-  - [ ] Offline caching for downloaded prescriptions, emergency contacts, and confirmed appointments.
-  - [ ] Push notification service integration (FCM / APNs).
-- [ ] **Platform Hardening & Scale**
-  - [ ] Automated CI/CD pipeline (GitHub Actions) for linting, testing, and security scanning.
-  - [ ] OWASP Top 10 security audit (SQL injection, XSS, CSRF, rate-limiting on sensitive endpoints).
-  - [ ] Database indexing on geolocation coordinates, doctor specialties, and appointment time slots.
-
----
-
-## Security, Privacy, and Data Integrity Standards
-
-1. **Parameter Sanitization:** Always use parameterized SQL queries or ORM abstractions. Never concatenate raw strings into SQL queries.
-2. **Access Control Checks:** Verify role and ownership on every protected backend route. Never trust client-provided user IDs.
-3. **Sensitive File Protection:** Medical files must never be publicly readable. All asset delivery must use short-lived pre-signed URLs (maximum 15 minutes validity).
-4. **Credential Hygiene:** Never commit `.env`, private keys, database credentials, or test customer identities.
-
----
-
-## Pull Request (PR) Checklist
-
-Before submitting a PR for review, verify:
-
-- [ ] Code follows project formatting and passes all lint checks (`npm run lint`).
-- [ ] All new and existing unit/integration tests pass (`npm test`).
-- [ ] Database migrations are backwards-compatible and tested on both fresh and populated databases.
-- [ ] No API keys, credentials, or private health data are committed.
-- [ ] PR title and description are written in clear, concise English following conventional commit patterns.
-- [ ] Corresponding tasks in the [Master Development Plan](#master-development-plan--checklist) have been updated.
+- [ ] **AI-Assisted Discovery**
+  - [ ] Natural-language search in both Bangla and English
+  - [ ] LLM-assisted specialty recommendation based on symptoms
+  - [ ] Strict safety guardrails (non-diagnostic disclaimers, urgent emergency redirection)
+- [ ] **Mobile & Production Readiness**
+  - [ ] Cross-platform mobile app (React Native or Flutter)
+  - [ ] Offline caching for prescriptions and emergency contacts
+  - [ ] Security audits, rate-limiting, and database indexing optimizations
