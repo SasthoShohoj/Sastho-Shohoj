@@ -1,0 +1,786 @@
+/* ==========================================================================
+   EasyHealth — Clinical Health Explorer Stylesheet
+   Faithfully matching the Clinical Health Explorer mockup:
+   - Fullscreen interactive vector map canvas
+   - Floating rounded top search bar + horizontal pill filter chips
+   - Floating left vertical icon dock
+   - Floating facility cards with "24/7 Open" pill badges and "↗ Directions"
+   - Teardrop custom category pin markers and dynamic route polyline
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f8fafc;
+  color: #0f172a;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   Map Viewport Canvas
+   ========================================================================== */
+.map-viewport {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* MapLibre Controls Positioning & Minimalist Overrides */
+.maplibregl-ctrl-top-right {
+  top: 24px !important;
+  right: 24px !important;
+}
+
+.maplibregl-ctrl-group {
+  border-radius: 12px !important;
+  border: 1px solid rgba(226, 232, 240, 0.9) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   Top Center Floating Search & Filter Bar
+   ========================================================================== */
+.top-search-filter-container {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.floating-search-bar {
+  pointer-events: auto;
+  width: 460px;
+  max-width: calc(100vw - 32px);
+  height: 50px;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.floating-search-bar:focus-within {
+  border-color: #94a3b8;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.1);
+}
+
+.search-icon {
+  width: 20px;
+  height: 20px;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+#facility-search-input {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #0f172a;
+}
+
+#facility-search-input::placeholder {
+  color: #94a3b8;
+}
+
+.search-clear-btn {
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.search-clear-btn:hover {
+  color: #0f172a;
+}
+
+/* Header Locate GPS Button */
+.header-locate-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: #f1f5f9;
+  color: #3b5a75;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.header-locate-btn:hover {
+  background: #e2eaf4;
+  color: #1e3a5f;
+}
+
+.header-locate-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Category Filter Chips */
+.filter-chips-row {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.filter-chip {
+  height: 34px;
+  padding: 0 16px;
+  border-radius: 9999px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  user-select: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* 1. Hospitals (Dark Slate Blue) */
+.chip-hospitals {
+  background: #ffffff;
+  color: #3b5a75;
+  border: 1px solid #cbd5e1;
+}
+
+.chip-hospitals.active {
+  background: #3b5a75;
+  color: #ffffff;
+  border-color: #3b5a75;
+  box-shadow: 0 4px 12px rgba(59, 90, 117, 0.25);
+}
+
+/* 2. Pharmacies (Mint Green) */
+.chip-pharmacies {
+  background: #ffffff;
+  color: #16a34a;
+  border: 1px solid #cbd5e1;
+}
+
+.chip-pharmacies.active {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.18);
+}
+
+/* 3. Diagnostics (Soft Purple) */
+.chip-diagnostics {
+  background: #ffffff;
+  color: #8b5cf6;
+  border: 1px solid #cbd5e1;
+}
+
+.chip-diagnostics.active {
+  background: #f3e8ff;
+  color: #7e22ce;
+  border: 1px solid #d8b4fe;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.18);
+}
+
+/* 4. Blood Banks (Soft Red/Rose) */
+.chip-blood {
+  background: #ffffff;
+  color: #ef4444;
+  border: 1px solid #cbd5e1;
+}
+
+.chip-blood.active {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.18);
+}
+
+/* ==========================================================================
+   Left Floating Container: Dock & Cards Panel
+   ========================================================================== */
+.left-floating-container {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  bottom: 24px;
+  display: flex;
+  gap: 16px;
+  z-index: 90;
+  pointer-events: none;
+}
+
+/* Vertical Slim Icon Dock */
+.vertical-icon-dock {
+  pointer-events: auto;
+  width: 48px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  flex-shrink: 0;
+}
+
+.dock-top-group, .dock-bottom-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.dock-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.dock-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.dock-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.dock-btn.active {
+  background: #e2eaf4;
+  color: #3b5a75;
+}
+
+/* Facility Cards Panel */
+.facility-cards-panel {
+  pointer-events: auto;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-width: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.facility-cards-panel::-webkit-scrollbar {
+  display: none;
+}
+
+.facility-cards-panel.collapsed {
+  opacity: 0;
+  transform: translateX(-20px);
+  pointer-events: none;
+}
+
+/* Facility Card */
+.facility-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.07);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  user-select: none;
+}
+
+.facility-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-color: #cbd5e1;
+}
+
+.facility-card.active-card {
+  border-color: #3b5a75;
+  box-shadow: 0 8px 30px rgba(59, 90, 117, 0.15);
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.25;
+}
+
+.card-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+.badge-green {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.badge-rose {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.card-divider {
+  height: 1px;
+  background: #f1f5f9;
+  width: 100%;
+}
+
+.card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #475569;
+}
+
+.meta-icon {
+  width: 15px;
+  height: 15px;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.btn-directions {
+  width: 100%;
+  height: 38px;
+  border-radius: 10px;
+  border: none;
+  background: #476888;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.btn-directions:hover {
+  background: #37536e;
+}
+
+.btn-directions svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* ==========================================================================
+   Custom Teardrop Map Markers
+   ========================================================================== */
+.custom-teardrop-marker {
+  cursor: pointer;
+  width: 38px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.22));
+}
+
+.custom-teardrop-marker:hover {
+  transform: scale(1.18);
+  z-index: 500;
+}
+
+.custom-teardrop-marker.active-marker {
+  transform: scale(1.22);
+  z-index: 600;
+}
+
+.teardrop-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Category Specific Colors */
+.pin-hospital path.pin-body { fill: #3b5a75; }
+.pin-pharmacy path.pin-body { fill: #16a34a; }
+.pin-diagnostic path.pin-body { fill: #8b5cf6; }
+.pin-blood path.pin-body { fill: #dc2626; }
+
+/* MapLibre Popups */
+.maplibregl-popup-content {
+  border-radius: 14px !important;
+  padding: 14px 16px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12) !important;
+  border: 1px solid rgba(226, 232, 240, 0.9) !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.maplibregl-popup-close-button {
+  top: 8px !important;
+  right: 8px !important;
+  font-size: 16px !important;
+  color: #94a3b8 !important;
+}
+
+.popup-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.popup-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.popup-sub {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.popup-status {
+  font-size: 11px;
+  font-weight: 600;
+  color: #15803d;
+}
+
+/* Settings Modal */
+.settings-modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-modal-backdrop.active {
+  display: flex;
+}
+
+.settings-modal-card {
+  width: 440px;
+  max-width: 90vw;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.settings-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.settings-modal-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.modal-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+.settings-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.settings-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.settings-select, #settings-api-key-input {
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  padding: 0 12px;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+}
+
+.settings-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+#settings-api-key-input {
+  flex: 1;
+}
+
+.settings-btn-primary {
+  height: 40px;
+  padding: 0 16px;
+  background: #3b5a75;
+  color: #ffffff;
+  border-radius: 8px;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.settings-feedback {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Location Permission Prompt Modal & User GPS Marker
+   ========================================================================== */
+.location-modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(5px);
+  z-index: 1100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
+}
+
+.location-modal-backdrop.active {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.location-modal-card {
+  width: 420px;
+  max-width: 90vw;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+}
+
+.location-icon-bubble {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #eff6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.location-icon-bubble svg {
+  width: 30px;
+  height: 30px;
+}
+
+.location-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.location-modal-desc {
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.location-modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin-top: 6px;
+}
+
+.btn-location-primary {
+  height: 44px;
+  border-radius: 12px;
+  border: none;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s ease;
+}
+
+.btn-location-primary:hover {
+  background: #1d4ed8;
+}
+
+.btn-location-primary svg {
+  width: 18px;
+  height: 18px;
+}
+
+.btn-location-secondary {
+  height: 38px;
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.btn-location-secondary:hover {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+/* User Location GPS Map Marker with Radar Ripple */
+.user-location-marker {
+  width: 18px;
+  height: 18px;
+  background: #2563eb;
+  border: 3.5px solid #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(37, 99, 235, 0.6);
+  position: relative;
+}
+
+.user-pulse-halo {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  border: 2px solid #2563eb;
+  border-radius: 50%;
+  animation: user-radar 2s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+  pointer-events: none;
+}
+
+@keyframes user-radar {
+  0% { transform: scale(1); opacity: 0.9; }
+  100% { transform: scale(2.8); opacity: 0; }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .left-floating-container {
+    top: auto;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    flex-direction: column-reverse;
+  }
+
+  .vertical-icon-dock {
+    width: 100%;
+    height: 48px;
+    flex-direction: row;
+    padding: 0 16px;
+  }
+
+  .dock-top-group, .dock-bottom-group {
+    flex-direction: row;
+  }
+
+  .facility-cards-panel {
+    width: 100%;
+    max-height: 220px;
+  }
+
+  .top-search-filter-container {
+    top: 16px;
+    width: calc(100vw - 32px);
+  }
+}
