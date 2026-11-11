@@ -180,8 +180,8 @@
 
     // Send filter message to map iframe if available, or update src
     const mapSrc = state.selectedCategory
-      ? `map.html?embed=preview&category=${encodeURIComponent(state.selectedCategory)}`
-      : 'map.html?embed=preview';
+      ? `map/index.html?embed=preview&category=${encodeURIComponent(state.selectedCategory)}`
+      : 'map/index.html?embed=preview';
 
     if (DOM.previewFrame && state.activePreview === 'map') {
       try {
@@ -196,8 +196,8 @@
     // Update external link with category parameter
     if (DOM.previewExternalLink) {
       DOM.previewExternalLink.href = state.selectedCategory
-        ? `map.html?category=${encodeURIComponent(state.selectedCategory)}`
-        : 'map.html';
+        ? `map/index.html?category=${encodeURIComponent(state.selectedCategory)}`
+        : 'map/index.html';
     }
   }
 
@@ -279,13 +279,13 @@
     if (DOM.previewFrame && DOM.previewExternalLink) {
       if (type === 'map') {
         const catParam = state.selectedCategory ? `&category=${encodeURIComponent(state.selectedCategory)}` : '';
-        DOM.previewFrame.src = `map.html?embed=preview${catParam}`;
+        DOM.previewFrame.src = `map/index.html?embed=preview${catParam}`;
         DOM.previewExternalLink.href = state.selectedCategory
-          ? `map.html?category=${encodeURIComponent(state.selectedCategory)}`
-          : 'map.html';
+          ? `map/index.html?category=${encodeURIComponent(state.selectedCategory)}`
+          : 'map/index.html';
       } else {
-        DOM.previewFrame.src = 'emergency.html?embed=preview';
-        DOM.previewExternalLink.href = 'emergency.html';
+        DOM.previewFrame.src = 'emergency/emergency.html?embed=preview';
+        DOM.previewExternalLink.href = 'emergency/emergency.html';
       }
     }
   }

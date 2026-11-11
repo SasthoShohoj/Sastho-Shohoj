@@ -37,35 +37,35 @@
       label: { en: 'Hospitals', bn: 'হাসপাতাল' },
       icon: 'hospital',
       colorClass: 'chip-blue',
-      route: 'map.html?category=HOSPITAL'
+      route: 'map/index.html?category=HOSPITAL'
     },
     {
       id: 'EMERGENCY',
       label: { en: 'Emergency 999', bn: 'জরুরি ৯৯৯' },
       icon: 'ambulance',
       colorClass: 'chip-crimson',
-      route: 'emergency.html'
+      route: 'emergency/emergency.html'
     },
     {
       id: 'PHARMACY',
       label: { en: 'Pharmacies', bn: 'ফার্মেসি' },
       icon: 'capsule',
       colorClass: 'chip-green',
-      route: 'map.html?category=PHARMACY'
+      route: 'map/index.html?category=PHARMACY'
     },
     {
       id: 'DIAGNOSTIC',
       label: { en: 'Diagnostics', bn: 'ডায়াগনস্টিক' },
       icon: 'microscope',
       colorClass: 'chip-purple',
-      route: 'map.html?category=DIAGNOSTIC'
+      route: 'map/index.html?category=DIAGNOSTIC'
     },
     {
       id: 'BLOOD_BANK',
       label: { en: 'Blood Banks', bn: 'ব্লাড ব্যাংক' },
       icon: 'bloodDrop',
       colorClass: 'chip-rose',
-      route: 'map.html?category=BLOOD_BANK'
+      route: 'map/index.html?category=BLOOD_BANK'
     }
   ];
 
@@ -79,7 +79,7 @@
         bn: 'জাতীয় জরুরি কল, অ্যাম্বুলেন্স প্রস্তুতি ও রোগী বিবরণ প্রস্তুত।'
       },
       icon: 'ambulance',
-      path: 'emergency.html',
+      path: 'emergency/emergency.html',
       status: 'ACTIVE',
       badge: { en: 'Active Beta', bn: 'চালু রয়েছে' },
       badgeType: 'badge-crimson',
@@ -94,7 +94,7 @@
         bn: 'খুলনা ও আশেপাশের যাচাইকৃত হাসপাতাল, ফার্মেসি ও আইসিইউ ম্যাপ।'
       },
       icon: 'mapPin',
-      path: 'map.html',
+      path: 'map/index.html',
       status: 'ACTIVE',
       badge: { en: 'Active Beta', bn: 'চালু রয়েছে' },
       badgeType: 'badge-blue',
