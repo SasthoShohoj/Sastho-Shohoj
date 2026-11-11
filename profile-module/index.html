@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Portal | Shastho Shohoj</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="portal-header">
+    <a class="brand" href="#" aria-label="Shastho Shohoj home">
+      <span class="brand-mark">+</span>
+      <span><strong>Shastho</strong> Shohoj<small>Patient portal</small></span>
+    </a>
+    <div class="header-user"><span class="status-dot"></span> Welcome, <strong id="headerName">Ayesha Rahman</strong></div>
+  </header>
+
+  <main class="portal-shell">
+    <section class="page-intro">
+      <div><p class="eyebrow">MY HEALTHCARE</p><h1>Personal Profile</h1><p class="muted">Manage your personal information and keep your health records in one secure place.</p></div>
+      <span class="privacy-note">🔒 Your information is private</span>
+    </section>
+
+    <section class="profile-card panel">
+      <div class="profile-identity">
+        <div class="avatar-wrap">
+          <img id="profileImage" class="avatar" alt="Profile avatar">
+          <label class="upload-button" title="Change profile picture">📷<input id="avatarInput" type="file" accept="image/*" hidden></label>
+        </div>
+        <div><p class="eyebrow">PATIENT PROFILE</p><h2 id="profileName">Ayesha Rahman</h2><p class="muted" id="profileLocation">Dhaka, Bangladesh</p></div>
+      </div>
+      <div class="profile-summary">
+        <div><span class="label">Date of birth</span><strong id="profileDob">12 March 1994</strong></div>
+        <div><span class="label">Age</span><strong id="profileAge">32 years</strong></div>
+        <div><span class="label">Phone number</span><strong id="profilePhone">+880 1712-345678</strong></div>
+        <div><span class="label">Email address</span><strong id="profileEmail">ayesha.rahman@example.com</strong></div>
+      </div>
+      <div class="profile-actions"><button class="button button-secondary" id="showProfile">Show details</button><button class="button button-primary" id="editProfile">Edit profile</button></div>
+    </section>
+
+    <section class="records-section">
+      <div class="section-heading"><div><p class="eyebrow">HEALTH HISTORY</p><h2>Medical records</h2></div><span class="record-count">Demonstration data</span></div>
+      <div class="tabs" role="tablist"><button class="tab active" data-tab="reports" role="tab">Reports <span>5</span></button><button class="tab" data-tab="prescriptions" role="tab">Prescriptions <span>2</span></button><button class="tab" data-tab="visits" role="tab">Visits <span>4</span></button></div>
+      <div id="recordsContent" class="records-grid"></div>
+    </section>
+
+    <section class="provider-section" aria-labelledby="providerSearchTitle">
+      <div class="section-heading"><div><p class="eyebrow">FIND CARE</p><h2>Healthcare provider search</h2><p class="muted">Find trusted care providers near you.</p></div></div>
+      <div class="provider-search-layout">
+        <aside class="provider-navigation panel" aria-label="Provider categories">
+          <p class="eyebrow">BROWSE BY TYPE</p>
+          <h3>Healthcare providers</h3>
+          <button class="provider-category active" data-provider-category="doctors" aria-pressed="true"><span>⚕</span>Doctors</button>
+          <button class="provider-category" data-provider-category="clinics" aria-pressed="false"><span>⌂</span>Clinics</button>
+          <button class="provider-category" data-provider-category="hospitals" aria-pressed="false"><span>✚</span>Hospitals</button>
+          <button class="provider-category" data-provider-category="pharmacies" aria-pressed="false"><span>⚕</span>Pharmacies</button>
+        </aside>
+        <div class="provider-results-area">
+          <div class="provider-search-heading"><div><p class="eyebrow">DEMONSTRATION DIRECTORY</p><h2 id="providerSearchTitle">Find Doctors</h2></div><label class="location-control" for="providerLocation">📍 <span>Near</span><select id="providerLocation"><option value="dhanmondi">Dhanmondi, Dhaka</option><option value="mirpur">Mirpur, Dhaka</option><option value="uttara">Uttara, Dhaka</option><option value="gulshan">Gulshan, Dhaka</option></select></label></div>
+          <form class="provider-search-form" id="providerSearchForm" role="search"><label class="sr-only" for="providerSearch">Search providers</label><div class="provider-search-input"><span>⌕</span><input id="providerSearch" type="search" placeholder="Search doctors by name or specialization..." autocomplete="off"><button type="button" id="clearSearch" aria-label="Clear search">×</button></div></form>
+          <p class="provider-sort-note">Sorted by approximate straight-line distance from your selected location.</p>
+          <div id="providerResults" class="provider-results-list" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <button class="appointment-fab" id="bookAppointment"><span>＋</span> Book an appointment</button>
+  <div id="modalRoot" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
