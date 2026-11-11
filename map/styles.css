@@ -608,6 +608,182 @@ html, body {
 }
 
 /* ==========================================================================
+   24/7 Medical Helplines Modal (Hamburger Menu)
+   ========================================================================== */
+.helplines-modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.helplines-modal-backdrop.active {
+  display: flex;
+}
+
+.helplines-modal-card {
+  width: 520px;
+  max-width: 92vw;
+  max-height: 82vh;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 24px 50px rgba(15, 23, 42, 0.18);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.helplines-modal-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fbfcfd;
+}
+
+.helplines-header-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.helplines-icon-pulse {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: #fee2e2;
+  color: #dc2626;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+}
+
+.helplines-header-title h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.helplines-header-title p {
+  font-size: 11px;
+  color: #64748b;
+  margin: 2px 0 0;
+}
+
+.helplines-modal-body {
+  padding: 18px 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.helpline-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.helpline-group-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #64748b;
+}
+
+.helpline-items-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.helpline-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #f1f5f9;
+  background: #f8fafc;
+  gap: 12px;
+  transition: all 0.15s ease;
+}
+
+.helpline-entry:hover {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.entry-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.entry-info strong {
+  font-size: 13px;
+  color: #0f172a;
+}
+
+.entry-info span {
+  font-size: 11px;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.entry-call-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: #0284c7;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background 0.15s ease;
+  flex-shrink: 0;
+}
+
+.entry-call-btn:hover {
+  background: #0369a1;
+}
+
+.entry-crimson .entry-call-btn {
+  background: #dc2626;
+}
+
+.entry-crimson .entry-call-btn:hover {
+  background: #b91c1c;
+}
+
+.entry-teal .entry-call-btn {
+  background: #0f766e;
+}
+
+.entry-teal .entry-call-btn:hover {
+  background: #115e59;
+}
+
+/* ==========================================================================
    Location Permission Prompt Modal & User GPS Marker
    ========================================================================== */
 .location-modal-backdrop {
@@ -784,3 +960,76 @@ html, body {
     width: calc(100vw - 32px);
   }
 }
+
+/* ==========================================================================
+   Embedded Mode Overrides (for landing preview & emergency radar)
+   Clean, minimal in-screen view: no duplicate search, no cluttered dock customization
+   ========================================================================== */
+html.is-embedded .site-header,
+body.is-embedded .site-header {
+  display: none !important;
+}
+
+html.is-embedded .top-search-filter-container,
+body.is-embedded .top-search-filter-container {
+  display: none !important;
+}
+
+html.is-embedded .vertical-icon-dock,
+body.is-embedded .vertical-icon-dock {
+  display: none !important;
+}
+
+html.is-embedded .location-modal-backdrop,
+body.is-embedded .location-modal-backdrop,
+html.is-embedded .settings-modal-backdrop,
+body.is-embedded .settings-modal-backdrop,
+html.is-embedded .helplines-modal-backdrop,
+body.is-embedded .helplines-modal-backdrop {
+  display: none !important;
+}
+
+html.is-embedded .left-floating-container,
+body.is-embedded .left-floating-container {
+  top: 14px !important;
+  left: 14px !important;
+  bottom: 14px !important;
+  pointer-events: none;
+}
+
+html.is-embedded .facility-cards-panel,
+body.is-embedded .facility-cards-panel {
+  pointer-events: auto;
+  width: 310px !important;
+  max-width: calc(100vw - 28px) !important;
+  max-height: calc(100% - 28px) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+html.is-embedded .maplibregl-ctrl-top-right,
+body.is-embedded .maplibregl-ctrl-top-right {
+  top: 14px !important;
+  right: 14px !important;
+}
+
+html.is-embedded .map-viewport,
+body.is-embedded .map-viewport {
+  top: 0 !important;
+  height: 100% !important;
+}
+
+@media (max-width: 640px) {
+  html.is-embedded .left-floating-container,
+  body.is-embedded .left-floating-container {
+    top: auto !important;
+    left: 10px !important;
+    right: 10px !important;
+    bottom: 10px !important;
+  }
+  html.is-embedded .facility-cards-panel,
+  body.is-embedded .facility-cards-panel {
+    width: 100% !important;
+    max-height: 170px !important;
+  }
+}
+

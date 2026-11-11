@@ -28,163 +28,215 @@
     {
       id: 'kuet-medical-center',
       name: 'KUET Campus Medical Center',
+      nameBn: 'কুয়েট ক্যাম্পাস মেডিকেল সেন্টার',
       category: 'HOSPITAL',
       badgeText: '24/7 Open',
       badgeType: 'badge-green',
       meta1Icon: 'bed',
       meta1Text: 'Campus Emergency & Primary Care',
+      meta1TextBn: 'ক্যাম্পাস জরুরি সেবা ও প্রাথমিক চিকিৎসা',
       lat: 22.9015,
       lng: 89.5032,
       address: 'Central Campus Avenue, KUET, Khulna 9203',
+      addressBn: 'সেন্ট্রাল ক্যাম্পাস এভিনিউ, কুয়েট, খুলনা ৯২০৩',
       phone: '+880-41-769468'
     },
     {
       id: 'citycare-pharmacy-fulbari',
       name: 'CityCare 24/7 Pharmacy',
+      nameBn: 'সিটি কেয়ার ২৪/৭ ফার্মেসি',
       category: 'PHARMACY',
       badgeText: '24/7 Open',
       badgeType: 'badge-green',
       meta1Icon: 'capsule',
       meta1Text: 'Prescriptions & Emergency Oxygen',
+      meta1TextBn: 'প্রেসক্রিপশন ও জরুরি অক্সিজেন সিলিন্ডার',
       lat: 22.8988,
       lng: 89.5058,
       address: 'Fulbarigate Commercial Point, Khulna',
+      addressBn: 'ফুলবাড়ীগেট বাণিজ্যিক কেন্দ্র, খুলনা',
       phone: '+880-1711-223344'
     },
     {
       id: 'alshefa-pharmacy-kuet',
       name: 'Al-Shefa Pharmacy',
+      nameBn: 'আল-শেফা ফার্মেসি',
       category: 'PHARMACY',
       badgeText: 'Open now',
       badgeType: 'badge-green',
       meta1Icon: 'capsule',
       meta1Text: 'Prescriptions & Vital Medicines',
+      meta1TextBn: 'প্রেসক্রিপশন ও জরুরি জীবনরক্ষাকারী ঔষধ',
       lat: 22.9042,
       lng: 89.4990,
       address: 'Teligati Main Gate, KUET, Khulna',
+      addressBn: 'তেলিগাতী মেইন গেট, কুয়েট, খুলনা',
       phone: '+880-1912-345678'
     },
     {
       id: 'kmch-hospital-khulna',
       name: 'Khulna Medical College Hospital (KMCH)',
+      nameBn: 'খুলনা মেডিকেল কলেজ হাসপাতাল (কেএমসিএইচ)',
       category: 'HOSPITAL',
       badgeText: '24/7 Open',
       badgeType: 'badge-green',
       meta1Icon: 'bed',
       meta1Text: 'ICU: 24 beds • 24/7 Trauma ER',
+      meta1TextBn: 'আইসিইউ: ২৪টি বেড • ২৪/৭ ট্রমা ও জরুরি বিভাগ',
       lat: 22.8436,
       lng: 89.5412,
       address: 'Boyra Main Road, Khulna 9000',
+      addressBn: 'বয়রা মেইন রোড, খুলনা ৯০০০',
       phone: '+880-41-760350'
     },
     {
       id: 'sheikh-abu-naser-hospital',
       name: 'Shaheed Sheikh Abu Naser Hospital',
+      nameBn: 'শহীদ শেখ আবু নাসের বিশেষায়িত হাসপাতাল',
       category: 'HOSPITAL',
       badgeText: '24/7 Open',
       badgeType: 'badge-green',
       meta1Icon: 'bed',
       meta1Text: 'Cardiology & ICU: 15 beds',
+      meta1TextBn: 'কার্ডিওলজি ও আইসিইউ: ১৫টি বেড',
       lat: 22.8552,
       lng: 89.5310,
       address: 'Mujgunni Main Road, Khulna 9000',
+      addressBn: 'মুজগুন্নি মেইন রোড, খুলনা ৯০০০',
       phone: '+880-41-761509'
     },
     {
       id: 'gazi-medical-college',
       name: 'Gazi Medical College Hospital',
+      nameBn: 'গাজী মেডিকেল কলেজ হাসপাতাল',
       category: 'HOSPITAL',
       badgeText: '24/7 Open',
       badgeType: 'badge-green',
       meta1Icon: 'bed',
       meta1Text: 'General ER & ICU: 18 beds',
+      meta1TextBn: 'জেনারেল জরুরি বিভাগ ও আইসিইউ: ১৮টি বেড',
       lat: 22.8390,
       lng: 89.5350,
       address: 'Sonadanga Main Road, Khulna 9100',
+      addressBn: 'সোনাডাঙ্গা মেইন রোড, খুলনা ৯১০০',
       phone: '+880-41-761509'
     },
     {
       id: 'popular-diagnostic-khulna',
       name: 'Popular Diagnostic Centre',
+      nameBn: 'পপুলার ডায়াগনস্টিক সেন্টার',
       category: 'DIAGNOSTIC',
       badgeText: 'Open now',
       badgeType: 'badge-green',
       meta1Icon: 'microscope',
       meta1Text: '3T MRI, 128-Slice CT & Digital Lab',
+      meta1TextBn: '৩টি এমআরআই, ১২৮-স্লাইস সিটি ও ডিজিটাল ল্যাব',
       lat: 22.8285,
       lng: 89.5510,
       address: '38 KDA Avenue, Majid Sarani, Khulna',
+      addressBn: '৩৮ কেডিএ অ্যাভিনিউ, মজিদ সরণি, খুলনা',
       phone: '+880-9613-787815'
     },
     {
       id: 'labaid-diagnostic-khulna',
       name: 'Labaid Diagnostic & Hospital',
+      nameBn: 'ল্যাবএইড ডায়াগনস্টিক অ্যান্ড হাসপাতাল',
       category: 'DIAGNOSTIC',
       badgeText: 'Open now',
       badgeType: 'badge-green',
       meta1Icon: 'microscope',
       meta1Text: 'Automated Pathology & Consultation',
+      meta1TextBn: 'অটোমেটেড প্যাথলজি ও কনসালটেশন',
       lat: 22.8250,
       lng: 89.5530,
       address: 'Majid Sarani, Sonadanga, Khulna',
+      addressBn: 'মজিদ সরণি, সোনাডাঙ্গা, খুলনা',
       phone: '+880-41-731380'
     },
     {
       id: 'sandhani-blood-bank-kmch',
       name: 'Sandhani Blood Bank (KMCH Unit)',
+      nameBn: 'সন্ধানী ব্লাড ব্যাংক (কেএমসিএইচ ইউনিট)',
       category: 'BLOOD_BANK',
       badgeText: 'Emergency',
       badgeType: 'badge-rose',
       meta1Icon: 'bloodDrop',
       meta1Text: 'Whole Blood & Platelets In-Stock',
+      meta1TextBn: 'হোল ব্লাড ও প্লাটিলেট সংরক্ষিত',
       lat: 22.8440,
       lng: 89.5415,
       address: 'KMCH Campus, Boyra, Khulna',
+      addressBn: 'কেএমসিএইচ ক্যাম্পাস, বয়রা, খুলনা',
       phone: '+880-1712-445566'
     },
     {
       id: 'red-crescent-blood-khulna',
       name: 'Red Crescent Blood Center',
+      nameBn: 'রেড ক্রিসেন্ট রক্তদান কেন্দ্র',
       category: 'BLOOD_BANK',
       badgeText: 'Emergency',
       badgeType: 'badge-rose',
       meta1Icon: 'bloodDrop',
       meta1Text: 'Emergency Blood Registry & Units',
+      meta1TextBn: 'জরুরি রক্তদাতা ও রক্তের মজুদ',
       lat: 22.8190,
       lng: 89.5620,
       address: 'Hospital Road, Khulna Sadar',
+      addressBn: 'হাসপাতাল রোড, খুলনা সদর',
       phone: '+880-41-721200'
     },
     {
       id: 'prime-surgical-pharmacy',
       name: 'Prime Surgical & 24/7 Medicine',
+      nameBn: 'প্রাইম সার্জিক্যাল ও ২৪/৭ মেডিসিন',
       category: 'PHARMACY',
       badgeText: '24/7 Open',
       badgeType: 'badge-green',
       meta1Icon: 'capsule',
       meta1Text: 'Surgical Supplies & Life-Support Drugs',
+      meta1TextBn: 'সার্জিক্যাল সামগ্রী ও জরুরি ঔষধ',
       lat: 22.8420,
       lng: 89.5430,
       address: 'Opposite KMCH Gate 1, Boyra, Khulna',
+      addressBn: 'কেএমসিএইচ গেট ১ এর বিপরীতে, বয়রা, খুলনা',
       phone: '+880-1715-667788'
     },
     {
       id: 'khulna-sadar-hospital',
       name: 'Khulna Sadar General Hospital',
+      nameBn: 'খুলনা সদর জেনারেল হাসপাতাল',
       category: 'HOSPITAL',
       badgeText: '24/7 Open',
       badgeType: 'badge-green',
       meta1Icon: 'bed',
       meta1Text: 'District General Hospital & 24/7 ER',
+      meta1TextBn: 'জেলা সদর হাসপাতাল ও ২৪/৭ জরুরি বিভাগ',
       lat: 22.8115,
       lng: 89.5665,
       address: 'Court Road, Khulna Sadar 9100',
+      addressBn: 'কোর্ট রোড, খুলনা সদর ৯১০০',
       phone: '+880-41-720130'
     }
   ];
 
   // Tile Providers
   const TILE_STYLES = {
+    'osm-standard': {
+      version: 8,
+      sources: {
+        'osm-tiles': {
+          type: 'raster',
+          tiles: [
+            'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
+          ],
+          tileSize: 256,
+          attribution: '&copy; OpenStreetMap contributors'
+        }
+      },
+      layers: [{ id: 'osm-layer', type: 'raster', source: 'osm-tiles', minzoom: 0, maxzoom: 19 }]
+    },
     'carto-voyager': {
       version: 8,
       sources: {
@@ -216,18 +268,6 @@
         }
       },
       layers: [{ id: 'positron-layer', type: 'raster', source: 'positron-tiles', minzoom: 0, maxzoom: 19 }]
-    },
-    'osm-standard': {
-      version: 8,
-      sources: {
-        'osm-tiles': {
-          type: 'raster',
-          tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
-          tileSize: 256,
-          attribution: '&copy; OpenStreetMap contributors'
-        }
-      },
-      layers: [{ id: 'osm-layer', type: 'raster', source: 'osm-tiles', minzoom: 0, maxzoom: 19 }]
     },
     'carto-dark': {
       version: 8,
@@ -263,13 +303,18 @@
   }
 
   /**
-   * Formats distance cleanly (e.g. "650 m away" or "1.4 km away")
+   * Formats distance cleanly with bilingual unit support
    */
   function formatDistance(distKm) {
+    const isBn = (window.EasyHealthI18n ? window.EasyHealthI18n.getCurrentLang() : (localStorage.getItem('easyhealth_lang') || 'en')) === 'bn';
+    const toBn = window.EasyHealthI18n ? window.EasyHealthI18n.toBengaliNumber : (v => v);
+
     if (distKm < 1) {
-      return `${Math.round(distKm * 1000)} m away`;
+      const m = Math.round(distKm * 1000);
+      return isBn ? `${toBn(m)} মিটার দূরে` : `${m} m away`;
     }
-    return `${distKm.toFixed(1)} km away`;
+    const kmStr = distKm.toFixed(1);
+    return isBn ? `${toBn(kmStr)} কিমি দূরে` : `${kmStr} km away`;
   }
 
   // App State Model
@@ -288,7 +333,7 @@
       BLOOD_BANK: true
     },
     searchQuery: '',
-    tileProvider: 'carto-voyager',
+    tileProvider: localStorage.getItem('easyhealth_tile_provider') || 'osm-standard',
     apiKey: localStorage.getItem('easyhealth_tile_key') || ''
   };
 
@@ -302,6 +347,9 @@
     facilityCardsPanel: document.getElementById('facility-cards-panel'),
     dockBtnCollapse: document.getElementById('dock-btn-collapse'),
     dockBtnSettings: document.getElementById('dock-btn-settings'),
+    dockBtnList: document.getElementById('dock-btn-list'),
+    helplinesModalBackdrop: document.getElementById('helplines-modal-backdrop'),
+    btnCloseHelplines: document.getElementById('btn-close-helplines'),
     settingsModalBackdrop: document.getElementById('settings-modal-backdrop'),
     btnCloseSettings: document.getElementById('btn-close-settings'),
     settingsTileProvider: document.getElementById('settings-tile-provider'),
@@ -342,6 +390,8 @@
 
       // Check location permission state on load
       checkInitialLocationPermission();
+      broadcastFacilities();
+      parseUrlParams();
     });
   }
 
@@ -370,6 +420,13 @@
    * Checks browser location permission status and shows permission dialog if needed
    */
   function checkInitialLocationPermission() {
+    // Never show modal dialog inside embedded iframe preview
+    if (document.documentElement.classList.contains('is-embedded') ||
+        document.body.classList.contains('is-embedded') ||
+        window.location.search.includes('embed=')) {
+      return;
+    }
+
     const promptDismissed = sessionStorage.getItem('easyhealth_location_dismissed');
 
     if (navigator.permissions && navigator.permissions.query) {
@@ -538,7 +595,7 @@
   }
 
   /**
-   * Filters facilities based on active category chips and search term
+   * Filters facilities based on active category chips and search term (supports English & Bengali)
    */
   function getFilteredFacilities() {
     return REAL_FACILITIES.filter(f => {
@@ -546,7 +603,12 @@
 
       if (state.searchQuery.trim() !== '') {
         const q = state.searchQuery.toLowerCase();
-        return f.name.toLowerCase().includes(q) || f.address.toLowerCase().includes(q) || f.meta1Text.toLowerCase().includes(q);
+        return f.name.toLowerCase().includes(q) ||
+               (f.nameBn && f.nameBn.toLowerCase().includes(q)) ||
+               f.address.toLowerCase().includes(q) ||
+               (f.addressBn && f.addressBn.toLowerCase().includes(q)) ||
+               f.meta1Text.toLowerCase().includes(q) ||
+               (f.meta1TextBn && f.meta1TextBn.toLowerCase().includes(q));
       }
 
       return true;
@@ -554,7 +616,7 @@
   }
 
   /**
-   * Renders Custom SVG Teardrop Map Markers
+   * Renders Custom SVG Teardrop Map Markers with Bilingual Popups
    */
   function renderMarkers() {
     if (!state.map || !state.mapLoaded) return;
@@ -563,6 +625,7 @@
     state.markers = [];
 
     const visibleFacilities = getFilteredFacilities();
+    const isBn = (window.EasyHealthI18n ? window.EasyHealthI18n.getCurrentLang() : (localStorage.getItem('easyhealth_lang') || 'en')) === 'bn';
 
     visibleFacilities.forEach(facility => {
       const el = document.createElement('div');
@@ -584,11 +647,16 @@
         </svg>
       `;
 
+      const displayName = isBn && facility.nameBn ? facility.nameBn : facility.name;
+      const displayAddress = isBn && facility.addressBn ? facility.addressBn : facility.address;
+      const displayMeta1 = isBn && facility.meta1TextBn ? facility.meta1TextBn : facility.meta1Text;
+      const displayDist = formatDistance(facility.distanceKm);
+
       const popupHtml = `
         <div class="popup-inner">
-          <div class="popup-title">${facility.name}</div>
-          <div class="popup-sub">${facility.address}</div>
-          <div class="popup-status">${facility.meta1Text} • ${facility.meta2Text}</div>
+          <div class="popup-title">${displayName}</div>
+          <div class="popup-sub">${displayAddress}</div>
+          <div class="popup-status">${displayMeta1} • ${displayDist}</div>
         </div>
       `;
 
@@ -612,15 +680,16 @@
   }
 
   /**
-   * Renders Facility Cards in Floating Left Panel
+   * Renders Facility Cards in Floating Left Panel with Bilingual Support
    */
   function renderCards() {
     const facilities = getFilteredFacilities();
+    const isBn = (window.EasyHealthI18n ? window.EasyHealthI18n.getCurrentLang() : (localStorage.getItem('easyhealth_lang') || 'en')) === 'bn';
 
     if (facilities.length === 0) {
       DOM.facilityCardsPanel.innerHTML = `
         <div style="background: #ffffff; padding: 20px; border-radius: 16px; font-size: 13px; color: #64748b; text-align: center;">
-          No matching healthcare facilities found in this category.
+          ${isBn ? 'এই ক্যাটাগরিতে কোনো স্বাস্থ্যসেবা প্রতিষ্ঠান পাওয়া যায়নি।' : 'No matching healthcare facilities found in this category.'}
         </div>
       `;
       return;
@@ -631,26 +700,39 @@
       const meta1IconSvg = ICONS[f.meta1Icon] || ICONS.bed;
       const meta2IconSvg = ICONS[f.meta2Icon] || ICONS.pin;
 
+      const displayName = isBn && f.nameBn ? f.nameBn : f.name;
+      const displayMeta1 = isBn && f.meta1TextBn ? f.meta1TextBn : f.meta1Text;
+      const displayMeta2 = formatDistance(f.distanceKm);
+
+      let badge = f.badgeText;
+      if (isBn) {
+        if (f.badgeText === '24/7 Open') badge = '২৪/৭ খোলা';
+        else if (f.badgeText === 'Open now') badge = 'এখন খোলা';
+        else if (f.badgeText === 'Emergency') badge = 'জরুরি সেবা';
+      }
+
+      const dirText = isBn ? 'দিকনির্দেশনা' : 'Directions';
+
       return `
         <article class="facility-card ${isActive}" data-id="${f.id}" onclick="window.easyHealthSelect('${f.id}')">
           <div class="card-top">
-            <h4 class="card-title">${f.name}</h4>
-            <span class="card-badge ${f.badgeType}">${f.badgeText}</span>
+            <h4 class="card-title">${displayName}</h4>
+            <span class="card-badge ${f.badgeType}">${badge}</span>
           </div>
           <div class="card-divider"></div>
           <div class="card-meta">
             <div class="meta-row">
               ${meta1IconSvg}
-              <span>${f.meta1Text}</span>
+              <span>${displayMeta1}</span>
             </div>
             <div class="meta-row">
               ${meta2IconSvg}
-              <span>${f.meta2Text}</span>
+              <span>${displayMeta2}</span>
             </div>
           </div>
           <button class="btn-directions" onclick="event.stopPropagation(); window.easyHealthSelect('${f.id}')">
             ${ICONS.directions}
-            <span>Directions</span>
+            <span>${dirText}</span>
           </button>
         </article>
       `;
@@ -692,9 +774,193 @@
         c.classList.remove('active-card');
       }
     });
+
+    // Broadcast selection to parent window (e.g. emergency triage or landing hub)
+    if (window.parent && window.parent !== window) {
+      try {
+        window.parent.postMessage({
+          type: 'SASTHO_MAP_FACILITY_SELECTED',
+          facility: {
+            id: facility.id,
+            name: facility.name,
+            category: facility.category,
+            address: facility.address,
+            phone: facility.phone,
+            lat: facility.lat,
+            lng: facility.lng,
+            badgeText: facility.badgeText,
+            meta1Text: facility.meta1Text
+          }
+        }, '*');
+      } catch (err) {}
+    }
   }
 
   window.easyHealthSelect = selectFacility;
+  window.easyHealthGetFacilities = function () {
+    return REAL_FACILITIES;
+  };
+
+  /**
+   * Filters map and cards to a specific category
+   */
+  function filterByCategory(targetCategory) {
+    if (!targetCategory || targetCategory === 'ALL') {
+      Object.keys(state.activeCategories).forEach(cat => {
+        state.activeCategories[cat] = true;
+      });
+    } else {
+      Object.keys(state.activeCategories).forEach(cat => {
+        state.activeCategories[cat] = cat === targetCategory;
+      });
+    }
+
+    DOM.filterChips.forEach(chip => {
+      const cat = chip.getAttribute('data-category');
+      chip.classList.toggle('active', !!state.activeCategories[cat]);
+    });
+
+    renderMarkers();
+    renderCards();
+  }
+  window.easyHealthFilterCategory = filterByCategory;
+
+  /**
+   * Broadcasts facilities list to parent window
+   */
+  function broadcastFacilities() {
+    if (window.parent && window.parent !== window) {
+      try {
+        window.parent.postMessage({
+          type: 'SASTHO_MAP_FACILITIES',
+          facilities: REAL_FACILITIES
+        }, '*');
+      } catch (err) {}
+    }
+  }
+
+  // 24/7 Helplines Bilingual Registry
+  const VERIFIED_HELPLINES = [
+    {
+      group: { en: 'National Emergency & Healthcare', bn: 'জাতীয় জরুরি ও স্বাস্থ্যসেবা' },
+      items: [
+        {
+          number: '999',
+          name: { en: '999 — National Emergency Hotline', bn: '৯৯৯ — জাতীয় জরুরি হেল্পলাইন' },
+          desc: { en: 'Ambulance, Police, and Fire dispatch (Nationwide)', bn: 'অ্যাম্বুলেন্স, পুলিশ ও ফায়ার সার্ভিস (সারাদেশে)' },
+          class: 'entry-crimson'
+        },
+        {
+          number: '16263',
+          name: { en: '16263 — Shastho Batayon (স্বাস্থ্য বাতায়ন)', bn: '১৬২৬৩ — স্বাস্থ্য বাতায়ন' },
+          desc: { en: '24/7 Free Doctor Consultation Helpline (Govt)', bn: '২৪/৭ বিনামূল্যে ডাক্তার পরামর্শ হেল্পলাইন (সরকারি)' },
+          class: 'entry-teal'
+        },
+        {
+          number: '199',
+          name: { en: '199 — Red Crescent Ambulance', bn: '১৯৯ — রেড ক্রিসেন্ট অ্যাম্বুলেন্স' },
+          desc: { en: 'Emergency Ambulance Dispatch Service', bn: 'জরুরি অ্যাম্বুলেন্স সেবা' },
+          class: ''
+        },
+        {
+          number: '333',
+          name: { en: '333 — National Citizen Helpline', bn: '৩৩৩ — জাতীয় নাগরিক হেল্পলাইন' },
+          desc: { en: 'Govt Medical Aid & Emergency Information', bn: 'সরকারি চিকিৎসা সহায়তা ও জরুরি তথ্য' },
+          class: ''
+        }
+      ]
+    },
+    {
+      group: { en: 'Khulna & Campus 24/7 Centers', bn: 'খুলনা ও ক্যাম্পাস ২৪/৭ কেন্দ্রসমূহ' },
+      items: [
+        {
+          number: '+88041769468',
+          name: { en: 'KUET Campus Medical Center', bn: 'কুয়েট ক্যাম্পাস মেডিকেল সেন্টার' },
+          desc: { en: 'Campus Emergency & Primary Care · Central Avenue', bn: 'ক্যাম্পাস জরুরি সেবা ও প্রাথমিক চিকিৎসা · সেন্ট্রাল এভিনিউ' },
+          displayNumber: '+880-41-769468'
+        },
+        {
+          number: '+88041760350',
+          name: { en: 'KMCH Khulna 24/7 Trauma ER', bn: 'কেএমসিএইচ খুলনা ২৪/৭ ট্রমা ইমার্জেন্সি' },
+          desc: { en: 'Khulna Medical College Hospital · Boyra Main Road', bn: 'খুলনা মেডিকেল কলেজ হাসপাতাল · বয়রা মেইন রোড' },
+          displayNumber: '+880-41-760350'
+        },
+        {
+          number: '+8801711223344',
+          name: { en: 'CityCare 24/7 Pharmacy', bn: 'সিটি কেয়ার ২৪/৭ ফার্মেসি' },
+          desc: { en: 'Fulbarigate Commercial Point · Emergency Oxygen', bn: 'ফুলবাড়ীগেট বাণিজ্যিক কেন্দ্র · জরুরি অক্সিজেন' },
+          displayNumber: '+880-1711-223344'
+        },
+        {
+          number: '+8801712445566',
+          name: { en: 'Sandhani Blood Bank (KMCH Unit)', bn: 'সন্ধানী ব্লাড ব্যাংক (কেএমসিএইচ ইউনিট)' },
+          desc: { en: 'Emergency Blood Registry & Platelets In-Stock', bn: 'জরুরি রক্তের মজুদ ও প্লাটিলেট সরবরাহ' },
+          displayNumber: '+880-1712-445566'
+        }
+      ]
+    }
+  ];
+
+  /**
+   * Renders the 24/7 verified helplines modal dynamically with bilingual support
+   */
+  function renderHelplinesModal() {
+    const container = document.getElementById('helplines-modal-body');
+    if (!container) return;
+
+    const isBn = (window.EasyHealthI18n ? window.EasyHealthI18n.getCurrentLang() : (localStorage.getItem('easyhealth_lang') || 'en')) === 'bn';
+    const toBn = window.EasyHealthI18n ? window.EasyHealthI18n.toBengaliNumber : (v => v);
+
+    container.innerHTML = VERIFIED_HELPLINES.map(g => `
+      <div class="helpline-group">
+        <span class="helpline-group-label">${isBn ? g.group.bn : g.group.en}</span>
+        <div class="helpline-items-grid">
+          ${g.items.map(item => {
+            const name = isBn ? item.name.bn : item.name.en;
+            const desc = isBn ? item.desc.bn : item.desc.en;
+            const numLabel = item.displayNumber || item.number;
+            const callLabel = isBn ? `${toBn(numLabel)} নম্বরে কল` : `Call ${numLabel}`;
+            return `
+              <div class="helpline-entry ${item.class || ''}">
+                <div class="entry-info">
+                  <strong>${name}</strong>
+                  <span>${desc}</span>
+                </div>
+                <a href="tel:${item.number}" class="entry-call-btn">${callLabel}</a>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  /**
+   * Parses URL search parameters for embed mode, categories, and selected facility
+   */
+  function parseUrlParams() {
+    const isInsideFrame = window.self !== window.top;
+    const params = new URLSearchParams(window.location.search);
+    const embedMode = params.get('embed');
+    if (isInsideFrame || embedMode === 'emergency' || embedMode === 'preview') {
+      document.documentElement.classList.add('is-embedded');
+      if (document.body) document.body.classList.add('is-embedded');
+      if (embedMode === 'emergency') {
+        document.documentElement.classList.add('is-emergency-embed');
+        if (document.body) document.body.classList.add('is-emergency-embed');
+      }
+    }
+
+    const initialCat = params.get('category');
+    if (initialCat && ['HOSPITAL', 'PHARMACY', 'DIAGNOSTIC', 'BLOOD_BANK'].includes(initialCat)) {
+      filterByCategory(initialCat);
+    }
+
+    const facilityId = params.get('facility');
+    if (facilityId) {
+      setTimeout(() => selectFacility(facilityId), 200);
+    }
+  }
 
   /**
    * Registers Event Listeners
@@ -765,21 +1031,47 @@
       }
     });
 
-    // 7. Tile Provider Switcher
-    DOM.settingsTileProvider.addEventListener('change', e => {
-      const provider = e.target.value;
-      state.tileProvider = provider;
-      const isKeyed = provider.includes('maptiler') || provider.includes('mapbox');
-      DOM.settingsApiKeyGroup.style.display = isKeyed ? 'flex' : 'none';
+    // 7. 24/7 Helplines Hamburger Menu (dock-btn-list)
+    if (DOM.dockBtnList && DOM.helplinesModalBackdrop) {
+      DOM.dockBtnList.addEventListener('click', () => {
+        renderHelplinesModal();
+        DOM.helplinesModalBackdrop.classList.add('active');
+      });
+    }
 
-      if (!isKeyed && TILE_STYLES[provider]) {
-        state.map.setStyle(TILE_STYLES[provider]);
-        state.map.once('style.load', () => {
-          setupRouteLayer();
-          renderMarkers();
-        });
-      }
-    });
+    if (DOM.btnCloseHelplines && DOM.helplinesModalBackdrop) {
+      DOM.btnCloseHelplines.addEventListener('click', () => {
+        DOM.helplinesModalBackdrop.classList.remove('active');
+      });
+    }
+
+    if (DOM.helplinesModalBackdrop) {
+      DOM.helplinesModalBackdrop.addEventListener('click', e => {
+        if (e.target === DOM.helplinesModalBackdrop) {
+          DOM.helplinesModalBackdrop.classList.remove('active');
+        }
+      });
+    }
+
+    // 8. Tile Provider Switcher
+    if (DOM.settingsTileProvider) {
+      DOM.settingsTileProvider.value = state.tileProvider;
+      DOM.settingsTileProvider.addEventListener('change', e => {
+        const provider = e.target.value;
+        state.tileProvider = provider;
+        localStorage.setItem('easyhealth_tile_provider', provider);
+        const isKeyed = provider.includes('maptiler') || provider.includes('mapbox');
+        DOM.settingsApiKeyGroup.style.display = isKeyed ? 'flex' : 'none';
+
+        if (!isKeyed && TILE_STYLES[provider]) {
+          state.map.setStyle(TILE_STYLES[provider]);
+          state.map.once('style.load', () => {
+            setupRouteLayer();
+            renderMarkers();
+          });
+        }
+      });
+    }
 
     DOM.btnSaveApiKey.addEventListener('click', () => {
       const key = DOM.settingsApiKeyInput.value.trim();
@@ -796,15 +1088,67 @@
         renderMarkers();
       });
     });
+
+    // 9. Cross-Window Messaging Bridge & i18n
+    if (window.EasyHealthI18n) {
+      window.EasyHealthI18n.onLanguageChange(() => {
+        renderMarkers();
+        renderCards();
+        renderHelplinesModal();
+        recalculateFacilityDistances();
+      });
+    }
+
+    window.addEventListener('message', event => {
+      const msg = event.data || {};
+      if (msg.type === 'SASTHO_MAP_RESIZE' && state.map) {
+        state.map.resize();
+      } else if (msg.type === 'SASTHO_MAP_SELECT_FACILITY' && msg.facilityId) {
+        selectFacility(msg.facilityId);
+      } else if (msg.type === 'SASTHO_MAP_FILTER_CATEGORY') {
+        filterByCategory(msg.category);
+      } else if (msg.type === 'SASTHO_MAP_SEARCH') {
+        state.searchQuery = msg.query || '';
+        if (DOM.searchInput) {
+          DOM.searchInput.value = state.searchQuery;
+          DOM.searchClearBtn.style.display = state.searchQuery ? 'block' : 'none';
+        }
+        renderMarkers();
+        renderCards();
+      } else if (msg.type === 'SASTHO_MAP_USER_LOCATION') {
+        if (msg.lat && msg.lng) {
+          state.userLocation = [msg.lng, msg.lat];
+          recalculateFacilityDistances();
+          renderMarkers();
+          renderCards();
+          state.map.flyTo({ center: [msg.lng, msg.lat], zoom: 14 });
+        }
+      } else if (msg.type === 'SASTHO_SET_LANGUAGE') {
+        const lang = msg.lang;
+        if (window.EasyHealthI18n) {
+          window.EasyHealthI18n.setLanguage(lang, false);
+        }
+        renderMarkers();
+        renderCards();
+        renderHelplinesModal();
+        recalculateFacilityDistances();
+      }
+    });
   }
 
-  // Initialize on Load
+  // Initialize on Load (Immediate embed check before map tiles load)
+  parseUrlParams();
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
+      parseUrlParams();
+      renderHelplinesModal();
       initMap();
       registerEvents();
     });
   } else {
+    parseUrlParams();
+    renderHelplinesModal();
     initMap();
     registerEvents();
   }

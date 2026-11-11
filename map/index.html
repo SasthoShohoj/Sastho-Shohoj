@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clinical Map Explorer — EasyHealth</title>
+
+  <!-- Google Fonts: Inter & Hind Siliguri -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- MapLibre GL JS v3.6.2 -->
+  <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet">
+  <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+
+  <!-- Application Stylesheet -->
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/landing.css">
+  <link rel="stylesheet" href="styles.css">
+
+  <script>
+    if (window.self !== window.top || window.location.search.includes('embed=')) {
+      document.documentElement.classList.add('is-embedded');
+    }
+  </script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: var(--font-sans);
+      background-color: #f8fafc;
+    }
+
+    .site-header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      z-index: 150;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--eh-border);
+    }
+
+    .map-viewport {
+      position: absolute;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 60px);
+      z-index: 1;
+    }
+
+    .top-search-filter-container {
+      top: 76px;
+    }
+
+    .left-floating-container {
+      top: 76px;
+      bottom: 20px;
+    }
+
+    /* Embedded Mode Adjustments (Clean, Minimal In-Screen View) */
+    html.is-embedded .site-header, body.is-embedded .site-header {
+      display: none !important;
+    }
+    html.is-embedded .top-search-filter-container, body.is-embedded .top-search-filter-container {
+      display: none !important;
+    }
+    html.is-embedded .vertical-icon-dock, body.is-embedded .vertical-icon-dock {
+      display: none !important;
+    }
+    html.is-embedded .location-modal-backdrop, body.is-embedded .location-modal-backdrop {
+      display: none !important;
+    }
+    html.is-embedded .settings-modal-backdrop, body.is-embedded .settings-modal-backdrop {
+      display: none !important;
+    }
+    html.is-embedded .helplines-modal-backdrop, body.is-embedded .helplines-modal-backdrop {
+      display: none !important;
+    }
+    html.is-embedded .map-viewport, body.is-embedded .map-viewport {
+      top: 0 !important;
+      height: 100% !important;
+    }
+    html.is-embedded .left-floating-container, body.is-embedded .left-floating-container {
+      top: 14px !important;
+      left: 14px !important;
+      bottom: 14px !important;
+      pointer-events: none;
+    }
+    html.is-embedded .facility-cards-panel, body.is-embedded .facility-cards-panel {
+      pointer-events: auto;
+      width: 310px !important;
+      max-width: calc(100vw - 28px) !important;
+      max-height: calc(100% - 28px) !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- Unified Application Header -->
+  <header class="site-header">
+    <a class="brand" href="../index.html" aria-label="EasyHealth Home">
+      <div class="brand-icon">+</div>
+      <div class="brand-text">
+        <strong data-i18n="brandTitle">EasyHealth · স্বাস্থ্য-সহজ</strong>
+        <small data-i18n="brandSubtitle">Clinical Healthcare Portal</small>
+      </div>
+    </a>
+
+    <!-- Main Navigation Links -->
+    <nav class="header-nav">
+      <a href="../index.html" class="nav-link" data-i18n="navHome">Home</a>
+      <a href="index.html" class="nav-link active" data-i18n="navMap">Clinical Map</a>
+      <a href="../emergency/emergency.html" class="nav-link" data-i18n="navEmergency">Emergency Support</a>
+    </nav>
+
+    <div class="header-actions">
+      <!-- Universal Language Switcher Pill -->
+      <div class="lang-toggle" role="group" aria-label="Select language">
+        <button type="button" class="lang-opt" id="btnLangEn" data-lang="en">EN</button>
+        <button type="button" class="lang-opt" id="btnLangBn" data-lang="bn">বাংলা</button>
+      </div>
+
+      <!-- Quick 999 Dial Action -->
+      <a class="sos-header-btn" href="tel:999" aria-label="Call 999 National Emergency">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15.05 5A5 5 0 0119 8.95M15.05 1A9 9 0 0123 8.94m-1 7.98v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+        <span data-i18n="call999">SOS 999</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Fullscreen Map Canvas -->
+  <div id="map" class="map-viewport"></div>
+
+  <!-- Top Center Floating Search & Filter Bar -->
+  <div class="top-search-filter-container">
+    <div class="floating-search-bar">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="7.5"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input
+        type="text"
+        id="facility-search-input"
+        data-i18n-placeholder="mapSearchPlaceholder"
+        placeholder="Search hospitals, specialists, clinics..."
+        autocomplete="off"
+      />
+      <button id="search-clear-btn" class="search-clear-btn" style="display: none;">✕</button>
+
+      <button id="btn-header-locate" class="header-locate-btn" data-i18n-title="dockLocate" title="Detect Current Location">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M12 2v3m0 14v3M2 12h3m14 0h3"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Floating Category Filter Chips -->
+    <div class="filter-chips-row">
+      <button class="filter-chip chip-hospitals active" data-category="HOSPITAL" data-i18n="filterHospitals">Hospitals</button>
+      <button class="filter-chip chip-pharmacies active" data-category="PHARMACY" data-i18n="filterPharmacies">Pharmacies</button>
+      <button class="filter-chip chip-diagnostics active" data-category="DIAGNOSTIC" data-i18n="filterDiagnostics">Diagnostics</button>
+      <button class="filter-chip chip-blood active" data-category="BLOOD_BANK" data-i18n="filterBlood">Blood Banks</button>
+    </div>
+  </div>
+
+  <!-- Left Floating Dock & Facility Ledger Panel -->
+  <div class="left-floating-container">
+    <!-- Slim Vertical Icon Dock -->
+    <aside class="vertical-icon-dock">
+      <div class="dock-top-group">
+        <button class="dock-btn active" id="dock-btn-hospitals" data-i18n-title="dockHospitals" title="Medical Facilities">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 21h18M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16M9 9h6M9 13h6M12 7v8" />
+          </svg>
+        </button>
+
+        <button class="dock-btn" id="dock-btn-locate" data-i18n-title="dockLocate" title="Detect Current GPS Location">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M12 2v3m0 14v3M2 12h3m14 0h3"></path>
+          </svg>
+        </button>
+
+        <!-- Hamburger Button with 24/7 Helplines -->
+        <button class="dock-btn" id="dock-btn-list" data-i18n-title="dockHelplines" title="24/7 Emergency & Medical Helplines">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="4" y1="6" x2="20" y2="6"></line>
+            <line x1="4" y1="12" x2="20" y2="12"></line>
+            <line x1="4" y1="18" x2="20" y2="18"></line>
+          </svg>
+        </button>
+
+        <button class="dock-btn" id="dock-btn-categories" data-i18n-title="dockCategories" title="Medical Categories">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+        </button>
+
+        <button class="dock-btn" id="dock-btn-settings" data-i18n-title="dockSettings" title="Settings & Tile Providers">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="dock-bottom-group">
+        <button class="dock-btn" id="dock-btn-collapse" data-i18n-title="dockCollapse" title="Toggle Cards Panel">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+          </svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Floating Facility Cards Panel -->
+    <section class="facility-cards-panel" id="facility-cards-panel">
+      <!-- Injected dynamically via app.js -->
+    </section>
+  </div>
+
+  <!-- Location Permission Prompt Modal -->
+  <div class="location-modal-backdrop" id="location-modal-backdrop">
+    <div class="location-modal-card">
+      <div class="location-icon-bubble">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"></path>
+          <circle cx="12" cy="10" r="3"></circle>
+        </svg>
+      </div>
+      <h3 class="location-modal-title" data-i18n="locationModalTitle">Enable Real Location Detection</h3>
+      <p class="location-modal-desc" data-i18n="locationModalDesc">
+        EasyHealth uses your current location to discover nearest verified hospitals, 24/7 pharmacies, ICU bed availability, and draw real-time navigation routes.
+      </p>
+      <div class="location-modal-actions">
+        <button id="btn-grant-location" class="btn-location-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M12 2v3m0 14v3M2 12h3m14 0h3"></path>
+          </svg>
+          <span data-i18n="btnGrantLocation">Share Precise GPS Location</span>
+        </button>
+        <button id="btn-use-default-location" class="btn-location-secondary" data-i18n="btnDefaultLocation">
+          Continue with Default Location
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Map Provider Settings Modal -->
+  <div class="settings-modal-backdrop" id="settings-modal-backdrop">
+    <div class="settings-modal-card">
+      <div class="settings-modal-header">
+        <h3 data-i18n="settingsModalTitle">Map Provider Settings</h3>
+        <button id="btn-close-settings" class="modal-close-btn">✕</button>
+      </div>
+      <div class="settings-modal-body">
+        <div class="settings-field">
+          <label for="settings-tile-provider" data-i18n="lblTileProvider">Tile Provider / Base Map</label>
+          <select id="settings-tile-provider" class="settings-select">
+            <option value="osm-standard" selected>OpenStreetMap Standard (Free / No Key Required)</option>
+            <option value="carto-voyager">CartoDB Voyager (Clinical Light Standard)</option>
+            <option value="carto-positron">CartoDB Positron (Minimal Monochrome)</option>
+            <option value="carto-dark">CartoDB Dark Matter</option>
+            <option value="maptiler-streets">MapTiler Streets (Requires API Key)</option>
+          </select>
+        </div>
+        <div class="settings-field" id="settings-api-key-group" style="display: none;">
+          <label for="settings-api-key-input" data-i18n="lblMapApiKey">Provider API Key</label>
+          <div class="settings-input-row">
+            <input type="password" id="settings-api-key-input" placeholder="Paste MapTiler or Mapbox API Key" />
+            <button id="btn-save-api-key" class="settings-btn-primary" data-i18n="btnSaveSettings">Apply Provider</button>
+          </div>
+          <div id="settings-key-feedback" class="settings-feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 24/7 Emergency & Medical Helplines Modal (Hamburger Menu) -->
+  <div class="helplines-modal-backdrop" id="helplines-modal-backdrop">
+    <div class="helplines-modal-card">
+      <div class="helplines-modal-header">
+        <div class="helplines-header-title">
+          <span class="helplines-icon-pulse">☎</span>
+          <div>
+            <h3 data-i18n="helplinesModalTitle">24/7 Verified Helplines</h3>
+            <p data-i18n="helplinesModalSubtitle">Immediate emergency and medical assistance hotlines in Bangladesh</p>
+          </div>
+        </div>
+        <button id="btn-close-helplines" class="modal-close-btn" aria-label="Close Helplines">✕</button>
+      </div>
+
+      <div class="helplines-modal-body" id="helplines-modal-body">
+        <!-- Injected dynamically via app.js for full bilingual rendering -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Logic -->
+  <script src="../js/i18n.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

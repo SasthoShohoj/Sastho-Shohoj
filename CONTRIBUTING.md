@@ -104,3 +104,48 @@ Track implementation progress for EasyHealth / Sastho-Shohoj. Check off items wi
   - [ ] Cross-platform mobile app (React Native or Flutter)
   - [ ] Offline caching for prescriptions and emergency contacts
   - [ ] Security audits, rate-limiting, and database indexing optimizations
+
+---
+
+## Modular Facility & Feature Development Guide
+
+EasyHealth is organized as a decoupled, multi-contributor web platform. Multiple developers can work concurrently on separate features without git conflicts by following this flow:
+
+### 1. Isolated Feature Subdirectories
+Create your dedicated folder at the repository root (e.g. `appointments/`, `records/`, `admin/`) with its own standalone assets:
+```
+EasyHealth/
+├── appointments/
+│   ├── index.html
+│   ├── appointments.css
+│   └── appointments.js
+```
+
+### 2. Adhere to Clinical Design Tokens
+Link the shared design tokens from `css/tokens.css` to maintain visual consistency:
+```html
+<link rel="stylesheet" href="../css/tokens.css">
+```
+- Use soft rounded cards (`14px` radius) and category pills (`border-radius: 9999px`).
+- Retain the clean, light-mode palette (`#f8fafc` canvas, `#ffffff` cards).
+
+### 3. Register in `js/modules.config.js`
+Add your facility descriptor to `MODULES` in `js/modules.config.js`:
+```javascript
+{
+  id: 'appointments',
+  title: { en: 'Doctor Consultations', bn: 'ডাক্তার অ্যাপয়েন্টমেন্ট' },
+  subtitle: {
+    en: 'Specialist discovery and chamber booking',
+    bn: 'বিশেষজ্ঞ চিকিৎসক খুঁজুন ও সময়সূচী বুক করুন'
+  },
+  icon: 'stethoscope',
+  path: 'appointments/index.html',
+  status: 'ACTIVE', // change from PLANNED to ACTIVE
+  badge: { en: 'Active Beta', bn: 'চালু রয়েছে' },
+  badgeType: 'badge-blue',
+  team: 'Your Team Name'
+}
+```
+The root landing page (`index.html`) will dynamically render your card and route without modifying the core landing codebase.
+
