@@ -1,0 +1,63 @@
+/* ==========================================================================
+   EasyHealth — Shared Clinical Design Tokens
+   Matching the minimalist aesthetic of the Map Explorer & Emergency subsystems
+   ========================================================================== */
+
+:root {
+  /* Surfaces & Canvas */
+  --eh-bg: #f8fafc;
+  --eh-surface: #ffffff;
+  --eh-surface-subtle: #f1f5f9;
+  --eh-surface-hover: #f8fafc;
+
+  /* Typography & Ink */
+  --eh-ink: #0f172a;
+  --eh-ink-secondary: #334155;
+  --eh-muted: #64748b;
+  --eh-subtle: #94a3b8;
+
+  /* Lines & Borders */
+  --eh-border: rgba(226, 232, 240, 0.9);
+  --eh-border-light: #f1f5f9;
+  --eh-border-strong: #cbd5e1;
+
+  /* Category Clinical Palettes */
+  --eh-blue: #0284c7;
+  --eh-blue-bg: #e0f2fe;
+  --eh-blue-border: rgba(186, 230, 253, 0.9);
+
+  --eh-green: #16a34a;
+  --eh-green-bg: #dcfce7;
+  --eh-green-border: rgba(187, 247, 208, 0.9);
+
+  --eh-purple: #8b5cf6;
+  --eh-purple-bg: #f3e8ff;
+  --eh-purple-border: rgba(233, 213, 255, 0.9);
+
+  --eh-crimson: #dc2626;
+  --eh-crimson-bg: #fee2e2;
+  --eh-crimson-border: rgba(254, 202, 202, 0.9);
+  --eh-crimson-hover: #b91c1c;
+
+  --eh-teal: #0f766e;
+  --eh-teal-bg: #ccfbf1;
+  --eh-teal-hover: #115e59;
+
+  /* Geometry - Soft Rounded Radii */
+  --eh-radius-xs: 6px;
+  --eh-radius-sm: 8px;
+  --eh-radius-md: 12px;
+  --eh-radius-lg: 14px;
+  --eh-radius-xl: 16px;
+  --eh-radius-pill: 9999px;
+
+  /* Elevations */
+  --eh-shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --eh-shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.04);
+  --eh-shadow-md: 0 8px 30px rgba(0, 0, 0, 0.07);
+  --eh-shadow-lg: 0 10px 35px rgba(0, 0, 0, 0.08);
+
+  /* Fonts */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-bn: 'Hind Siliguri', 'Inter', -apple-system, sans-serif;
+}
