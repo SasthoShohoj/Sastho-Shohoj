@@ -645,4 +645,4 @@ A license has not yet been specified. Choose an appropriate open-source or propr
 
 **Shastho Shohoj — Healthcare should be easy to find, easy to access, and easier to manage.**
 
-By connecting patients, doctors, hospitals, clinics, and diagnostic services through one coordinated platform, we aim to reduce avoidable friction in healthcare access and help people manage their health information with greater confidence.
+By connecting patients, doctors, hospitals, clinics, and diagnostic services through one coordinated platform, we aim to reduce avoidable friction in healthcare access and help people manage their health information with greater confidence....
