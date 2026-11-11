@@ -1,25 +1,110 @@
 <!doctype html>
-<html lang="bn">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#123b35">
-  <title>জরুরি সেবা কেন্দ্র | Sastho-Shohoj</title>
+  <title>Emergency Support &amp; SOS | EasyHealth (স্বাস্থ্য-সহজ)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/landing.css">
   <link rel="stylesheet" href="emergency.css">
+
+  <script>
+    if (window.self !== window.top || window.location.search.includes('embed=')) {
+      document.documentElement.classList.add('is-embedded');
+    }
+  </script>
+  <style>
+    .app-header { display: none !important; }
+    body { background: var(--eh-bg); }
+    html.is-embedded .site-header, body.is-embedded .site-header,
+    html.is-embedded .app-header, body.is-embedded .app-header,
+    html.is-embedded .welcome-panel, body.is-embedded .welcome-panel,
+    html.is-embedded .safety-note, body.is-embedded .safety-note,
+    html.is-embedded .app-footer, body.is-embedded .app-footer {
+      display: none !important;
+    }
+    html.is-embedded .shell, body.is-embedded .shell { margin: 14px auto 30px !important; width: 96% !important; }
+    html.is-embedded .workspace, body.is-embedded .workspace { margin-top: 14px !important; }
+    .welcome-panel {
+      background: var(--eh-surface) !important;
+      border: 1px solid var(--eh-border) !important;
+      border-radius: var(--eh-radius-xl) !important;
+      padding: 26px 32px !important;
+      color: var(--eh-ink) !important;
+      box-shadow: var(--eh-shadow-sm) !important;
+      display: block !important;
+    }
+    .welcome-panel .eyebrow {
+      color: var(--eh-teal) !important;
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.8px !important;
+      margin-bottom: 6px !important;
+    }
+    .welcome-panel h1 {
+      color: var(--eh-ink) !important;
+      font-size: clamp(22px, 3.5vw, 28px) !important;
+      font-weight: 800 !important;
+      margin: 4px 0 8px !important;
+      letter-spacing: -0.4px !important;
+    }
+    .welcome-panel p {
+      color: var(--eh-muted) !important;
+      font-size: 13px !important;
+      max-width: 720px !important;
+      margin: 0 !important;
+      line-height: 1.6 !important;
+    }
+    .safety-note {
+      border-radius: var(--eh-radius-md) !important;
+      border: 1px solid #fed7aa !important;
+      background: #fffbeb !important;
+      color: #9a3412 !important;
+      margin: 14px 0 20px !important;
+      padding: 11px 16px !important;
+      display: flex !important;
+      align-items: center !important;
+      font-size: 12px !important;
+    }
+    .safety-note strong {
+      background: #fde68a !important;
+      color: #92400e !important;
+    }
+  </style>
 </head>
 <body>
-  <header class="app-header">
-    <a class="brand" href="../index.html" aria-label="Sastho-Shohoj home">
-      <span class="brand-mark">+</span>
-      <span><strong>স্বাস্থ্য-সহজ</strong><small>Sastho-Shohoj · Emergency Support</small></span>
+  <!-- Unified Application Header -->
+  <header class="site-header">
+    <a class="brand" href="../index.html" aria-label="EasyHealth Home">
+      <div class="brand-icon">+</div>
+      <div class="brand-text">
+        <strong data-i18n="brandTitle">EasyHealth · স্বাস্থ্য-সহজ</strong>
+        <small data-i18n="brandSubtitle">Clinical Healthcare Portal</small>
+      </div>
     </a>
+
+    <!-- Main Navigation Links -->
+    <nav class="header-nav">
+      <a href="../index.html" class="nav-link" data-i18n="navHome">Home</a>
+      <a href="../map.html" class="nav-link" data-i18n="navMap">Clinical Map</a>
+      <a href="../emergency.html" class="nav-link active" data-i18n="navEmergency">Emergency Support</a>
+    </nav>
+
     <div class="header-actions">
-      <span class="secure-label"><span class="status-dot"></span><span data-i18n="prototype">সেবা সহায়তা</span></span>
-      <button id="languageToggle" class="language-toggle" type="button" aria-label="Switch language">English</button>
-      <a class="header-home" href="../index.html" data-i18n="mainSite">মূল ওয়েবসাইট</a>
+      <!-- Universal Language Switcher Pill -->
+      <div class="lang-toggle" role="group" aria-label="Select language">
+        <button type="button" class="lang-opt" id="btnLangEn" data-lang="en">EN</button>
+        <button type="button" class="lang-opt" id="btnLangBn" data-lang="bn">বাংলা</button>
+      </div>
+
+      <!-- Quick 999 Dial Action -->
+      <a class="sos-header-btn" href="tel:999" aria-label="Call 999 National Emergency">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15.05 5A5 5 0 0119 8.95M15.05 1A9 9 0 0123 8.94m-1 7.98v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+        <span data-i18n="call999">SOS 999</span>
+      </a>
     </div>
   </header>
 
@@ -28,9 +113,8 @@
       <div>
         <div class="eyebrow" data-i18n="eyebrow">বাংলাদেশ · জরুরি স্বাস্থ্য সহায়তা</div>
         <h1 data-i18n="headline">জরুরি মুহূর্তে সঠিক সহায়তা, দ্রুত</h1>
-        <p data-i18n="intro">প্রয়োজনীয় জরুরি সেবা বেছে নিন। তাৎক্ষণিক বিপদে সরাসরি জাতীয় জরুরি নম্বরে কল করুন।</p>
+        <p data-i18n="intro">প্রয়োজনীয় জরুরি সেবা বেছে নিন। তাৎক্ষণিক জীবন-ঝুঁকিপূর্ণ বিপদে সরাসরি উপরে ৯৯৯-এ কল করুন।</p>
       </div>
-      <a class="sos-cta" href="tel:999"><span class="sos-icon">SOS</span><span><strong data-i18n="call999">৯৯৯-এ কল করুন</strong><small data-i18n="nationalEmergency">জাতীয় জরুরি সেবা</small></span></a>
     </section>
 
     <div class="safety-note" role="note">
@@ -74,8 +158,8 @@
       </section>
 
       <section class="view-panel" data-panel="radar" hidden>
-        <div class="map-intro"><div><strong data-i18n="sharedMapTitle">আপনার প্রকল্পের বিদ্যমান স্বাস্থ্যসেবা ম্যাপ</strong><p data-i18n="sharedMapText">ম্যাপটি emergency/map/ ফোল্ডার থেকে লোড হবে। ম্যাপের কোনো নতুন কপি তৈরি করা হচ্ছে না।</p></div><button id="refreshMap" class="secondary-button" type="button" data-i18n="reloadMap">ম্যাপ রিফ্রেশ</button></div>
-        <div class="map-frame-wrap"><iframe id="sharedMapFrame" title="Sastho-Shohoj existing medical map" src="./map/index.html?embed=emergency" loading="lazy"></iframe></div>
+        <div class="map-intro"><div><strong data-i18n="sharedMapTitle">আপনার প্রকল্পের বিদ্যমান স্বাস্থ্যসেবা ম্যাপ</strong><p data-i18n="sharedMapText">ম্যাপটি map/ ফোল্ডার থেকে লোড হচ্ছে। কোনো ডুপ্লিকেট কপি তৈরি করা হয়নি।</p></div><button id="refreshMap" class="secondary-button" type="button" data-i18n="reloadMap">ম্যাপ রিফ্রেশ</button></div>
+        <div class="map-frame-wrap"><iframe id="sharedMapFrame" title="Sastho-Shohoj existing medical map" src="../map.html?embed=emergency" loading="lazy"></iframe></div>
         <div class="map-below"><div><span class="live-dot"></span><span id="mapConnection" data-i18n="mapWaiting">ম্যাপের সাথে সংযোগের অপেক্ষায়...</span></div><span data-i18n="mapDisclaimer">ম্যাপের তালিকার তথ্য যাচাই করে ব্যবহার করুন।</span></div>
         <div class="selected-hospital-card" id="mapSelectedHospital"><div class="empty-icon">⌖</div><div><strong data-i18n="selectHospitalMap">ম্যাপে একটি হাসপাতাল নির্বাচন করুন</strong><p data-i18n="selectHospitalMapSub">নির্বাচিত প্রতিষ্ঠানের নাম ও উপলব্ধ তথ্য এখানে দেখানো হবে।</p></div></div>
       </section>
@@ -111,8 +195,9 @@
       </section>
     </section>
 
-    <footer class="app-footer"><span>© Sastho-Shohoj</span><span data-i18n="footerText">জরুরি সহায়তা · ফ্রন্টএন্ড প্রোটোটাইপ</span><a href="tel:999">999 · Emergency</a></footer>
+    <footer class="app-footer"><span>© 2026 EasyHealth · Sastho-Shohoj</span><span data-i18n="footerText">জরুরি সহায়তা · সমন্বিত ফ্রন্টএন্ড</span><a href="tel:999">999 · Emergency</a></footer>
   </main>
+  <script src="../js/i18n.js"></script>
   <script src="emergency.js"></script>
 </body>
 </html>

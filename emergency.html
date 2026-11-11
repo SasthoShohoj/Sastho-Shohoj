@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Emergency Support &amp; SOS | EasyHealth (স্বাস্থ্য-সহজ)</title>
+
+  <!-- Google Fonts: Hind Siliguri & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Application Stylesheets -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <link rel="stylesheet" href="emergency/emergency.css">
+
+  <script>
+    if (window.self !== window.top || window.location.search.includes('embed=')) {
+      document.documentElement.classList.add('is-embedded');
+    }
+  </script>
+  <style>
+    /* Harmonize unified site header with emergency shell */
+    .app-header {
+      display: none !important;
+    }
+    body {
+      background: var(--eh-bg);
+      overflow-y: auto;
+    }
+    .shell {
+      margin: 24px auto 60px;
+    }
+
+    /* Embedded Mode Override (for in-screen preview on landing page) */
+    html.is-embedded .site-header, body.is-embedded .site-header,
+    html.is-embedded .app-header, body.is-embedded .app-header,
+    html.is-embedded .welcome-panel, body.is-embedded .welcome-panel,
+    html.is-embedded .safety-note, body.is-embedded .safety-note,
+    html.is-embedded .app-footer, body.is-embedded .app-footer {
+      display: none !important;
+    }
+    html.is-embedded .shell, body.is-embedded .shell {
+      margin: 14px auto 30px !important;
+      width: 96% !important;
+    }
+    html.is-embedded .workspace, body.is-embedded .workspace {
+      margin-top: 14px !important;
+    }
+
+    /* Seamless Minimal Welcome Panel (Zero Redundant SOS Button) */
+    .welcome-panel {
+      background: var(--eh-surface) !important;
+      border: 1px solid var(--eh-border) !important;
+      border-radius: var(--eh-radius-xl) !important;
+      padding: 26px 32px !important;
+      color: var(--eh-ink) !important;
+      box-shadow: var(--eh-shadow-sm) !important;
+      display: block !important;
+    }
+    .welcome-panel .eyebrow {
+      color: var(--eh-teal) !important;
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.8px !important;
+      margin-bottom: 6px !important;
+    }
+    .welcome-panel h1 {
+      color: var(--eh-ink) !important;
+      font-size: clamp(22px, 3.5vw, 28px) !important;
+      font-weight: 800 !important;
+      margin: 4px 0 8px !important;
+      letter-spacing: -0.4px !important;
+    }
+    .welcome-panel p {
+      color: var(--eh-muted) !important;
+      font-size: 13px !important;
+      max-width: 720px !important;
+      margin: 0 !important;
+      line-height: 1.6 !important;
+    }
+
+    /* Clean Subtle Safety Alert */
+    .safety-note {
+      border-radius: var(--eh-radius-md) !important;
+      border: 1px solid #fed7aa !important;
+      background: #fffbeb !important;
+      color: #9a3412 !important;
+      margin: 14px 0 20px !important;
+      padding: 11px 16px !important;
+      display: flex !important;
+      align-items: center !important;
+      font-size: 12px !important;
+    }
+    .safety-note strong {
+      background: #fde68a !important;
+      color: #92400e !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Unified Application Header -->
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="EasyHealth Home">
+      <div class="brand-icon">+</div>
+      <div class="brand-text">
+        <strong data-i18n="brandTitle">EasyHealth · স্বাস্থ্য-সহজ</strong>
+        <small data-i18n="brandSubtitle">Clinical Healthcare Portal</small>
+      </div>
+    </a>
+
+    <!-- Main Navigation Links -->
+    <nav class="header-nav">
+      <a href="index.html" class="nav-link" data-i18n="navHome">Home</a>
+      <a href="map.html" class="nav-link" data-i18n="navMap">Clinical Map</a>
+      <a href="emergency.html" class="nav-link active" data-i18n="navEmergency">Emergency Support</a>
+    </nav>
+
+    <div class="header-actions">
+      <!-- Universal Language Switcher Pill -->
+      <div class="lang-toggle" role="group" aria-label="Select language">
+        <button type="button" class="lang-opt" id="btnLangEn" data-lang="en">EN</button>
+        <button type="button" class="lang-opt" id="btnLangBn" data-lang="bn">বাংলা</button>
+      </div>
+
+      <!-- Quick 999 Dial Action -->
+      <a class="sos-header-btn" href="tel:999" aria-label="Call 999 National Emergency">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15.05 5A5 5 0 0119 8.95M15.05 1A9 9 0 0123 8.94m-1 7.98v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+        <span data-i18n="call999">SOS 999</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="welcome-panel">
+      <div>
+        <div class="eyebrow" data-i18n="eyebrow">বাংলাদেশ · জরুরি স্বাস্থ্য সহায়তা</div>
+        <h1 data-i18n="headline">জরুরি মুহূর্তে সঠিক সহায়তা, দ্রুত</h1>
+        <p data-i18n="intro">প্রয়োজনীয় জরুরি সেবা বেছে নিন। তাৎক্ষণিক জীবন-ঝুঁকিপূর্ণ বিপদে সরাসরি উপরে ৯৯৯-এ কল করুন।</p>
+      </div>
+    </section>
+
+    <div class="safety-note" role="note">
+      <strong>!</strong>
+      <span data-i18n="safetyNote">জীবন-ঝুঁকিপূর্ণ জরুরি অবস্থায় অ্যাপের অপেক্ষা না করে ৯৯৯-এ কল করুন বা নিকটস্থ জরুরি বিভাগে যান। এই ফ্রন্টএন্ড নিজে থেকে অ্যাম্বুলেন্স পাঠায় না।</span>
+    </div>
+
+    <section class="feature-grid" aria-label="Emergency services">
+      <button class="feature-card feature-red active" data-view="helplines" type="button" aria-pressed="true">
+        <span class="feature-icon">☎</span><span class="feature-number">01</span>
+        <strong data-i18n="featureHelplines">জাতীয় জরুরি হেল্পলাইন</strong>
+        <small data-i18n="featureHelplinesSub">সরকারি জরুরি নম্বরে সরাসরি কল</small><span class="feature-arrow">↗</span>
+      </button>
+      <button class="feature-card feature-blue" data-view="radar" type="button" aria-pressed="false">
+        <span class="feature-icon">⌖</span><span class="feature-number">02</span>
+        <strong data-i18n="featureRadar">কাছাকাছি চিকিৎসা সেবা</strong>
+        <small data-i18n="featureRadarSub">বিদ্যমান ম্যাপে হাসপাতাল ও সেবা খুঁজুন</small><span class="feature-arrow">↗</span>
+      </button>
+      <button class="feature-card feature-green" data-view="ambulance" type="button" aria-pressed="false">
+        <span class="feature-icon">🚑</span><span class="feature-number">03</span>
+        <strong data-i18n="featureAmbulance">অ্যাম্বুলেন্স ও হাসপাতাল</strong>
+        <small data-i18n="featureAmbulanceSub">হাসপাতাল, গাড়ি ও চালকের তথ্য দেখুন</small><span class="feature-arrow">↗</span>
+      </button>
+      <button class="feature-card feature-purple" data-view="casualty" type="button" aria-pressed="false">
+        <span class="feature-icon">▤</span><span class="feature-number">04</span>
+        <strong data-i18n="featureCasualty">রোগীর জরুরি তথ্য</strong>
+        <small data-i18n="featureCasualtySub">আঘাতের ছবি ও রোগীর বিবরণ প্রস্তুত করুন</small><span class="feature-arrow">↗</span>
+      </button>
+    </section>
+
+    <section id="workspace" class="workspace" aria-live="polite">
+      <div class="workspace-heading">
+        <div><div class="eyebrow" id="viewEyebrow">01 / জরুরি যোগাযোগ</div><h2 id="viewTitle">জাতীয় জরুরি হেল্পলাইন</h2><p id="viewDescription">প্রয়োজনীয় সেবাটি বেছে সরাসরি কল করুন।</p></div>
+        <button id="backToOptions" class="back-button" type="button">← <span data-i18n="back">সব অপশন</span></button>
+      </div>
+
+      <section class="view-panel" data-panel="helplines">
+        <div class="toolbar"><input id="helplineSearch" type="search" data-i18n-placeholder="searchHelpline" placeholder="হেল্পলাইন খুঁজুন..."></div>
+        <div id="helplineList" class="helpline-grid"></div>
+        <p class="footnote" data-i18n="helplineFootnote">ব্যবহারের আগে সরকারি সূত্র থেকে নম্বর ও সেবার তথ্য যাচাই করুন।</p>
+      </section>
+
+      <section class="view-panel" data-panel="radar" hidden>
+        <div class="map-intro"><div><strong data-i18n="sharedMapTitle">আপনার প্রকল্পের বিদ্যমান স্বাস্থ্যসেবা ম্যাপ</strong><p data-i18n="sharedMapText">ম্যাপটি map/ ফোল্ডার থেকে লোড হচ্ছে। কোনো ডুপ্লিকেট কপি তৈরি করা হয়নি।</p></div><button id="refreshMap" class="secondary-button" type="button" data-i18n="reloadMap">ম্যাপ রিফ্রেশ</button></div>
+        <div class="map-frame-wrap"><iframe id="sharedMapFrame" title="Sastho-Shohoj existing medical map" src="map.html?embed=emergency" loading="lazy"></iframe></div>
+        <div class="map-below"><div><span class="live-dot"></span><span id="mapConnection" data-i18n="mapWaiting">ম্যাপের সাথে সংযোগের অপেক্ষায়...</span></div><span data-i18n="mapDisclaimer">ম্যাপের তালিকার তথ্য যাচাই করে ব্যবহার করুন।</span></div>
+        <div class="selected-hospital-card" id="mapSelectedHospital"><div class="empty-icon">⌖</div><div><strong data-i18n="selectHospitalMap">ম্যাপে একটি হাসপাতাল নির্বাচন করুন</strong><p data-i18n="selectHospitalMapSub">নির্বাচিত প্রতিষ্ঠানের নাম ও উপলব্ধ তথ্য এখানে দেখানো হবে।</p></div></div>
+      </section>
+
+      <section class="view-panel" data-panel="ambulance" hidden>
+        <div class="notice-inline"><strong data-i18n="providerNoticeTitle">প্রোভাইডার সংযোগ প্রয়োজন</strong><span data-i18n="providerNotice">এখানে প্রদর্শিত নমুনা অ্যাম্বুলেন্স/চালক বুকিংয়ের জন্য উপলব্ধ নয়। বাস্তব বুকিংয়ের আগে যাচাইকৃত অ্যাম্বুলেন্স অপারেটর যুক্ত করতে হবে।</span></div>
+        <div class="dispatch-layout">
+          <div class="subpanel">
+            <div class="subpanel-title"><h3 data-i18n="chooseHospital">হাসপাতাল নির্বাচন</h3><span class="step-tag">01</span></div>
+            <div id="hospitalChoices" class="choice-list"><p class="muted" data-i18n="hospitalMapHint">মেডিকেল হেল্প রাডার থেকে হাসপাতাল নির্বাচন করুন অথবা নিচের তালিকা দেখুন।</p></div>
+          </div>
+          <div class="subpanel">
+            <div class="subpanel-title"><h3 data-i18n="ambulanceOptions">অ্যাম্বুলেন্সের ধরন</h3><span class="step-tag">02</span></div>
+            <div id="ambulanceChoices" class="ambulance-options"></div>
+            <div id="ambulanceDetails" class="detail-card" hidden></div>
+          </div>
+        </div>
+        <div class="subpanel driver-panel">
+          <div class="subpanel-title"><h3 data-i18n="driverDetails">চালক ও গাড়ির তথ্য</h3><span class="demo-tag" data-i18n="demoOnly">ডেমো তথ্য</span></div>
+          <div id="driverDetails" class="driver-empty" data-i18n="driverNotAssigned">এখনো কোনো যাচাইকৃত চালক বরাদ্দ নেই। অপারেটর সংযুক্ত হলে চালকের পরিচয়, লাইসেন্স যাচাই, ফোন ও গাড়ির নম্বর এখানে দেখানো হবে।</div>
+        </div>
+        <div class="dispatch-footer"><p data-i18n="dispatchSafety">জরুরি অবস্থায় অ্যাম্বুলেন্সের জন্য ৯৯৯ বা সরাসরি যাচাইকৃত স্থানীয় সেবায় যোগাযোগ করুন।</p><button id="requestAmbulance" class="primary-button" type="button" disabled data-i18n="requestAmbulance">অ্যাম্বুলেন্স বুকিং অনুরোধ</button></div>
+        <p id="bookingMessage" class="form-message" role="status" hidden></p>
+      </section>
+
+      <section class="view-panel" data-panel="casualty" hidden>
+        <form id="casualtyForm" class="casualty-form">
+          <label class="upload-zone" for="casualtyPhotos"><span class="upload-icon">＋</span><strong data-i18n="uploadTitle">আঘাতের ছবি আপলোড করুন</strong><small data-i18n="uploadSub">JPEG, PNG বা WebP · সর্বোচ্চ ৫টি ছবি · প্রতিটি ১০ MB পর্যন্ত</small><input id="casualtyPhotos" name="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple><span id="photoNames" class="photo-names" data-i18n="noPhotos">কোনো ছবি নির্বাচন করা হয়নি</span></label>
+          <label class="field-label" for="casualtyNotes"><strong data-i18n="casualtyNotesTitle">রোগীর অবস্থা ও জরুরি তথ্য</strong><span data-i18n="casualtyNotesSub">লক্ষণ, আঘাতের স্থান, কীভাবে আঘাত লেগেছে এবং চিকিৎসকের জানা জরুরি তথ্য লিখুন।</span><textarea id="casualtyNotes" name="triageNotes" rows="7" maxlength="3000" required data-i18n-placeholder="casualtyPlaceholder" placeholder="রোগীর বর্তমান অবস্থা ও আঘাতের বিবরণ লিখুন..."></textarea></label>
+          <div class="form-footer"><p data-i18n="privacyNote">এই প্রিভিউতে তথ্য সার্ভারে পাঠানো হয় না। সংবেদনশীল ছবি/তথ্য পাঠানোর আগে নিরাপদ হাসপাতাল API ও অনুমোদন ব্যবস্থা যুক্ত করতে হবে।</p><button class="primary-button" type="submit" data-i18n="prepareInfo">তথ্য প্রস্তুত করুন</button></div>
+          <p id="casualtyMessage" class="form-message" role="status" hidden></p>
+        </form>
+      </section>
+    </section>
+
+    <footer class="app-footer"><span>© 2026 EasyHealth · Sastho-Shohoj</span><span data-i18n="footerText">জরুরি সহায়তা</span><a href="tel:999">999 · Emergency</a></footer>
+  </main>
+  <script src="js/i18n.js"></script>
+  <script src="emergency/emergency.js"></script>
+</body>
+</html>

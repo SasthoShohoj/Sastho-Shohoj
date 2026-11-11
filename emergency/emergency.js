@@ -1,10 +1,15 @@
 (() => {
   "use strict";
 
+  if (window.self !== window.top || window.location.search.includes('embed=')) {
+    document.documentElement.classList.add('is-embedded');
+    if (document.body) document.body.classList.add('is-embedded');
+  }
+
   const $ = (s, root = document) => root.querySelector(s);
   const $$ = (s, root = document) => [...root.querySelectorAll(s)];
   const state = {
-    lang: localStorage.getItem("sastho_emergency_language") || "bn",
+    lang: (window.EasyHealthI18n ? window.EasyHealthI18n.getCurrentLang() : (localStorage.getItem("easyhealth_lang") || localStorage.getItem("sastho_emergency_language") || "en")),
     view: "helplines",
     facilities: [],
     selectedHospital: null,
@@ -15,14 +20,14 @@
     bn: {
       prototype:"সেবা সহায়তা", mainSite:"মূল ওয়েবসাইট", eyebrow:"বাংলাদেশ · জরুরি স্বাস্থ্য সহায়তা",
       headline:"জরুরি মুহূর্তে সঠিক সহায়তা, দ্রুত", intro:"প্রয়োজনীয় জরুরি সেবা বেছে নিন। তাৎক্ষণিক বিপদে সরাসরি জাতীয় জরুরি নম্বরে কল করুন।",
-      call999:"৯৯৯-এ কল করুন", nationalEmergency:"জাতীয় জরুরি সেবা",
+      call999:"জরুরি ৯৯৯", nationalEmergency:"জাতীয় জরুরি সেবা",
       safetyNote:"জীবন-ঝুঁকিপূর্ণ জরুরি অবস্থায় অ্যাপের অপেক্ষা না করে ৯৯৯-এ কল করুন বা নিকটস্থ জরুরি বিভাগে যান। এই ফ্রন্টএন্ড নিজে থেকে অ্যাম্বুলেন্স পাঠায় না।",
       featureHelplines:"জাতীয় জরুরি হেল্পলাইন",featureHelplinesSub:"সরকারি জরুরি নম্বরে সরাসরি কল",
       featureRadar:"কাছাকাছি চিকিৎসা সেবা",featureRadarSub:"বিদ্যমান ম্যাপে হাসপাতাল ও সেবা খুঁজুন",
       featureAmbulance:"অ্যাম্বুলেন্স ও হাসপাতাল",featureAmbulanceSub:"হাসপাতাল, গাড়ি ও চালকের তথ্য দেখুন",
       featureCasualty:"রোগীর জরুরি তথ্য",featureCasualtySub:"আঘাতের ছবি ও রোগীর বিবরণ প্রস্তুত করুন",
       back:"সব অপশন",searchHelpline:"হেল্পলাইন খুঁজুন...",helplineFootnote:"ব্যবহারের আগে সরকারি সূত্র থেকে নম্বর ও সেবার তথ্য যাচাই করুন।",
-      sharedMapTitle:"আপনার প্রকল্পের বিদ্যমান স্বাস্থ্যসেবা ম্যাপ",sharedMapText:"ম্যাপটি emergency/map/ ফোল্ডার থেকে লোড হবে। ম্যাপের কোনো নতুন কপি তৈরি করা হচ্ছে না।",
+      sharedMapTitle:"আপনার প্রকল্পের বিদ্যমান স্বাস্থ্যসেবা ম্যাপ",sharedMapText:"ম্যাপটি map/ ফোল্ডার থেকে লোড হচ্ছে। কোনো ডুপ্লিকেট কপি তৈরি করা হয়নি।",
       reloadMap:"ম্যাপ রিফ্রেশ",mapWaiting:"ম্যাপের সাথে সংযোগের অপেক্ষায়...",mapConnected:"বিদ্যমান ম্যাপের সাথে সংযুক্ত।",mapDisclaimer:"ম্যাপের তালিকার তথ্য যাচাই করে ব্যবহার করুন।",
       selectHospitalMap:"ম্যাপে একটি হাসপাতাল নির্বাচন করুন",selectHospitalMapSub:"নির্বাচিত প্রতিষ্ঠানের নাম ও উপলব্ধ তথ্য এখানে দেখানো হবে।",
       providerNoticeTitle:"প্রোভাইডার সংযোগ প্রয়োজন",providerNotice:"এখানে প্রদর্শিত নমুনা অ্যাম্বুলেন্স/চালক বুকিংয়ের জন্য উপলব্ধ নয়। বাস্তব বুকিংয়ের আগে যাচাইকৃত অ্যাম্বুলেন্স অপারেটর যুক্ত করতে হবে।",
@@ -53,14 +58,14 @@
     en: {
       prototype:"Emergency support",mainSite:"Main website",eyebrow:"BANGLADESH · EMERGENCY HEALTH SUPPORT",
       headline:"The right help, faster when it matters",intro:"Choose the emergency service you need. For immediate danger, call the national emergency number directly.",
-      call999:"Call 999",nationalEmergency:"National Emergency Service",
+      call999:"SOS 999",nationalEmergency:"National Emergency Service",
       safetyNote:"For life-threatening emergencies, do not wait for the app. Call 999 or go to the nearest emergency department. This frontend does not dispatch ambulances.",
       featureHelplines:"National emergency helplines",featureHelplinesSub:"Direct calls to government helplines",
       featureRadar:"Nearby medical services",featureRadarSub:"Find hospitals and services on the existing map",
       featureAmbulance:"Ambulance & hospital",featureAmbulanceSub:"View hospital, vehicle and driver information",
       featureCasualty:"Patient casualty information",featureCasualtySub:"Prepare injury photos and patient notes",
       back:"All options",searchHelpline:"Search helplines...",helplineFootnote:"Verify numbers and service descriptions against official sources before production.",
-      sharedMapTitle:"Your project's existing medical map",sharedMapText:"The map loads from emergency/map/. No duplicate map is created.",
+      sharedMapTitle:"Your project's existing medical map",sharedMapText:"The map loads directly from the map/ folder. No duplicate map is created.",
       reloadMap:"Reload map",mapWaiting:"Waiting for map connection...",mapConnected:"Connected to the existing map.",mapDisclaimer:"Verify facility details before relying on them.",
       selectHospitalMap:"Select a hospital on the map",selectHospitalMapSub:"The selected facility and available information will appear here.",
       providerNoticeTitle:"Provider integration required",providerNotice:"Ambulance and driver entries shown here are not bookable. A verified ambulance operator must be integrated before real bookings.",
@@ -112,20 +117,56 @@
   const setMessage = (id, message) => { const el=$("#"+id); el.textContent=message; el.hidden=false; };
 
   function setLanguage(lang) {
+    if (lang !== "en" && lang !== "bn") return;
     state.lang = lang;
-    localStorage.setItem("sastho_emergency_language", lang);
+    try {
+      localStorage.setItem("easyhealth_lang", lang);
+      localStorage.setItem("sastho_emergency_language", lang);
+    } catch(e) {}
     document.documentElement.lang = lang;
-    $$("[data-i18n]").forEach(el => { const key=el.dataset.i18n; if(translations[lang][key]) el.textContent=t(key); });
-    $$("[data-i18n-placeholder]").forEach(el => { el.placeholder=t(el.dataset.i18nPlaceholder); });
-    $("#languageToggle").textContent = lang === "bn" ? "English" : "বাংলা";
-    renderHelplines($("#helplineSearch").value);
+
+    if (window.EasyHealthI18n && window.EasyHealthI18n.getCurrentLang() !== lang) {
+      window.EasyHealthI18n.setLanguage(lang);
+    }
+
+    $$("[data-i18n]").forEach(el => {
+      const key = el.dataset.i18n;
+      if (translations[lang] && translations[lang][key]) el.textContent = t(key);
+      else if (window.EasyHealthI18n) {
+        const tr = window.EasyHealthI18n.t(key);
+        if (tr) el.textContent = tr;
+      }
+    });
+
+    $$("[data-i18n-placeholder]").forEach(el => {
+      const key = el.dataset.i18nPlaceholder;
+      if (translations[lang] && translations[lang][key]) el.placeholder = t(key);
+      else if (window.EasyHealthI18n) {
+        const tr = window.EasyHealthI18n.t(key);
+        if (tr) el.placeholder = tr;
+      }
+    });
+
+    $$(".lang-opt").forEach(btn => {
+      btn.classList.toggle("active", btn.getAttribute("data-lang") === lang);
+    });
+
+    renderHelplines($("#helplineSearch") ? $("#helplineSearch").value : "");
     renderAmbulanceChoices();
     renderHospitalChoices();
     updateWorkspaceHeading();
-    if(state.selectedHospital) renderSelectedHospital(state.selectedHospital);
+    if (state.selectedHospital) renderSelectedHospital(state.selectedHospital);
+
+    // Broadcast to embedded shared map frame
+    const frame = $("#sharedMapFrame");
+    if (frame && frame.contentWindow) {
+      try {
+        frame.contentWindow.postMessage({ type: "SASTHO_SET_LANGUAGE", lang }, "*");
+      } catch (err) {}
+    }
   }
 
-  function showView(view) {
+  function showView(view, shouldScroll = true) {
     state.view=view;
     $$(".feature-card").forEach(card => {
       const active=card.dataset.view===view;
@@ -133,7 +174,9 @@
       card.setAttribute("aria-pressed",String(active));
     });
     $$(".view-panel").forEach(panel => panel.hidden=panel.dataset.panel!==view);
-    $("#workspace").scrollIntoView({behavior:"smooth",block:"start"});
+    if (shouldScroll && window.self === window.top) {
+      $("#workspace").scrollIntoView({behavior:"smooth",block:"start"});
+    }
     updateWorkspaceHeading();
     if(view==="radar") setTimeout(()=> {
       const frame=$("#sharedMapFrame");
@@ -266,9 +309,12 @@
       }
     });
     window.addEventListener("message",event=>{
-      if(event.origin!==location.origin) return;
+      if(location.origin && location.origin!=="null" && event.origin && event.origin!==location.origin) return;
       const msg=event.data||{};
-      if(msg.type==="SASTHO_MAP_FACILITIES") receiveFacilities(msg.facilities);
+      if(msg.type==="SASTHO_MAP_FACILITIES") {
+        receiveFacilities(msg.facilities);
+        $("#mapConnection").textContent=t("mapConnected");
+      }
       if(msg.type==="SASTHO_MAP_FACILITY_SELECTED") {
         const f=normalizeFacility(msg.facility);
         if(f) {
@@ -293,11 +339,31 @@
   }
 
   function init() {
-    setLanguage(state.lang==="en"?"en":"bn");
-    showView("helplines");
-    $$(".feature-card").forEach(card=>card.addEventListener("click",()=>showView(card.dataset.view)));
-    $("#backToOptions").addEventListener("click",()=>{ $("#workspace").scrollIntoView({behavior:"smooth"}); });
-    $("#languageToggle").addEventListener("click",()=>setLanguage(state.lang==="bn"?"en":"bn"));
+    const initialLang = (window.EasyHealthI18n ? window.EasyHealthI18n.getCurrentLang() : (localStorage.getItem("easyhealth_lang") || localStorage.getItem("sastho_emergency_language") || "en"));
+    setLanguage(initialLang);
+    showView("helplines", false);
+    $$(".feature-card").forEach(card=>card.addEventListener("click",()=>showView(card.dataset.view, true)));
+    $("#backToOptions").addEventListener("click", () => {
+      const grid = $(".feature-grid");
+      if (grid) grid.scrollIntoView({ behavior: "smooth", block: "start" });
+      else window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    
+    // Wire segmented lang toggle buttons
+    $$(".lang-opt").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const l = btn.getAttribute("data-lang");
+        setLanguage(l);
+      });
+    });
+
+    // Subscribe to EasyHealthI18n changes
+    if (window.EasyHealthI18n) {
+      window.EasyHealthI18n.onLanguageChange(lang => {
+        if (lang !== state.lang) setLanguage(lang);
+      });
+    }
+
     $("#helplineSearch").addEventListener("input",e=>renderHelplines(e.target.value));
     $("#refreshMap").addEventListener("click",()=>$("#sharedMapFrame").contentWindow.location.reload());
     $("#casualtyForm").addEventListener("submit",handleCasualtySubmit);
