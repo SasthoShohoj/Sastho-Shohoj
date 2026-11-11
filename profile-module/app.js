@@ -26,10 +26,10 @@
     ["✓", "Dr. Sadia Ahmed", "Dermatologist", "21 Nov 2024", "Popular Diagnostic Center", "Completed", "06:30 PM", "Visit type: In-person consultation\nReason: Skin allergy\nAppointment status: Completed\nNotes: Follow-up completed."]
   ].map(toRecord);
   const demoLocations = {
-    dhanmondi: { name: "Dhanmondi, Dhaka", latitude: 23.7461, longitude: 90.3742 },
-    mirpur: { name: "Mirpur, Dhaka", latitude: 23.8223, longitude: 90.3654 },
-    uttara: { name: "Uttara, Dhaka", latitude: 23.8759, longitude: 90.3795 },
-    gulshan: { name: "Gulshan, Dhaka", latitude: 23.7925, longitude: 90.4078 }
+    kuet: { name: "KUET, Khulna", latitude: 22.9006, longitude: 89.5024 },
+    boyra: { name: "Boyra, Khulna", latitude: 22.8436, longitude: 89.5412 },
+    sonadanga: { name: "Sonadanga, Khulna", latitude: 22.8285, longitude: 89.5510 },
+    sadar: { name: "Khulna Sadar", latitude: 22.8115, longitude: 89.5665 }
   };
   const doctorsData = [
     ["doctor-001","Dr. Maya Sen","Cardiology","Fictional Care Hospital","Panthapath, Dhaka",23.7515,90.3912,"MBBS, FCPS","12 years","9:00 AM - 2:00 PM","Friday","+880 1700-000001"],
@@ -54,24 +54,14 @@
     ["clinic-008","Banani Family Care","Banani, Dhaka",23.7931,90.4047,"+880 1800-000108","demo.clinic08@example.invalid","10:00 AM - 10:00 PM","General practice, pharmacy"]
   ].map(providerFromRow);
   const hospitalsData = [
-    ["hospital-001","Fictional Care Hospital","Panthapath, Dhaka",23.7515,90.3912,"+880 1900-000201","demo.hospital01@example.invalid","Open 24 hours","Medicine, surgery, cardiology","Emergency available"],
-    ["hospital-002","Dhanmondi General Hospital","Satmasjid Road, Dhaka",23.7445,90.3691,"+880 1900-000202","demo.hospital02@example.invalid","Open 24 hours","Medicine, paediatrics, orthopaedics","Emergency available"],
-    ["hospital-003","Mirpur Central Hospital","Mirpur 10, Dhaka",23.8068,90.3682,"+880 1900-000203","demo.hospital03@example.invalid","Open 24 hours","Medicine, surgery, maternity","Emergency available"],
-    ["hospital-004","Uttara Community Hospital","Sector 7, Uttara",23.8721,90.3794,"+880 1900-000204","demo.hospital04@example.invalid","Open 24 hours","Medicine, ENT, diagnostics","Emergency available"],
-    ["hospital-005","Gulshan Specialist Hospital","Gulshan 2, Dhaka",23.7936,90.4145,"+880 1900-000205","demo.hospital05@example.invalid","Open 24 hours","Cardiology, neurology, oncology","Emergency available"],
-    ["hospital-006","Mohammadpur Medical Centre","Ring Road, Mohammadpur",23.7651,90.3575,"+880 1900-000206","demo.hospital06@example.invalid","7:00 AM - 11:00 PM","Medicine, dermatology, dental","No emergency department"],
-    ["hospital-007","Badda Riverside Hospital","Pragati Avenue, Badda",23.7805,90.4264,"+880 1900-000207","demo.hospital07@example.invalid","Open 24 hours","Medicine, surgery, ICU","Emergency available"],
-    ["hospital-008","Banani Integrated Hospital","Banani, Dhaka",23.7937,90.4041,"+880 1900-000208","demo.hospital08@example.invalid","Open 24 hours","Medicine, women’s health, diagnostics","Emergency available"]
+    ["hospital-kuet-medical-center","KUET Campus Medical Center","Central Campus Avenue, KUET, Khulna 9203",22.9015,89.5032,"+880-41-769468","map.facility@example.invalid","24/7 Open","Campus emergency and primary care","Emergency available"],
+    ["hospital-kmch","Khulna Medical College Hospital (KMCH)","Boyra Main Road, Khulna 9000",22.8436,89.5412,"+880-41-760350","map.facility@example.invalid","24/7 Open","ICU: 24 beds, trauma emergency","Emergency available"],
+    ["hospital-abu-naser","Shaheed Sheikh Abu Naser Hospital","Mujgunni Main Road, Khulna 9000",22.8552,89.5310,"+880-41-761509","map.facility@example.invalid","24/7 Open","Cardiology and ICU: 15 beds","Emergency available"],
+    ["hospital-gazi-medical","Gazi Medical College Hospital","Sonadanga Main Road, Khulna 9100",22.8390,89.5350,"+880-41-761509","map.facility@example.invalid","24/7 Open","General emergency and ICU: 18 beds","Emergency available"]
   ].map(providerFromRow);
   const pharmaciesData = [
-    ["pharmacy-001","Dhanmondi Community Pharmacy","Road 27, Dhanmondi, Dhaka",23.7471,90.3749,"+880 1600-000301","demo.pharmacy01@example.invalid","Open 24 hours","Yes"],
-    ["pharmacy-002","Green Road Wellness Pharmacy","Green Road, Dhaka",23.7418,90.3883,"+880 1600-000302","demo.pharmacy02@example.invalid","8:00 AM - 11:00 PM","No"],
-    ["pharmacy-003","Mirpur Care Pharmacy","Mirpur 10, Dhaka",23.8068,90.3684,"+880 1600-000303","demo.pharmacy03@example.invalid","8:00 AM - 10:00 PM","No"],
-    ["pharmacy-004","Uttara Health Pharmacy","Sector 7, Uttara",23.8724,90.3791,"+880 1600-000304","demo.pharmacy04@example.invalid","Open 24 hours","Yes"],
-    ["pharmacy-005","Gulshan Family Pharmacy","Gulshan 1, Dhaka",23.7807,90.4145,"+880 1600-000305","demo.pharmacy05@example.invalid","8:00 AM - 11:00 PM","No"],
-    ["pharmacy-006","Mohammadpur Medicine Point","Mohammadpur, Dhaka",23.7642,90.3586,"+880 1600-000306","demo.pharmacy06@example.invalid","9:00 AM - 10:00 PM","No"],
-    ["pharmacy-007","Badda Riverside Pharmacy","Badda, Dhaka",23.7806,90.4262,"+880 1600-000307","demo.pharmacy07@example.invalid","Open 24 hours","Yes"],
-    ["pharmacy-008","Banani Wellness Pharmacy","Banani, Dhaka",23.7938,90.4043,"+880 1600-000308","demo.pharmacy08@example.invalid","8:00 AM - 10:00 PM","No"]
+    ["pharmacy-citycare","CityCare 24/7 Pharmacy","Fulbarigate Commercial Point, Khulna",22.8988,89.5058,"+880-1711-223344","map.facility@example.invalid","24/7 Open","Prescriptions and emergency oxygen","24-hour availability"],
+    ["pharmacy-alshefa","Al-Shefa Pharmacy","Teligati Main Gate, KUET, Khulna",22.9042,89.4990,"+880-1912-345678","map.facility@example.invalid","Open now","Prescriptions and vital medicines","Open now"]
   ].map(providerFromRow);
   const providerDatasets = { doctors: doctorsData, clinics: clinicsData, hospitals: hospitalsData, pharmacies: pharmaciesData };
   const providerMeta = {
@@ -81,7 +71,7 @@
     pharmacies: ["Pharmacies", "Search pharmacies by name or location...", "⚕"]
   };
   let selectedProviderCategory = "doctors";
-  let selectedProviderLocation = demoLocations.dhanmondi;
+  let selectedProviderLocation = demoLocations.kuet;
   let providerFocusTarget = null;
 
   function toRecord(row) { return { icon: row[0], title: row[1], specialty: row[2], date: row[3], facility: row[4], status: row[5], time: row[6], body: row[7] || row[5] }; }
@@ -192,6 +182,17 @@
   }
   document.addEventListener("click", event => {
     if (event.target.closest("[data-close]") || event.target.classList.contains("modal-backdrop")) document.getElementById("modalRoot").innerHTML = "";
+    const moduleButton = event.target.closest("[data-module]");
+    if (moduleButton) {
+      const moduleName = moduleButton.dataset.module;
+      document.querySelectorAll("[data-module]").forEach(button => {
+        const selected = button === moduleButton;
+        button.classList.toggle("active", selected);
+        button.setAttribute("aria-selected", String(selected));
+      });
+      document.querySelectorAll("[data-module-view]").forEach(view => view.classList.toggle("active", view.dataset.moduleView === moduleName));
+      if (moduleName === "healthcare") renderProviderSearch();
+    }
     const tab = event.target.closest("[data-tab]");
     if (tab) { document.querySelectorAll(".tab").forEach(button => button.classList.remove("active")); tab.classList.add("active"); renderRecords(tab.dataset.tab); }
     const record = event.target.closest("[data-record]");
@@ -212,11 +213,12 @@
     if (event.target.id === "showProfile") modal("Personal profile", profileDetails());
     if (event.target.id === "editProfile") { modal("Edit profile", editForm()); document.getElementById("profileForm").addEventListener("submit", saveForm); document.getElementById("removeAvatar").addEventListener("click", () => { profile.avatar = ""; saveProfile(); modal("Edit profile", editForm()); document.getElementById("profileForm").addEventListener("submit", saveForm); }); }
     if (event.target.id === "bookAppointment") modal("Appointment booking", '<div class="empty"><div class="card-icon" style="margin:0 auto 15px">◷</div><h3>Appointment Booking – Work in Progress</h3><p>Online appointment booking will be available soon.</p></div>');
+    if (event.target.id === "bookAppointmentModule" || event.target.closest("[data-booking-action]")) modal("Appointment booking", '<div class="empty"><div class="card-icon" style="margin:0 auto 15px">◷</div><h3>Appointment Booking – Work in Progress</h3><p>Online appointment booking will be available soon.</p></div>');
     if (event.target.id === "clearSearch") { document.getElementById("providerSearch").value = ""; renderProviderSearch(); }
   });
   function saveForm(event) { event.preventDefault(); profile = Object.assign({}, profile, Object.fromEntries(new FormData(event.target).entries())); saveProfile(); updateProfile(); document.getElementById("modalRoot").innerHTML = ""; }
   document.getElementById("providerSearchForm").addEventListener("submit", event => { event.preventDefault(); renderProviderSearch(); });
-  document.getElementById("providerLocation").addEventListener("change", event => { selectedProviderLocation = demoLocations[event.target.value] || demoLocations.dhanmondi; renderProviderSearch(); });
+  document.getElementById("providerLocation").addEventListener("change", event => { selectedProviderLocation = demoLocations[event.target.value] || demoLocations.kuet; renderProviderSearch(); });
   document.addEventListener("keydown", event => { if (event.key === "Escape" && document.querySelector(".modal-backdrop")) { document.getElementById("modalRoot").innerHTML = ""; if (providerFocusTarget) providerFocusTarget.focus(); providerFocusTarget = null; } });
   document.getElementById("avatarInput").addEventListener("change", event => { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = () => { profile.avatar = reader.result; saveProfile(); updateProfile(); }; reader.readAsDataURL(file); });
   updateProfile(); renderRecords("reports"); renderProviderSearch();

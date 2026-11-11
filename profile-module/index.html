@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Patient Portal | Shastho Shohoj</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="module-tabs.css">
 </head>
 <body>
   <header class="portal-header">
-    <a class="brand" href="#" aria-label="Shastho Shohoj home">
+    <a class="brand" href="../index.html" aria-label="Shastho Shohoj home">
       <span class="brand-mark">+</span>
       <span><strong>Shastho</strong> Shohoj<small>Patient portal</small></span>
     </a>
@@ -21,6 +22,14 @@
       <span class="privacy-note">🔒 Your information is private</span>
     </section>
 
+    <nav class="module-tabs" aria-label="Patient portal modules">
+      <button class="module-tab active" type="button" data-module="profile" aria-selected="true">Personal profile</button>
+      <button class="module-tab" type="button" data-module="records" aria-selected="false">Medical records</button>
+      <button class="module-tab" type="button" data-module="healthcare" aria-selected="false">Healthcare</button>
+      <button class="module-tab" type="button" data-module="booking" aria-selected="false">Booking module</button>
+    </nav>
+
+    <div class="module-view active" data-module-view="profile">
     <section class="profile-card panel">
       <div class="profile-identity">
         <div class="avatar-wrap">
@@ -37,13 +46,17 @@
       </div>
       <div class="profile-actions"><button class="button button-secondary" id="showProfile">Show details</button><button class="button button-primary" id="editProfile">Edit profile</button></div>
     </section>
+    </div>
 
+    <div class="module-view" data-module-view="records">
     <section class="records-section">
       <div class="section-heading"><div><p class="eyebrow">HEALTH HISTORY</p><h2>Medical records</h2></div><span class="record-count">Demonstration data</span></div>
       <div class="tabs" role="tablist"><button class="tab active" data-tab="reports" role="tab">Reports <span>5</span></button><button class="tab" data-tab="prescriptions" role="tab">Prescriptions <span>2</span></button><button class="tab" data-tab="visits" role="tab">Visits <span>4</span></button></div>
       <div id="recordsContent" class="records-grid"></div>
     </section>
+    </div>
 
+    <div class="module-view" data-module-view="healthcare">
     <section class="provider-section" aria-labelledby="providerSearchTitle">
       <div class="section-heading"><div><p class="eyebrow">FIND CARE</p><h2>Healthcare provider search</h2><p class="muted">Find trusted care providers near you.</p></div></div>
       <div class="provider-search-layout">
@@ -56,16 +69,30 @@
           <button class="provider-category" data-provider-category="pharmacies" aria-pressed="false"><span>⚕</span>Pharmacies</button>
         </aside>
         <div class="provider-results-area">
-          <div class="provider-search-heading"><div><p class="eyebrow">DEMONSTRATION DIRECTORY</p><h2 id="providerSearchTitle">Find Doctors</h2></div><label class="location-control" for="providerLocation">📍 <span>Near</span><select id="providerLocation"><option value="dhanmondi">Dhanmondi, Dhaka</option><option value="mirpur">Mirpur, Dhaka</option><option value="uttara">Uttara, Dhaka</option><option value="gulshan">Gulshan, Dhaka</option></select></label></div>
+          <div class="provider-search-heading"><div><p class="eyebrow">MAP DIRECTORY</p><h2 id="providerSearchTitle">Find Doctors</h2></div><label class="location-control" for="providerLocation">📍 <span>Near</span><select id="providerLocation"><option value="kuet">KUET, Khulna</option><option value="boyra">Boyra, Khulna</option><option value="sonadanga">Sonadanga, Khulna</option><option value="sadar">Khulna Sadar</option></select></label></div>
           <form class="provider-search-form" id="providerSearchForm" role="search"><label class="sr-only" for="providerSearch">Search providers</label><div class="provider-search-input"><span>⌕</span><input id="providerSearch" type="search" placeholder="Search doctors by name or specialization..." autocomplete="off"><button type="button" id="clearSearch" aria-label="Clear search">×</button></div></form>
           <p class="provider-sort-note">Sorted by approximate straight-line distance from your selected location.</p>
           <div id="providerResults" class="provider-results-list" aria-live="polite"></div>
         </div>
       </div>
     </section>
+    </div>
+
+    <div class="module-view" data-module-view="booking">
+      <section class="booking-section panel">
+        <div class="section-heading">
+          <div><p class="eyebrow">YOUR CARE PLAN</p><h2>Booking module</h2><p class="muted">Review upcoming visits and start a new appointment request.</p></div>
+          <span class="record-count">2 upcoming visits</span>
+        </div>
+        <div class="booking-grid">
+          <article class="booking-card"><span class="booking-icon">◷</span><div><h3>Dr. Nusrat Jahan</h3><p class="muted">Medicine Specialist · Square Hospital</p><strong>26 March 2025 · 10:30 AM</strong></div><button class="button button-primary" data-booking-action>Manage booking</button></article>
+          <article class="booking-card"><span class="booking-icon">◷</span><div><h3>Dr. Arif Hossain</h3><p class="muted">Cardiologist · Labaid Specialized Hospital</p><strong>15 April 2025 · 4:00 PM</strong></div><button class="button button-secondary" data-booking-action>View details</button></article>
+        </div>
+        <button class="button button-primary booking-new-button" id="bookAppointmentModule">＋ Book a new appointment</button>
+      </section>
+    </div>
   </main>
 
-  <button class="appointment-fab" id="bookAppointment"><span>＋</span> Book an appointment</button>
   <div id="modalRoot" aria-live="polite"></div>
   <script src="app.js"></script>
 </body>
