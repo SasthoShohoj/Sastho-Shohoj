@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shastho Shohoj - Patient Appointments</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="app-header">
+      <div>
+        <h2>Shastho Shohoj (স্বাস্থ্যসহজ)</h2>
+        <p>Patient Portal &bull; Appointments & Updates</p>
+      </div>
+      <div class="notification-badge" id="notif-bell" title="Click to view notifications">
+        🔔 <span id="unread-count">0</span>
+      </div>
+    </header>
+
+    <!-- Notification Tray -->
+    <section id="notification-tray" class="notification-tray hidden">
+      <div class="tray-header">
+        <h4>Status Updates</h4>
+        <button id="clear-notifs-btn">Mark All Read</button>
+      </div>
+      <ul id="notification-list"></ul>
+    </section>
+
+    <!-- Filter Navigation -->
+    <nav class="filter-tabs">
+      <button class="tab-btn active" data-filter="ALL">All</button>
+      <button class="tab-btn" data-filter="REQUESTS">Requests & Pending</button>
+      <button class="tab-btn" data-filter="CONFIRMED">Confirmed</button>
+    </nav>
+
+    <!-- Appointments Container -->
+    <main id="appointments-container" class="appointments-list">
+      <!-- Injected via JavaScript -->
+    </main>
+  </div>
+
+  <!-- Action Modal (Reschedule / Cancel) -->
+  <div id="action-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <h3 id="modal-title">Action Title</h3>
+      <p id="modal-desc" class="modal-desc"></p>
+      
+      <div id="reschedule-fields" class="form-group hidden">
+        <label for="new-date">Select New Date & Time:</label>
+        <input type="datetime-local" id="new-datetime" />
+      </div>
+
+      <div class="form-group">
+        <label for="reason">Reason / Note:</label>
+        <textarea id="action-reason" rows="3" placeholder="Provide additional details..."></textarea>
+      </div>
+
+      <div class="modal-actions">
+        <button id="cancel-modal-btn" class="btn btn-secondary">Back</button>
+        <button id="submit-modal-btn" class="btn btn-primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
