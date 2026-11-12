@@ -1,13 +1,346 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>sasthoshohoj_</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SasthoShohoj — Medical Document Portal</title>
+  <link rel="icon" type="image/svg+xml" href="public/favicon.svg" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- ─── Navbar ──────────────────────────────────────────────────── -->
+    <header class="navbar">
+      <div class="navbar-logo" onclick="location.reload()">
+        <div class="navbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </div>
+        <div class="navbar-brand">
+          <span class="navbar-title">SasthoShohoj</span>
+          <span class="navbar-subtitle">Medical Document Portal</span>
+        </div>
+      </div>
+
+      <!-- Top-right Backend Status Indicator -->
+      <div class="backend-status-widget">
+        <button id="statusBtn" class="backend-status-btn checking" type="button" title="Backend Server Status">
+          <span class="status-indicator">
+            <span id="statusDot" class="status-dot checking"></span>
+            <span id="statusText">Checking…</span>
+          </span>
+          <svg id="statusChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;margin-left:2px;display:none;">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+
+        <!-- Offline Setup Popover Guide -->
+        <div id="statusOverlay" class="status-overlay hidden"></div>
+        <div id="offlineGuide" class="offline-guide hidden">
+          <div class="offline-guide-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <div>
+              <h4>Backend not running</h4>
+              <p>Follow these steps to start the OCR server</p>
+            </div>
+          </div>
+          <div class="offline-guide-body">
+            <ol class="offline-steps">
+              <li class="offline-step">
+                <span class="step-num">1</span>
+                <div class="step-content">
+                  <div class="step-label">Open a terminal in the backend directory</div>
+                  <div class="step-cmd"><span>cd backend</span></div>
+                  <div class="step-note">Or double-click start_backend.bat in the backend folder.</div>
+                </div>
+              </li>
+              <li class="offline-step">
+                <span class="step-num">2</span>
+                <div class="step-content">
+                  <div class="step-label">Install Python dependencies (first time only)</div>
+                  <div class="step-cmd"><span>pip install -r requirements.txt</span></div>
+                  <div class="step-note">EasyOCR models (~200 MB) load on first startup.</div>
+                </div>
+              </li>
+              <li class="offline-step">
+                <span class="step-num">3</span>
+                <div class="step-content">
+                  <div class="step-label">Start the Flask OCR server</div>
+                  <div class="step-cmd"><span>python app.py</span></div>
+                  <div class="step-note">Server runs on http://localhost:5001 — keep terminal open.</div>
+                </div>
+              </li>
+            </ol>
+          </div>
+          <div class="offline-guide-footer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 8 12 12 14 14"/>
+            </svg>
+            Auto-checks every 8s
+            <button id="retryBtn" class="retry-btn" type="button">Retry now</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ─── Tab Bar ─────────────────────────────────────────────────── -->
+    <nav class="tab-bar">
+      <button class="tab-btn active" data-tab="upload" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+        </svg>
+        Upload Document
+      </button>
+      <button class="tab-btn" data-tab="reports" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+          <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+        </svg>
+        Medical Reports
+      </button>
+    </nav>
+
+    <!-- ─── Main Content ────────────────────────────────────────────── -->
+    <main class="main">
+
+      <!-- ═════════ Tab 1: Upload Document ═════════ -->
+      <section id="tabUpload" class="tab-content active">
+        <h2 class="section-title">Document Upload</h2>
+        <p class="section-desc">
+          Upload a scanned or printed PDF or image (MRI, CT, Ultrasonography, Blood Test, Prescription).
+          The backend validates whether it's a genuine medical document and extracts structured data.
+        </p>
+
+        <!-- Drop Zone -->
+        <div id="dropZone" class="upload-card">
+          <input id="fileInput" type="file" accept="application/pdf,image/jpeg,image/jpg,image/png,image/tiff,image/bmp,image/webp" style="display:none;" />
+          <div class="upload-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>
+              <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+            </svg>
+          </div>
+          <p class="upload-label">Drop your medical document here</p>
+          <p class="upload-hint"><span>Click to browse files</span> &nbsp;· Scanned or digital PDFs & images accepted</p>
+          <div class="upload-formats">
+            <span class="fmt-badge">PDF</span>
+            <span class="fmt-badge">JPG</span>
+            <span class="fmt-badge">PNG</span>
+            <span class="fmt-badge">TIFF</span>
+            <span class="fmt-badge">BMP</span>
+            <span class="fmt-badge">WebP</span>
+          </div>
+        </div>
+
+        <!-- Selected File Strip -->
+        <div id="fileStrip" class="file-strip hidden">
+          <span id="fileIcon" class="file-strip-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+            </svg>
+          </span>
+          <div class="file-strip-info">
+            <div id="fileName" class="file-strip-name">—</div>
+            <div id="fileSize" class="file-strip-size">—</div>
+          </div>
+          <button id="removeFileBtn" class="file-strip-remove" type="button" title="Remove File">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Image Preview Frame -->
+        <div id="previewWrap" class="preview-image hidden">
+          <img id="previewImg" src="" alt="Document Preview" />
+        </div>
+
+        <!-- Action Strip -->
+        <div class="upload-actions">
+          <button id="processBtn" class="btn-primary" type="button" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="4 7 4 4 7 4"/><polyline points="17 4 20 4 20 7"/>
+              <polyline points="20 17 20 20 17 20"/><polyline points="7 20 4 20 4 17"/>
+              <line x1="4" y1="12" x2="20" y2="12"/>
+            </svg>
+            Analyse Document
+          </button>
+          <span id="processPill" class="status-pill" style="display:none;"></span>
+        </div>
+
+        <!-- Processing Banner -->
+        <div id="processingBanner" class="processing-banner hidden">
+          <div class="spinner"></div>
+          Running EasyOCR — validating document validity and extracting medical metadata…
+        </div>
+
+        <!-- Rejection Banner -->
+        <div id="rejectionBanner" class="rejection-banner hidden">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <div>
+            <div class="rejection-title">Not a recognised medical document</div>
+            <div id="rejectionReason" class="rejection-reason">—</div>
+            <div id="rejectionMeta" class="rejection-meta" style="display:none;"></div>
+          </div>
+        </div>
+
+        <!-- Structured Medical Results Card -->
+        <div id="resultCard" class="result-card hidden">
+          <div class="result-header">
+            <div class="result-header-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+              </svg>
+            </div>
+            <div>
+              <h3>Analysis Complete</h3>
+              <p id="resultFilename">—</p>
+            </div>
+            <div id="resultConf" class="confidence-badge">OCR 95%</div>
+          </div>
+
+          <div id="resultDocType" class="doc-type-tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+            General Medical Report
+          </div>
+
+          <div class="result-body">
+            <!-- Patient Information -->
+            <div class="result-section-title">Patient Information</div>
+            <div class="meta-grid">
+              <div class="meta-item">
+                <div class="meta-label">Patient Name</div>
+                <div id="metaPatient" class="meta-value">—</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">Age</div>
+                <div id="metaAge" class="meta-value">—</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">Sex / Gender</div>
+                <div id="metaSex" class="meta-value">—</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">Date of Test</div>
+                <div id="metaDate" class="meta-value">—</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">Facility / Hospital</div>
+                <div id="metaFacility" class="meta-value">—</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">Doctor / Consultant</div>
+                <div id="metaDoctor" class="meta-value">—</div>
+              </div>
+            </div>
+
+            <hr class="meta-divider" />
+
+            <!-- File Metadata -->
+            <div class="result-section-title">File Metadata</div>
+            <div class="meta-grid">
+              <div class="meta-item">
+                <div class="meta-label">File Type</div>
+                <div id="metaFileType" class="meta-value">—</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">File Size</div>
+                <div id="metaFileSize" class="meta-value">—</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">Page Count</div>
+                <div id="metaPages" class="meta-value">—</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">OCR Confidence</div>
+                <div id="metaOcrConf" class="meta-value">—</div>
+              </div>
+            </div>
+
+            <!-- Findings Section -->
+            <div id="findingsSection" style="display:none;">
+              <hr class="meta-divider" />
+              <div class="result-section-title">Findings / Radiologist Observations</div>
+              <div id="findingsText" class="findings-block"></div>
+            </div>
+
+            <!-- Clinical Summary / Diagnosis -->
+            <div id="diagnosisSection" style="display:none;">
+              <div class="result-section-title">Clinical Summary / Diagnosis</div>
+              <div id="diagnosisText" class="diagnosis-block"></div>
+            </div>
+
+            <!-- Lab Results Table -->
+            <div id="labSection" style="display:none;">
+              <hr class="meta-divider" />
+              <div class="result-section-title">Extracted Lab Parameters</div>
+              <div class="lab-table-wrap">
+                <table class="lab-table">
+                  <thead>
+                    <tr>
+                      <th>Parameter</th>
+                      <th>Value</th>
+                      <th>Unit</th>
+                      <th>Ref. Range</th>
+                    </tr>
+                  </thead>
+                  <tbody id="labTbody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Raw OCR Collapsible (Debug) -->
+            <hr class="meta-divider" />
+            <button id="debugToggle" class="debug-toggle" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+              <span>Show raw OCR text (debug)</span>
+            </button>
+            <pre id="rawText" class="raw-text-block hidden"></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═════════ Tab 2: Medical Reports ═════════ -->
+      <section id="tabReports" class="tab-content">
+        <h2 class="section-title">Medical Reports</h2>
+        <p class="section-desc">View and manage your saved and processed medical documents.</p>
+
+        <div class="reports-placeholder">
+          <div class="reports-placeholder-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <h3>No reports saved yet</h3>
+          <p>Processed documents will be archived here once report storage is connected.</p>
+          <button class="btn-primary" type="button" style="margin: 0 auto;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+              <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+            </svg>
+            Access Medical Reports
+          </button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
 </html>
