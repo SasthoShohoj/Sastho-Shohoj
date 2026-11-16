@@ -114,6 +114,7 @@
       badgeType: 'badge-muted',
       team: 'Clinical Team'
     },
+   
     {
       id: 'records',
       title: { en: 'Medical Records & EHR', bn: 'মেডিকেল রেকর্ড ও প্রেসক্রিপশন' },
@@ -127,6 +128,20 @@
       badge: { en: 'Phase 4', bn: 'পরিকল্পনাধীন' },
       badgeType: 'badge-muted',
       team: 'Records Team'
+    },
+    {
+      id: 'vaccine',
+      title: { en: 'Vaccine Hub', bn: 'ভ্যাকসিন হাব' },
+      subtitle: {
+        en: 'Vaccine information, personal schedules, and vaccination records.',
+        bn: 'টিকার তথ্য, ব্যক্তিগত সময়সূচি ও টিকাদানের রেকর্ড।'
+      },
+      icon: 'bloodDrop',
+      path: 'vaccine/index.html',
+      status: 'ACTIVE',
+      badge: { en: 'New', bn: 'নতুন' },
+      badgeType: 'badge-green',
+      team: 'Vaccine Hub Team'
     }
   ];
 
@@ -136,3 +151,4 @@
     MODULES
   };
 });
+
