@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | Healthcare App</title>
+
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+
+    <div class="register-container">
+
+        <div class="register-header">
+            <h1>Sastho-Shohoj</h1>
+            <p>Your health, our priority.</p>
+        </div>
+
+        <div class="register-form">
+            <h2>Create Account</h2>
+            <p class="subtitle">Join us to manage your healthcare easily.</p>
+
+            <form id="registerForm">
+
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" placeholder="Enter your full name" required>
+
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" placeholder="+8801XXXXXXXXX" required>
+
+                
+<label for="password">Password</label>
+<div class="password-wrapper">
+    <input type="password" id="password"
+        placeholder="Create a password" required>
+    <button type="button" class="toggle-password"
+        data-target="password">Show</button>
+</div>
+
+<label for="confirmPassword">Confirm Password</label>
+<div class="password-wrapper">
+    <input type="password" id="confirmPassword"
+        placeholder="Confirm your password" required>
+    <button type="button" class="toggle-password"
+        data-target="confirmPassword">Show</button>
+</div>
+
+                <div class="terms">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">I agree to the Terms and Conditions</label>
+                </div>
+
+                <button type="submit">Create Account</button>
+                <p id="formMessage" role="status" aria-live="polite"></p>
+
+            </form>
+
+            <p class="login-link">
+                Already have an account?
+                <a href="#">Login</a>
+            </p>
+
+        </div>
+
+    </div>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>
