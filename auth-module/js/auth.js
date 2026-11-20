@@ -49,10 +49,20 @@ registerForm.addEventListener("submit", function(event) {
         return;
     }
 
-    // Successful frontend validation
-    message.style.color = "#087f8c";
+    // Frontend validation successful
+message.style.color = "#087f8c";
+message.textContent = "Registration details validated! Redirecting...";
+
+// Store only a temporary workflow marker.
+// Do NOT store passwords or personal information.
+try {
+    sessionStorage.setItem("registrationPending", "true");
+    window.location.href = "verify-otp.html";
+} catch (error) {
+    message.style.color = "#dc2626";
     message.textContent =
-        "Validation successful! Registration is not yet connected to a server.";
+        "Unable to continue. Please enable session storage and try again.";
+}
 });
 
 // Show/Hide Password
@@ -74,5 +84,46 @@ toggleButtons.forEach(function(button) {
         }
 
     });
+
+});
+
+const passwordField = document.getElementById("password");
+const strengthFill = document.getElementById("strengthFill");
+const strengthText = document.getElementById("strengthText");
+
+passwordField.addEventListener("input", function() {
+
+    const password = passwordField.value;
+
+    let score = 0;
+
+    if (password.length >= 10) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[a-z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+
+    if (password.length === 0) {
+        strengthFill.style.width = "0%";
+        strengthText.textContent = "Password strength";
+    }
+    else if (score <= 2) {
+        strengthFill.style.width = "33%";
+        strengthFill.style.background = "#dc2626";
+        strengthText.textContent = "Weak password";
+        strengthText.style.color = "#dc2626";
+    }
+    else if (score <= 4) {
+        strengthFill.style.width = "66%";
+        strengthFill.style.background = "#f59e0b";
+        strengthText.textContent = "Medium password";
+        strengthText.style.color = "#f59e0b";
+    }
+    else {
+        strengthFill.style.width = "100%";
+        strengthFill.style.background = "#16a34a";
+        strengthText.textContent = "Strong password";
+        strengthText.style.color = "#16a34a";
+    }
 
 });

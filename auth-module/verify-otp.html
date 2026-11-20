@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>OTP Verification | Sastho-Shohoj</title>
+
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+
+<body>
+
+    <div class="register-container">
+
+        <div class="register-header">
+            <h1>Sastho-Shohoj</h1>
+            <p>Your health, our priority.</p>
+        </div>
+
+        <div class="register-form otp-form">
+
+            <div class="otp-icon">✉</div>
+
+            <h2>Verify Your Account</h2>
+
+            <p class="subtitle">
+                We've sent a verification code to your registered
+                email or phone number.
+            </p>
+
+            <form id="otpForm">
+
+                <label for="otp">Enter 6-digit OTP</label>
+
+                <input
+                    type="text"
+                    id="otp"
+                    placeholder="Enter OTP"
+                    maxlength="6"
+                    inputmode="numeric"
+                    pattern="[0-9]{6}"
+                    autocomplete="one-time-code"
+                    required
+                >
+
+                <p id="timer">OTP expires in 05:00</p>
+
+                <button type="submit">Verify OTP</button>
+
+                <p id="otpMessage" role="status"
+                   aria-live="polite"></p>
+
+            </form>
+            
+            <p id="successLoginLink" hidden>
+             Registration completed successfully!
+            <a href="login.html">Go to Login</a>
+            </p>
+            <div class="resend-section">
+                <p>Didn't receive the code?</p>
+                <button type="button" id="resendBtn" disabled>
+                    Resend OTP
+                </button>
+                <p id="resendMessage"></p>
+            </div>
+
+            <p class="login-link">
+                <a href="register.html">Back to Registration</a>
+            </p>
+
+        </div>
+
+    </div>
+
+    <script src="js/otp.js"></script>
+
+</body>
+</html>
