@@ -6,7 +6,7 @@
  *  - Tab navigation (Upload Document / Medical Reports)
  *  - Drag & drop file uploads (PDF & Image formats)
  *  - Live image previews
- *  - POST to Python OCR backend (/api/process)
+ *  - POST to Python OCR backend (/api/process) with live elapsed timer
  *  - Multi-stage medical validation & structured report rendering
  */
 
@@ -90,6 +90,8 @@
     previewUrl: null,
     processing: false,
     activeTab: 'upload',
+    timerId: null,
+    elapsedSeconds: 0,
   };
 
   // ─── Helpers ─────────────────────────────────────────────────────
@@ -209,7 +211,6 @@
       return;
     }
 
-    // Clear previous results
     clearResults();
     hideErrorPill();
 
@@ -230,10 +231,10 @@
       state.previewUrl = URL.createObjectURL(file);
       dom.previewImg.src = state.previewUrl;
       dom.previewWrap.classList.remove('hidden');
-      dom.fileIcon.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`;
+      dom.fileIcon.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`;
     } else {
       dom.previewWrap.classList.add('hidden');
-      dom.fileIcon.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+      dom.fileIcon.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
     }
 
     updateProcessBtnState();
@@ -257,8 +258,8 @@
     const canProcess = Boolean(state.currentFile) && state.backendOnline === true && !state.processing;
     dom.processBtn.disabled = !canProcess;
 
-    if (!state.currentFile) {
-      dom.processBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 7 4 4 7 4"/><polyline points="17 4 20 4 20 7"/><polyline points="20 17 20 20 17 20"/><polyline points="7 20 4 20 4 17"/><line x1="4" y1="12" x2="20" y2="12"/></svg> Analyse Document`;
+    if (!state.processing) {
+      dom.processBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 7 4"/><polyline points="17 4 20 4 20 7"/><polyline points="20 17 20 20 17 20"/><polyline points="7 20 4 20 4 17"/><line x1="4" y1="12" x2="20" y2="12"/></svg> Analyse Document`;
     }
   }
 
@@ -268,17 +269,49 @@
     dom.processingBanner.classList.add('hidden');
     dom.rawText.classList.add('hidden');
     dom.debugToggle.classList.remove('open');
+    stopTimer();
+  }
+
+  function startTimer() {
+    stopTimer();
+    state.elapsedSeconds = 0;
+    updateProcessingBannerText();
+    state.timerId = setInterval(() => {
+      state.elapsedSeconds++;
+      updateProcessingBannerText();
+    }, 1000);
+  }
+
+  function stopTimer() {
+    if (state.timerId) {
+      clearInterval(state.timerId);
+      state.timerId = null;
+    }
+  }
+
+  function updateProcessingBannerText() {
+    const s = state.elapsedSeconds;
+    const isPdf = state.currentFile && state.currentFile.name.toLowerCase().endsWith('.pdf');
+    let message = `Running OCR & Medical Validation… (${s}s)`;
+
+    if (s > 10) {
+      message = `Processing high-resolution document on CPU… (${s}s)`;
+    } else if (isPdf && s < 3) {
+      message = `Inspecting PDF content & validating medical data… (${s}s)`;
+    }
+
+    dom.processingBanner.innerHTML = `<div class="spinner"></div> <span>${escapeHtml(message)}</span>`;
   }
 
   function showErrorPill(msg) {
     dom.processPill.className = 'status-pill error';
-    dom.processPill.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> ${escapeHtml(msg)}`;
+    dom.processPill.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> ${escapeHtml(msg)}`;
     dom.processPill.style.display = 'inline-flex';
   }
 
   function showSuccessPill(msg) {
     dom.processPill.className = 'status-pill success';
-    dom.processPill.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> ${escapeHtml(msg)}`;
+    dom.processPill.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> ${escapeHtml(msg)}`;
     dom.processPill.style.display = 'inline-flex';
   }
 
@@ -297,6 +330,11 @@
 
     dom.processBtn.innerHTML = `<div class="spinner" style="width:14px;height:14px;border-width:2px;display:inline-block;vertical-align:middle;margin-right:6px;"></div> Processing…`;
     dom.processingBanner.classList.remove('hidden');
+    startTimer();
+
+    // 60-second safety timeout controller
+    const controller = new AbortController();
+    const abortTimeout = setTimeout(() => controller.abort(), 60000);
 
     try {
       const formData = new FormData();
@@ -305,13 +343,23 @@
       const res = await fetch(`${API_BASE}/api/process`, {
         method: 'POST',
         body: formData,
+        signal: controller.signal,
       });
 
-      const data = await res.json();
-
+      clearTimeout(abortTimeout);
+      stopTimer();
       dom.processingBanner.classList.add('hidden');
       state.processing = false;
       updateProcessBtnState();
+
+      const rawJson = await res.text();
+      let data;
+      try {
+        data = JSON.parse(rawJson);
+      } catch (parseErr) {
+        showErrorPill('Server returned non-JSON response.');
+        return;
+      }
 
       if (!res.ok) {
         showErrorPill(data.error || 'Server error occurred during processing.');
@@ -326,10 +374,17 @@
         renderRejection(data);
       }
     } catch (err) {
+      clearTimeout(abortTimeout);
+      stopTimer();
       dom.processingBanner.classList.add('hidden');
       state.processing = false;
       updateProcessBtnState();
-      showErrorPill('Could not connect to OCR server. Is the backend running?');
+
+      if (err.name === 'AbortError') {
+        showErrorPill('Processing timed out (file may be too dense for CPU OCR). Try a smaller scan.');
+      } else {
+        showErrorPill('Could not connect to OCR server. Is the backend running?');
+      }
     }
   }
 
@@ -353,7 +408,7 @@
 
     // Header info
     dom.resultFilename.textContent = meta.filename || state.currentFile.name;
-    dom.resultDocType.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style="width:14px;height:14px"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> ${escapeHtml(data.document_type || 'General Medical Report')}`;
+    dom.resultDocType.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> ${escapeHtml(data.document_type || 'General Medical Report')}`;
     dom.resultConf.textContent = `OCR ${meta.ocr_confidence || '95%'}`;
 
     // Patient info fields
@@ -386,13 +441,13 @@
       dom.diagnosisSection.style.display = 'none';
     }
 
-    // Lab Values Table
+    // Variable Lab & Imaging Parameters Table
     const labs = data.test_results || [];
     if (labs.length > 0) {
       dom.labTbody.innerHTML = labs.map(r => `
         <tr>
-          <td>${escapeHtml(r.parameter)}</td>
-          <td><strong>${escapeHtml(r.value)}</strong></td>
+          <td><strong>${escapeHtml(r.parameter)}</strong></td>
+          <td>${escapeHtml(r.value)}</td>
           <td>${escapeHtml(r.unit || '—')}</td>
           <td>${escapeHtml(r.reference_range || '—')}</td>
         </tr>

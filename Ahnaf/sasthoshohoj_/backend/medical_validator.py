@@ -9,7 +9,7 @@ Multi-stage pipeline:
            memes, natural photos/selfies vs monochrome medical scans / paper reports.
   Stage 2: Semantic Text Validation
            Scores medical terms against anti-medical/rejection patterns
-           (invoices, grocery lists, certificates, resumes, entertainment).
+           (resumes, CVs, invoices, grocery lists, certificates, entertainment).
 """
 
 import re
@@ -46,11 +46,12 @@ MEDICAL_ANCHORS = [
     r'\b(hospital|clinic|medical cent(er|re)|diagnostic)\b',
     r'\b(wbc|rbc|platelet|hematocrit|haematocrit|hba1c)\b',
     r'\b(serum|plasma|urine|stool|csf)\b',
-    r'\b(mg/dl|mmol/l|g/dl|iu/l|mEq/L|cells/µl|cells/ul)\b',
+    r'\b(mg/dl|mmol/l|g/dl|iu/l|mEq/L|cells/µl|cells/ul|/cumm|/hpf)\b',
     r'\b(ecg|eeg|emg|endoscopy|colonoscopy|gastroscopy)\b',
     r'\b(fracture|tumour|tumor|cyst|lesion|nodule|calculus)\b',
     r'\b(hypertension|diabetes|asthma|anemia|infection)\b',
     r'\b(creatinine|bilirubin|cholesterol|tsh|sgpt|sgot|alt|ast)\b',
+    r'\b(lipid profile|liver function|kidney function|lft|kft)\b',
 ]
 
 # ── Supporting medical terms (boost score) ───────────────────────
@@ -66,7 +67,20 @@ MEDICAL_SUPPORT = [
     r'\b(liver|kidney|gallbladder|spleen|pancreas|heart|lung|brain)\b',
 ]
 
-# ── Anti-medical / reject terms (invoices, groceries, engineering, anime, certs) ──
+# ── Resume / CV Anchor Terms (Instant Rejection) ──────────────────
+RESUME_TERMS = [
+    r'\b(curriculum\s*vitae|resume|resum[eé])\b',
+    r'\b(work\s*experience|professional\s*experience|employment\s*history)\b',
+    r'\b(technical\s*skills|soft\s*skills|core\s*competencies)\b',
+    r'\b(career\s*objective|professional\s*summary|profile\s*summary)\b',
+    r'\b(education\s*history|academic\s*background|bachelor\s*of|master\s*of)\b',
+    r'\b(projects?\s*completed|personal\s*projects|key\s*achievements)\b',
+    r'\b(github\.com|linkedin\.com|hackerrank|leetcode)\b',
+    r'\b(cgpa\b|gpa\b|coursework|honors?\s*and\s*awards?)\b',
+    r'\b(references?\s*available|declaration\s*:)\b',
+]
+
+# ── Anti-medical / reject terms (invoices, groceries, engineering, certs) ──
 REJECT_TERMS = [
     # Commercial & invoices
     r'\b(invoice|purchase order|po number|quotation|proforma)\b',
@@ -78,7 +92,7 @@ REJECT_TERMS = [
     # Engineering & academic certs
     r'\b(circuit|voltage|ampere|ohm|resistance|transistor|capacitor)\b',
     r'\b(certificate of (completion|achievement|merit|participation))\b',
-    r'\b(bachelor of (science|arts|engineering)|diploma in|semester|cgpa)\b',
+    r'\b(diploma in|semester|cgpa)\b',
     # Entertainment / Anime / Games
     r'\b(anime|manga|wallpaper|deviantart|pixiv|cosplay|fanart)\b',
     r'\b(genshin|naruto|pokemon|dragon\s*ball|attack on titan)\b',
@@ -117,7 +131,6 @@ def validate_visual_image(pil_img: Image.Image) -> tuple[bool, str | None]:
         (is_valid_document, rejection_reason)
     """
     try:
-        # Resize thumbnail to 200x200 for near-instant analysis (<5ms)
         thumb = pil_img.resize((200, 200)).convert('RGB')
         arr = np.array(thumb, dtype=np.float32) / 255.0
 
@@ -127,7 +140,7 @@ def validate_visual_image(pil_img: Image.Image) -> tuple[bool, str | None]:
         max_channel_diff = float(np.mean(rg_diff + gb_diff))
 
         if max_channel_diff < 0.05:
-            # Essentially grayscale -> definitely consistent with a radiology film or scanned document
+            # Essentially grayscale -> consistent with a radiology film or monochrome report
             return True, None
 
         # 2. Color saturation and paper background analysis
@@ -137,14 +150,12 @@ def validate_visual_image(pil_img: Image.Image) -> tuple[bool, str | None]:
 
         mean_sat = float(np.mean(sat))
         vibrant_pixels = float(np.mean(sat > 0.28))
-        # Paper background: near-white or light neutral pixels
         paper_pixels = float(np.mean((val > 0.70) & (sat < 0.18)))
 
-        # Anime wallpaper / colorful art check:
-        # High saturation across most of the image, lack of neutral paper document background
+        # Anime wallpaper / colorful art check
         if vibrant_pixels > 0.35 and paper_pixels < 0.25:
             return False, (
-                "The uploaded image appears to be a colorful illustration, a natural imagery, "
+                "The uploaded image appears to be a colorful illustration, anime wallpaper, "
                 "or digital artwork rather than a medical document or scan."
             )
 
@@ -157,8 +168,7 @@ def validate_visual_image(pil_img: Image.Image) -> tuple[bool, str | None]:
 
         return True, None
 
-    except Exception as e:
-        # If visual inspection encounters an unexpected format, allow downstream OCR to evaluate
+    except Exception:
         return True, None
 
 
@@ -182,12 +192,12 @@ def classify_document_type(text: str) -> str:
 
 def validate_medical_document(text: str) -> dict:
     """
-    Evaluates OCR text to determine if it is a genuine medical record.
+    Evaluates text to determine if it is a genuine medical record.
 
     Returns:
         {
           "is_medical": bool,
-          "confidence": float,          # 0.0 to 1.0
+          "confidence": float,
           "document_type": str | None,
           "rejection_reason": str | None
         }
@@ -200,27 +210,41 @@ def validate_medical_document(text: str) -> dict:
             'rejection_reason': 'No readable text could be found on the uploaded document.',
         }
 
-    # Check anti-medical terms (invoices, grocery lists, certs, engineering, anime)
+    anchor_hits = _score(text, MEDICAL_ANCHORS)
+    support_hits = _score(text, MEDICAL_SUPPORT)
+    resume_hits = _score(text, RESUME_TERMS)
     reject_hits = _score(text, REJECT_TERMS)
-    if reject_hits >= 2:
+
+    # 1. Catch Resumes & CVs immediately
+    if resume_hits >= 1 and anchor_hits <= 1:
+        return {
+            'is_medical': False,
+            'confidence': 0.0,
+            'document_type': None,
+            'rejection_reason': (
+                'This document was identified as a Resume / Curriculum Vitae '
+                '(detected employment history, skills, or educational profile), '
+                'not a medical report.'
+            ),
+        }
+
+    # 2. Catch Invoices, Groceries, Certificates
+    if reject_hits >= 2 and anchor_hits <= 1:
         return {
             'is_medical': False,
             'confidence': 0.0,
             'document_type': None,
             'rejection_reason': (
                 'This document was identified as a non-medical file '
-                '(e.g. commercial invoice, grocery bill, engineering certificate, or non-medical media). '
+                '(e.g. commercial invoice, grocery bill, engineering certificate, or academic record). '
                 'Please upload a valid medical report.'
             ),
         }
 
-    anchor_hits = _score(text, MEDICAL_ANCHORS)
-    support_hits = _score(text, MEDICAL_SUPPORT)
     total_score = anchor_hits * 3 + support_hits
-
     confidence = min(1.0, total_score / 12)
 
-    # Must have at least 1 strong medical anchor
+    # 3. Must contain at least 1 strong medical anchor
     if anchor_hits == 0:
         return {
             'is_medical': False,
@@ -235,7 +259,7 @@ def validate_medical_document(text: str) -> dict:
 
     return {
         'is_medical': True,
-        'confidence': round(max(0.60, confidence), 2),
+        'confidence': round(max(0.65, confidence), 2),
         'document_type': classify_document_type(text),
         'rejection_reason': None,
     }

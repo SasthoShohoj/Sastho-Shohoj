@@ -6,13 +6,18 @@ Extracts structured medical fields from raw OCR text with OCR-error tolerance.
 Features:
   • Patient Name: stops at newlines, intra-line labels like Age/Pge/Sex/ID/DOB.
   • Patient Age: handles '24 Y', '24 Years', '24 yrs', 'Age: 24', 'Pge: 24'.
-  • Patient Sex: handles 'Male', 'Female', 'Sex Male', 'M', 'F', '24Y/M'.
-  • Test / Report Date: catches formatted and bare medical dates.
+  • Patient Sex/Gender: handles 'Male', 'Female', 'Sex Male', 'M', 'F', '24Y/M', 'Age/Sex: 45/Male'.
+  • Test / Report Date: catches formatted, named-month, fused (12-Nov2026), and standalone dates.
   • Facility: tolerant of OCR typos like 'Hcspital', 'Hospltal', 'Cllnic'.
-  • Doctor: parses 'Ref By: Dr: Farhan Islam', stops before qualifications.
+  • Doctor: handles 'Peferred By', 'Ref By', 'Dr: Name', filters non-name words.
   • Findings: matches with or without colons, captures multi-line observations.
-  • Disease Summary / Impression: captures diagnostic impressions and advice.
-  • Lab Parameters: parameter names, numerical values, units, reference ranges.
+  • Disease Summary / Impression: handles 'Impression', 'Imdression', 'Diagnosis', 'Advice'.
+  • Variable Test Parameters:
+      - Blood / Lab tests (Haemoglobin, Creatinine, Sugar, SGPT, TSH)
+      - Qualitative tests (Blood Group, Dengue, Urine Protein, Pus Cells)
+      - Unitless tests (pH, Specific Gravity, INR)
+      - Imaging measurements (Organ sizes in cm/mm, disc bulges, thicknesses)
+      - Supports multi-line table layouts where OCR splits name and value across lines
 """
 
 import re
@@ -37,7 +42,8 @@ _NAME_BLACKLIST = re.compile(
     r'hospital|clinic|lab|test|sample|id|no|ref|signature|ward|bed|room|'
     r'male|female|positive|negative|normal|abnormal|result|findings?|'
     r'impression|diagnosis|history|examination|investigation|'
-    r'recommendation|advice|treatment|ultrasound|mri|ct|xray|'
+    r'recommendation|advice|treatment|ultrasound|mri|ct|xray|consultation|'
+    r'physician|consultant|specialist|department|institute|institution|'
     r'[0-9]|n/?a|nil|not\s+available)\s*$',
     re.IGNORECASE,
 )
@@ -51,7 +57,6 @@ def _valid_name(s: str | None) -> str | None:
         return None
     if _NAME_BLACKLIST.match(s):
         return None
-    # Strip honorifics that leaked into the string
     s = re.sub(r'^(?:Mr\.?|Mrs\.?|Ms\.?|Miss\.?|Md\.?|Master)\s+', '', s, flags=re.I).strip()
     return s if len(s) >= 2 else None
 
@@ -61,10 +66,6 @@ def _valid_name(s: str | None) -> str | None:
 # ──────────────────────────────────────────────────────────────────
 
 def extract_patient_name(text: str) -> str | None:
-    """
-    Extracts patient name from labels.
-    Never crosses newlines. Stops before intra-line labels like Age/Pge/Sex/ID.
-    """
     patterns = [
         # Explicit Patient Name: Ahnaf Rahman
         r"(?:patient'?s?\s*name|pt\.?\s*name)\s*[:\-\.]?\s*([A-Za-z][A-Za-z \t\.\-]{1,45})",
@@ -79,7 +80,7 @@ def extract_patient_name(text: str) -> str | None:
         m = re.search(pat, text, re.IGNORECASE | re.MULTILINE)
         if m:
             raw = m.group(1).strip()
-            # Stop before intra-line labels (handles OCR typos like Pge for Age)
+            # Stop before intra-line labels
             raw = re.split(
                 r'\b(?:[ap]ge|sex|gender|dob|date|ref|id|no|bed|ward|cabin|reg|phone)\b',
                 raw,
@@ -100,7 +101,7 @@ def extract_patient_age(text: str) -> str | None:
     patterns = [
         # Age: 24 Years / Pge: 24 Y / Age - 24 yrs
         r"\b[ap]ge\s*[:\-/]?\s*(\d{1,3})\s*(?:years?|yrs?|y\b)?",
-        # Inline shorthand: 24 Y / M or 24Y/M
+        # Inline shorthand: 24 Y / M or 24Y/M or PgelSex 26 Y
         r"\b(\d{1,3})\s*[Yy](?:[\/\s\|]|$)",
         # Standalone Age : 24
         r"\b[ap]ge\s*[:\-/]\s*(\d{1,3})\b",
@@ -123,23 +124,36 @@ def extract_patient_age(text: str) -> str | None:
 # ──────────────────────────────────────────────────────────────────
 
 def extract_patient_sex(text: str) -> str | None:
-    # 1. Explicit label (with or without colon, e.g. "Sex Male" or "Sex: Female")
-    m = re.search(r"\b(?:sex|gender)\s*[:\-\.]?\s*(male|female|m\b|f\b)", text, re.I)
-    if m:
-        v = m.group(1).lower()
-        return "Male" if v.startswith('m') else "Female"
+    # 1. Compound row: Age/Sex: 45 Yrs / Male or PgelSex 26 Y / Male or Sex/Age: Female / 28 Yrs
+    m_compound = re.search(r'\b(?:[ap]ge\s*[\/\\]\s*s[eoa]x|[ap]gel\s*s[eoa]x|s[eoa]x\s*[\/\\]\s*[ap]ge)\s*[:\-\.]?\s*([^\n\r]+)', text, re.I)
+    if m_compound:
+        segment = m_compound.group(1).lower()
+        if re.search(r'\b(female|f)\b', segment):
+            return 'Female'
+        if re.search(r'\b(male|m)\b', segment):
+            return 'Male'
 
-    # 2. Shorthand like 24Y / M or 24/M
-    m2 = re.search(r"\b\d{1,3}\s*[Yy]?\s*[\/\|]\s*(male|female|m\b|f\b)", text, re.I)
-    if m2:
-        v = m2.group(1).lower()
-        return "Male" if v.startswith('m') else "Female"
+    # 2. Labelled: Sex: Male, Sox: Female, Gender: M, Sex-F, Sex Male
+    m_label = re.search(r'\b(?:s[eoa]x|gender)\s*[:\-\.\s]\s*(male|female|m\b|f\b)', text, re.I)
+    if m_label:
+        v = m_label.group(1).lower()
+        return 'Female' if v.startswith('f') else 'Male'
 
-    # 3. M / 24Y
-    m3 = re.search(r"\b(male|female|m\b|f\b)\s*[\/\|]\s*\d{1,3}\s*[Yy]?", text, re.I)
-    if m3:
-        v = m3.group(1).lower()
-        return "Male" if v.startswith('m') else "Female"
+    # 3. Shorthand like 28/F or 45 Y / Male or M / 42Y
+    m_short1 = re.search(r'\b\d{1,3}\s*(?:y|yrs|years)?\s*[\/\|\\]\s*(male|female|m\b|f\b)', text, re.I)
+    if m_short1:
+        v = m_short1.group(1).lower()
+        return 'Female' if v.startswith('f') else 'Male'
+
+    m_short2 = re.search(r'\b(male|female|m\b|f\b)\s*[\/\|\\]\s*\d{1,3}\s*(?:y|yrs|years)?', text, re.I)
+    if m_short2:
+        v = m_short2.group(1).lower()
+        return 'Female' if v.startswith('f') else 'Male'
+
+    # 4. Standalone MALE / FEMALE near demographic info
+    m_demo = re.search(r'(?:patient|name|age|\d{1,2}\s*y)[^\n\r]{0,60}?\b(male|female)\b', text, re.I)
+    if m_demo:
+        return m_demo.group(1).capitalize()
 
     return None
 
@@ -149,22 +163,42 @@ def extract_patient_sex(text: str) -> str | None:
 # ──────────────────────────────────────────────────────────────────
 
 def extract_date(text: str) -> str | None:
-    month_names = r'(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*'
+    months = (
+        r'(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|'
+        r'Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)'
+    )
 
-    # Explicit labelled dates (with or without colon)
-    labelled = [
-        rf"(?:date\s*of\s*(?:report|test|exam|study|sample|collection)|report\s*date|test\s*date|sample\s*date|date)\s*[:\-\.]?\s*(\d{{1,2}}[\/\-\.]\d{{1,2}}[\/\-\.]\d{{2,4}})",
-        rf"(?:date\s*of\s*(?:report|test|exam|study)|report\s*date|test\s*date|date)\s*[:\-\.]?\s*(\d{{1,2}}\s+{month_names}\s+\d{{2,4}})",
-    ]
-    for pat in labelled:
-        m = re.search(pat, text, re.I)
-        if m:
-            return _clean(m.group(1))
+    # 1. Labelled dates: Date:, Dt:, Dated:, Report Date:, Exam Date:, Collection Date:, Dale:
+    date_label_pat = (
+        rf'\b(?:d[a-z]te|d[at]ed?|dt|exam\s*date|study\s*date|col(?:lection)?\s*date|rep(?:ort)?\s*date)\s*[:\-\.]?\s*'
+        rf'('
+        rf'\d{{1,2}}[\s\-\/\.]*{months}[\s\-\/\.]*\d{{2,4}}|'
+        rf'{months}[\s\-\/\.]*\d{{1,2}},?[\s\-\/\.]*\d{{2,4}}|'
+        rf'\d{{1,2}}[\/\-\.]\d{{1,2}}[\/\-\.]\d{{2,4}}|'
+        rf'\d{{4}}[\/\-\.]\d{{1,2}}[\/\-\.]\d{{1,2}}'
+        rf')'
+    )
+    m1 = re.search(date_label_pat, text, re.I)
+    if m1:
+        return _clean(m1.group(1))
 
-    # Bare standalone dates with 4-digit year
-    bare_matches = re.findall(r"\b(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{4})\b", text)
-    if bare_matches:
-        return _clean(bare_matches[0])
+    # 2. Exam: 12-Nov2026 or Date \n Exam: 12-Nov2026
+    m_exam = re.search(rf'\b(?:exam|date)\s*[:\-\.]?\s*(\d{{1,2}}[\s\-\/\.]*{months}[\s\-\/\.]*\d{{2,4}}|\d{{1,2}}[\/\-\.]\d{{1,2}}[\/\-\.]\d{{2,4}})', text, re.I)
+    if m_exam:
+        return _clean(m_exam.group(1))
+
+    # 3. Standalone dates anywhere in document with 4-digit year (1980–2035)
+    standalone_pat = (
+        rf'\b('
+        rf'\d{{1,2}}[\s\-\/\.]*{months}[\s\-\/\.]*(?:19\d\d|20[0-3]\d)|'
+        rf'{months}[\s\-\/\.]*\d{{1,2}},?[\s\-\/\.]*(?:19\d\d|20[0-3]\d)|'
+        rf'\d{{1,2}}[\/\-\.]\d{{1,2}}[\/\-\.](?:19\d\d|20[0-3]\d)|'
+        rf'(?:19\d\d|20[0-3]\d)[\/\-\.]\d{{1,2}}[\/\-\.]\d{{1,2}}'
+        rf')\b'
+    )
+    m2 = re.search(standalone_pat, text, re.I)
+    if m2:
+        return _clean(m2.group(1))
 
     return None
 
@@ -176,7 +210,7 @@ def extract_date(text: str) -> str | None:
 def extract_facility(text: str) -> str | None:
     lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
 
-    # Check header lines (first 5 lines), OCR typo tolerant
+    # Check header lines (first 5 lines)
     for line in lines[:5]:
         if re.search(r'\b(h[o0c]spital|cl[i1l]n[i1]c|d[i1]agnost[i1]c|med[i1]cal|health\s*care|pathology)\b', line, re.I):
             clean_line = re.sub(r'^(?:hospital|clinic|facility|center|centre|lab)\s*[:\-]\s*', '', line, flags=re.I).strip(' :;,-')
@@ -196,18 +230,16 @@ def extract_facility(text: str) -> str | None:
 
 def extract_doctor(text: str) -> str | None:
     patterns = [
-        # Ref By: Dr: Farhan Islam / Doctor: Dr. Smith
-        r"(?:ref(?:erred)?\s*(?:by|\.)?|consultant|physician|doctor|reported\s*by|signed\s*by)\s*[:\-\.]?\s*((?:Dr[\.:]?)?\s*[A-Z][A-Za-z \t\.\-]{2,35})",
-        # Dr. Farhan Islam
+        # Ref By: Dr. Shamsul Huda / Peferred By: Dr: Shamsul Huda (tolerates OCR typo P for R)
+        r"(?:[pr]ef(?:erred)?\s*(?:by|\.)?|consultant|physician|doctor|reported\s*by|signed\s*by)\s*[:\-\.]?\s*((?:Dr[\.:]?)?\s*[A-Z][A-Za-z \t\.\-]{2,35})",
+        # Dr. Shamsul Huda (explicit Dr. Name)
         r"(?:^|\n)\s*(Dr[\.:]\s+[A-Z][A-Za-z \t\.\-]{2,30})",
     ]
     for pat in patterns:
         m = re.search(pat, text, re.I | re.MULTILINE)
         if m:
             raw = m.group(1).strip()
-            # Stop before qualification degrees or next line headers
-            raw = re.split(r'[\(\[\n\t\|]|\b(?:consultant|mbbs|fcps|md|ms|mrcp|frcs|dgo|phd|department|complete|pathology)\b', raw, flags=re.I)[0].strip(' :;,-')
-            # Standardise Dr prefix
+            raw = re.split(r'[\(\[\n\t\|]|\b(?:consultant|mbbs|fcps|md|ms|mrcp|frcs|dgo|phd|department|complete|pathology|date|exam)\b', raw, flags=re.I)[0].strip(' :;,-')
             raw = re.sub(r'^Dr[\.:]?\s*', '', raw, flags=re.I).strip()
             name = _valid_name(raw)
             if name:
@@ -221,11 +253,10 @@ def extract_doctor(text: str) -> str | None:
 # ──────────────────────────────────────────────────────────────────
 
 def extract_findings(text: str) -> str | None:
-    # Match paragraph after Findings or Observations header (with or without colon)
     pat = (
         r"(?:^|\n)\s*(?:findings?|radiological\s+findings?|sonographic\s+findings?|observations?)\s*[:\-\.]?\s*\n?"
         r"([\s\S]+?)"
-        r"(?=\n\s*(?:impression|diagnosis|[ap]dvice|recommendation|conclusion|signature|dr\.|\n\s*\n\s*\n|$))"
+        r"(?=\n\s*(?:im[pd]ression|diagnosis|[ap]dvice|recommendation|conclusion|signature|dr\.|\n\s*\n\s*\n|$))"
     )
     m = re.search(pat, text, re.I)
     if m:
@@ -241,8 +272,8 @@ def extract_findings(text: str) -> str | None:
 
 def extract_disease_summary(text: str) -> str | None:
     patterns = [
-        # Impression: ... (with or without colon)
-        r"(?:^|\n)\s*(?:impression|radiological\s+impression|sonographic\s+impression|conclusion|opinion)\s*[:\-\.]?\s*([\s\S]+?)(?=\n\s*(?:[ap]dvice|recommendation|signature|dr\.|\n\s*\n|$))",
+        # Impression / Imdression: ...
+        r"(?:^|\n)\s*(?:im[pd]ression|radiological\s+impression|sonographic\s+impression|conclusion|opinion)\s*[:\-\.]?\s*([\s\S]+?)(?=\n\s*(?:[ap]dvice|recommendation|signature|dr\.|\n\s*\n|$))",
         # Diagnosis: ...
         r"(?:^|\n)\s*(?:diagnosis|clinical\s+(?:history|summary|indication|notes?)|assessment)\s*[:\-\.]?\s*([\s\S]+?)(?=\n\s*(?:findings?|[ap]dvice|recommendation|signature|dr\.|\n\s*\n|$))",
         # Advice / Pdvice: ...
@@ -258,60 +289,111 @@ def extract_disease_summary(text: str) -> str | None:
 
 
 # ──────────────────────────────────────────────────────────────────
-# 9. Lab / Test Results Table
+# 9. Variable Lab & Imaging Parameter Extractor
 # ──────────────────────────────────────────────────────────────────
 
-_UNIT_PAT = (
-    r'(?:g/dL|mg/dL|mmol/L|IU/L|U/L|mEq/L|mIU/L|'
-    r'µmol/L|umol/L|nmol/L|pmol/L|ng/mL|µg/dL|ug/dL|ng/dL|'
-    r'%|/µL|/uL|/mm³|/mm3|cells/µL|cells/uL|'
-    r'pg|fL|fl|mm/hr|mg/L|g/L|mOsm/kg)'
+_UNITS_REGEX = (
+    r'(?:g/dL|mg/dL|mmol/L|umol/L|µmol/L|IU/L|U/L|uIU/mL|mIU/L|ng/mL|pg/mL|%|'
+    r'/cumm|cells/uL|cells/µL|/uL|/µL|/HPF|lakh/cumm|mm/hr|cm|mm|mg/L|g/L|ratio|sec|'
+    r'x10\^9/L|10\^3/uL|10\^6/uL|fl|fL|pg)'
 )
 
 def extract_test_results(text: str) -> list[dict]:
+    # Normalise common OCR unit slash errors: mgidL, mgldL, gidL, gldL, Icumm, lcumm
+    norm_text = re.sub(r'\bmg[il1]dL\b', 'mg/dL', text, flags=re.I)
+    norm_text = re.sub(r'\bg[il1]dL\b', 'g/dL', norm_text, flags=re.I)
+    norm_text = re.sub(r'\b[Il1]cumm\b', '/cumm', norm_text, flags=re.I)
+    norm_text = re.sub(r'\blakh[il1]cumm\b', 'lakh/cumm', norm_text, flags=re.I)
+
     results = []
     seen = set()
+    lines = [ln.strip() for ln in norm_text.splitlines() if ln.strip()]
 
-    row_re = re.compile(
-        rf"^([A-Za-z][A-Za-z0-9\s\(\)\/\-\.]{{2,40}}?)"
-        rf"[\s:,]+"
-        rf"(\d[\d\.,]{{0,7}})"
-        rf"(\s*{_UNIT_PAT})?"
-        rf"(?:\s+[\(\[]?([\d\.\s\-–]+)[\)\]]?)?"
-        rf"\s*$",
-        re.I | re.MULTILINE,
+    # 1. Single-line pattern: Parameter: Value [Unit] [Ref]
+    inline_pat = re.compile(
+        rf'^\s*([A-Za-z][A-Za-z0-9\s\(\)\/\-\.\+]{{2,35}}?)\s*[:\-]\s*([<>]?\s*\d[\d\.,\-\/]*|Positive|Negative|Nil|Trace|Non-reactive|Reactive|[ABO][\s\+-]+(?:Positive|Negative|Pos|Neg))\s*({_UNITS_REGEX})?(?:[^\n\r]*?\(?([<>]?\s*[\d\.\s\-–]+|Negative|Nil|Normal)\)?)?',
+        re.I
     )
 
-    for m in row_re.finditer(text):
+    # 2. Multi-column table row without colon: Parameter Name    Value   Unit   Ref
+    table_pat = re.compile(
+        rf'^\s*([A-Za-z][A-Za-z0-9\s\(\)\/\-\.\+]{{2,35}}?)\s{{2,}}([<>]?\s*\d[\d\.,\-\/]*|Positive|Negative|Nil|Trace|Non-reactive|Reactive|[ABO][\s\+-]+(?:Positive|Negative|Pos|Neg))\s*({_UNITS_REGEX})?(?:[^\n\r]*?\(?([<>]?\s*[\d\.\s\-–]+|Negative|Nil|Normal)\)?)?',
+        re.I
+    )
+
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+
+        # Try single-line colon format
+        m = inline_pat.search(line) or table_pat.search(line)
+        if m:
+            param = _clean(m.group(1))
+            val = m.group(2).strip()
+            unit = (m.group(3) or '').strip()
+            ref = (m.group(4) or '').strip(' ()[]') or None
+
+            if param and len(param) >= 2 and param.lower() not in (
+                'findings', 'impression', 'technique', 'patient name', 'referred by', 'date', 'pge sex', 'age sex', 'page'
+            ):
+                key = param.lower()
+                if key not in seen:
+                    seen.add(key)
+                    results.append({'parameter': param, 'value': val, 'unit': unit, 'reference_range': ref})
+            i += 1
+            continue
+
+        # Try two-line pattern (where OCR put Parameter Name on line i, and Value Unit on line i+1)
+        if i + 1 < len(lines):
+            next_line = lines[i + 1]
+            m_next = re.search(
+                rf'^([<>]?\s*\d[\d\.,\-\/]*|Positive|Negative|Nil|Trace|Non-reactive|Reactive|[ABO][\s\+-]+(?:Positive|Negative|Pos|Neg))\s*({_UNITS_REGEX})?(?:[^\n\r]*?\(?([<>]?\s*[\d\.\s\-–]+|Negative|Nil|Normal)\)?)?',
+                next_line,
+                re.I
+            )
+            if m_next and len(line) <= 35 and re.match(r'^[A-Za-z][A-Za-z0-9\s\(\)\/\-\.\+]{2,35}:?$', line):
+                param = _clean(line)
+                val = m_next.group(1).strip()
+                unit = (m_next.group(2) or '').strip()
+                ref = (m_next.group(3) or '').strip(' ()[]') or None
+
+                if param and param.lower() not in (
+                    'findings', 'impression', 'technique', 'complete bloodcount', 'metabolic panel', 'date', 'date of test', 'patient name'
+                ):
+                    key = param.lower()
+                    if key not in seen:
+                        seen.add(key)
+                        results.append({'parameter': param, 'value': val, 'unit': unit, 'reference_range': ref})
+                    i += 2
+                    continue
+
+        i += 1
+
+    # 3. Imaging & anatomical criteria measurements (e.g. 'L4-L5 disc shows 3.5 mm' or 'CBD: 4.2 mm')
+    measure_pat = re.compile(
+        r'^\s*([A-Za-z0-9][A-Za-z0-9\s\-\.]{2,35}?)\s*(?:shows?|shoivs?|heightis|measures?|is|:)\s*([^\n\r]*?\b(\d+[\.\d]*\s*(?:mm|cm|x\s*\d+[\.\d]*\s*(?:mm|cm)))\b[^\n\r]*)',
+        re.I | re.MULTILINE
+    )
+    for m in measure_pat.finditer(norm_text):
         param = _clean(m.group(1))
-        val_str = m.group(2).strip()
-        unit = (m.group(3) or '').strip()
-        ref = (m.group(4) or '').strip(' ()[]') or None
-
-        if not param or len(param) < 2 or not val_str:
+        val_str = _clean(m.group(2))
+        if not param or not val_str or len(param) < 2:
             continue
 
-        if param.lower() in ('parameter', 'test', 'investigation', 'page', 'date'):
-            continue
-
-        try:
-            num = float(val_str.replace(',', ''))
-            if num > 200_000:
-                continue
-        except ValueError:
-            continue
+        unit_m = re.search(r'\b(mm|cm)\b', val_str, re.I)
+        unit = unit_m.group(1) if unit_m else ''
 
         key = param.lower()
-        if key not in seen:
+        if key not in seen and param.lower() not in ('slice thickness', 'technique', 'date', 'findings'):
             seen.add(key)
             results.append({
                 'parameter': param,
                 'value': val_str,
                 'unit': unit,
-                'reference_range': ref,
+                'reference_range': None,
             })
 
-    return results[:35]
+    return results[:40]
 
 
 # ──────────────────────────────────────────────────────────────────
