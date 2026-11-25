@@ -29,7 +29,8 @@
 
   // ─── DOM References ──────────────────────────────────────────────
   const dom = {
-    // Backend status
+    // Theme & Backend status
+    themeToggleBtn: document.getElementById('themeToggleBtn'),
     statusBtn:      document.getElementById('statusBtn'),
     statusDot:      document.getElementById('statusDot'),
     statusText:     document.getElementById('statusText'),
@@ -998,7 +999,23 @@
   }
 
   // ─── Event Listeners Setup ───────────────────────────────────────
+  function toggleTheme() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const next = isDark ? 'light' : 'dark';
+    if (next === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+    localStorage.setItem('sasthoshohoj-theme', next);
+  }
+
   function initEvents() {
+    // Theme toggle
+    if (dom.themeToggleBtn) {
+      dom.themeToggleBtn.addEventListener('click', toggleTheme);
+    }
+
     // Backend guide toggle
     dom.statusBtn.addEventListener('click', (e) => {
       e.stopPropagation();
