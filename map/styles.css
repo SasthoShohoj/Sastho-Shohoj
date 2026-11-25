@@ -1033,3 +1033,211 @@ body.is-embedded .map-viewport {
   }
 }
 
+
+
+/* ==========================================================================
+   Dark Mode Overrides (Map Explorer UI)
+   ========================================================================== */
+[data-theme="dark"] html,
+[data-theme="dark"] body {
+  background-color: var(--eh-bg);
+  color: var(--eh-ink);
+}
+
+[data-theme="dark"] .floating-search-bar {
+  background: var(--eh-surface);
+  border-color: var(--eh-border);
+  box-shadow: var(--eh-shadow-md);
+}
+
+[data-theme="dark"] .floating-search-bar:focus-within {
+  border-color: var(--eh-teal-mid);
+}
+
+[data-theme="dark"] #facility-search-input {
+  color: var(--eh-ink);
+}
+
+[data-theme="dark"] #facility-search-input::placeholder {
+  color: var(--eh-subtle);
+}
+
+[data-theme="dark"] .search-icon {
+  color: var(--eh-muted);
+}
+
+[data-theme="dark"] .header-locate-btn {
+  background: var(--eh-surface-subtle);
+  color: var(--eh-teal);
+}
+
+[data-theme="dark"] .header-locate-btn:hover {
+  background: var(--eh-teal-bg);
+  color: var(--eh-teal-mid);
+}
+
+[data-theme="dark"] .filter-chip {
+  background: var(--eh-surface);
+  border-color: var(--eh-border);
+}
+
+[data-theme="dark"] .chip-hospitals { color: var(--eh-blue); }
+[data-theme="dark"] .chip-hospitals.active {
+  background: var(--eh-blue-bg);
+  color: var(--eh-blue);
+  border-color: var(--eh-blue-border);
+}
+
+[data-theme="dark"] .chip-pharmacies { color: var(--eh-green); }
+[data-theme="dark"] .chip-pharmacies.active {
+  background: var(--eh-green-bg);
+  color: var(--eh-green);
+  border-color: var(--eh-green-border);
+}
+
+[data-theme="dark"] .chip-diagnostics { color: var(--eh-purple); }
+[data-theme="dark"] .chip-diagnostics.active {
+  background: var(--eh-purple-bg);
+  color: var(--eh-purple);
+  border-color: var(--eh-purple-border);
+}
+
+[data-theme="dark"] .chip-blood { color: var(--eh-crimson); }
+[data-theme="dark"] .chip-blood.active {
+  background: var(--eh-crimson-bg);
+  color: var(--eh-crimson);
+  border-color: var(--eh-crimson-border);
+}
+
+[data-theme="dark"] .vertical-icon-dock {
+  background: var(--eh-surface);
+  border-color: var(--eh-border);
+  box-shadow: var(--eh-shadow-md);
+}
+
+[data-theme="dark"] .dock-btn {
+  color: var(--eh-muted);
+}
+
+[data-theme="dark"] .dock-btn:hover {
+  background: var(--eh-surface-subtle);
+  color: var(--eh-ink);
+}
+
+[data-theme="dark"] .dock-btn.active {
+  background: var(--eh-teal-bg);
+  color: var(--eh-teal);
+}
+
+[data-theme="dark"] .facility-card {
+  background: var(--eh-surface);
+  border-color: var(--eh-border);
+  box-shadow: var(--eh-shadow-md);
+}
+
+[data-theme="dark"] .facility-card:hover {
+  border-color: var(--eh-glass-border);
+}
+
+[data-theme="dark"] .facility-card.active-card {
+  border-color: var(--eh-teal-mid);
+}
+
+[data-theme="dark"] .card-title { color: var(--eh-ink); }
+[data-theme="dark"] .card-divider { background: var(--eh-border-light); }
+[data-theme="dark"] .meta-row { color: var(--eh-ink-secondary); }
+[data-theme="dark"] .meta-icon { color: var(--eh-muted); }
+
+[data-theme="dark"] .badge-green {
+  background: var(--eh-green-bg);
+  color: var(--eh-green);
+}
+
+[data-theme="dark"] .badge-rose {
+  background: var(--eh-crimson-bg);
+  color: var(--eh-crimson);
+}
+
+[data-theme="dark"] .btn-directions {
+  background: linear-gradient(135deg, var(--eh-teal-mid), var(--eh-teal-hover));
+}
+
+[data-theme="dark"] .maplibregl-ctrl-group {
+  background: var(--eh-surface) !important;
+  border-color: var(--eh-border) !important;
+}
+
+[data-theme="dark"] .maplibregl-ctrl-group button {
+  background: var(--eh-surface) !important;
+  color: var(--eh-ink) !important;
+  filter: invert(0.88) hue-rotate(180deg);
+}
+
+[data-theme="dark"] .maplibregl-popup-content {
+  background: var(--eh-surface) !important;
+  border-color: var(--eh-border) !important;
+  color: var(--eh-ink) !important;
+}
+
+[data-theme="dark"] .popup-title { color: var(--eh-ink); }
+[data-theme="dark"] .popup-sub { color: var(--eh-muted); }
+[data-theme="dark"] .popup-status { color: var(--eh-green); }
+
+[data-theme="dark"] .settings-modal-card,
+[data-theme="dark"] .helplines-modal-card,
+[data-theme="dark"] .location-modal-card {
+  background: var(--eh-surface);
+  border: 1px solid var(--eh-border);
+  color: var(--eh-ink);
+}
+
+[data-theme="dark"] .settings-field label,
+[data-theme="dark"] .helpline-group-label,
+[data-theme="dark"] .helplines-header-title p,
+[data-theme="dark"] .location-modal-desc {
+  color: var(--eh-muted);
+}
+
+[data-theme="dark"] .settings-select,
+[data-theme="dark"] #settings-api-key-input {
+  background: var(--eh-surface-subtle);
+  border-color: var(--eh-border-strong);
+  color: var(--eh-ink);
+}
+
+[data-theme="dark"] .helplines-modal-header {
+  background: var(--eh-surface-subtle);
+  border-bottom-color: var(--eh-border);
+}
+
+[data-theme="dark"] .helplines-header-title h3,
+[data-theme="dark"] .location-modal-title,
+[data-theme="dark"] .entry-info strong {
+  color: var(--eh-ink);
+}
+
+[data-theme="dark"] .helpline-entry {
+  background: var(--eh-surface-subtle);
+  border-color: var(--eh-border);
+}
+
+[data-theme="dark"] .helpline-entry:hover {
+  background: var(--eh-surface-hover);
+  border-color: var(--eh-teal-mid);
+}
+
+[data-theme="dark"] .entry-info span { color: var(--eh-muted); }
+
+[data-theme="dark"] .location-icon-bubble {
+  background: var(--eh-teal-bg);
+}
+
+[data-theme="dark"] .btn-location-secondary {
+  background: var(--eh-surface-subtle);
+  border-color: var(--eh-border);
+  color: var(--eh-ink);
+}
+
+[data-theme="dark"] .btn-location-secondary:hover {
+  background: var(--eh-surface-hover);
+}
