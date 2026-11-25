@@ -1,93 +1,130 @@
+/* ==========================================================================
+   EasyHealth — Patient Portal Module Tabs  (Premium UI Upgrade)
+   Segmented pill switcher with animated active state
+   ========================================================================== */
+
+/* ── Top-level Module Tabs (Personal profile / Medical records / …) ───────── */
 .module-tabs {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
-  padding: 6px;
+  padding: 5px;
   margin: 0 0 28px;
-  background: #eaf7f5;
-  border: 1px solid #dce9e9;
-  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(20, 184, 166, 0.22);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(13, 148, 136, 0.06);
 }
 
 .module-tab {
-  flex: 1 1 170px;
+  flex: 1 1 150px;
   border: 0;
-  border-radius: 9px;
-  padding: 12px 16px;
+  border-radius: 11px;
+  padding: 11px 18px;
+  font-size: 13.5px;
+  font-weight: 700;
   color: #6d8188;
   background: transparent;
-  font-weight: 800;
+  transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+  white-space: nowrap;
+  letter-spacing: 0.05px;
 }
 
-.module-tab.active,
-.module-tab:hover {
+.module-tab:hover:not(.active) {
+  color: #0f766e;
+  background: rgba(13, 148, 136, 0.08);
+  transform: translateY(-1px);
+}
+
+.module-tab.active {
   color: #fff;
-  background: #087f81;
+  background: linear-gradient(135deg, #14b8a6, #0f766e);
+  box-shadow: 0 4px 14px rgba(13, 148, 136, 0.28);
+  transform: translateY(0);
 }
 
+/* ── Module View Panels ──────────────────────────────────────────────────── */
 .module-view {
   display: none;
 }
-
 .module-view.active {
   display: block;
+  animation: tabFadeSlide 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes tabFadeSlide {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.booking-section {
-  padding: 27px;
-}
+/* ── Booking Section ─────────────────────────────────────────────────────── */
+.booking-section { padding: 27px; }
 
-.booking-grid {
-  display: grid;
-  gap: 14px;
-}
+.booking-grid { display: grid; gap: 14px; }
 
 .booking-card {
   display: flex;
   align-items: center;
   gap: 15px;
   padding: 18px;
-  border: 1px solid #dce9e9;
+  border: 1px solid rgba(226, 232, 240, 0.9);
   border-radius: 14px;
   background: #fff;
+  transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
 }
-
-.booking-card h3 {
-  margin: 0;
+.booking-card:hover {
+  border-color: rgba(20, 184, 166, 0.3);
+  box-shadow: 0 8px 22px rgba(13, 148, 136, 0.1);
+  transform: translateY(-2px);
 }
-
-.booking-card .button {
-  margin-left: auto;
-}
+.booking-card h3 { margin: 0; color: #163542; }
+.booking-card .button { margin-left: auto; }
 
 .booking-icon {
   display: grid;
   place-items: center;
   flex: none;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border-radius: 11px;
-  color: #087f81;
-  background: #eaf7f5;
-  font-size: 20px;
+  color: #0d9488;
+  background: #f0fdfa;
+  font-size: 21px;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+.booking-card:hover .booking-icon { transform: scale(1.1) rotate(-4deg); }
 
-.booking-new-button {
-  margin-top: 18px;
+.booking-new-button { margin-top: 18px; }
+
+/* ── Dark Mode ───────────────────────────────────────────────────────────── */
+[data-theme="dark"] .module-tabs {
+  background: rgba(15, 34, 37, 0.85);
+  border-color: rgba(45, 212, 191, 0.2);
 }
+[data-theme="dark"] .module-tab { color: #a5c7c3; }
+[data-theme="dark"] .module-tab:hover:not(.active) {
+  color: #2dd4bf;
+  background: rgba(45, 212, 191, 0.1);
+}
+[data-theme="dark"] .module-tab.active {
+  background: #2dd4bf;
+  color: #042220;
+  box-shadow: 0 4px 14px rgba(45, 212, 191, 0.28);
+}
+[data-theme="dark"] .booking-card {
+  background: #0f2225;
+  border-color: rgba(30, 63, 69, 0.9);
+}
+[data-theme="dark"] .booking-card:hover { border-color: rgba(45, 212, 191, 0.3); }
+[data-theme="dark"] .booking-card h3 { color: #f0faf9; }
+[data-theme="dark"] .booking-icon { background: rgba(45, 212, 191, 0.12); color: #2dd4bf; }
 
-@media (max-width: 560px) {
-  .booking-section {
-    padding: 19px;
-  }
-
-  .booking-card {
-    align-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .booking-card .button {
-    width: 100%;
-    margin-left: 55px;
-  }
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .module-tabs { gap: 4px; padding: 4px; }
+  .module-tab { flex: 1 1 120px; padding: 10px 12px; font-size: 12.5px; }
+  .booking-section { padding: 19px; }
+  .booking-card { align-items: flex-start; flex-wrap: wrap; }
+  .booking-card .button { width: 100%; margin-left: 55px; }
 }
