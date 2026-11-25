@@ -25,6 +25,7 @@ from PIL import Image
 from ocr_processor     import process_file, extract_digital_pdf_text
 from medical_validator import validate_medical_document, validate_visual_image
 from data_extractor    import extract_medical_data
+from storage           import add_record, list_records, delete_record, UPLOAD_DIR
 
 logging.basicConfig(
     level=logging.INFO,
@@ -56,6 +57,80 @@ def serve_index():
 @app.get('/api/health')
 def health():
     return jsonify({'status': 'ok', 'service': 'SasthoShohoj OCR API'})
+
+
+# ── Stored Records & File Serving ─────────────────────────────────
+
+@app.get('/api/records')
+def get_records():
+    category = request.args.get('category')
+    return jsonify({'records': list_records(category)}), 200
+
+
+@app.delete('/api/records/<record_id>')
+def remove_record(record_id: str):
+    if delete_record(record_id):
+        return jsonify({'deleted': True}), 200
+    return jsonify({'error': 'Record not found.'}), 404
+
+
+@app.get('/api/files/<path:filename>')
+def serve_uploaded_file(filename: str):
+    return send_from_directory(UPLOAD_DIR, filename, as_attachment=False)
+
+
+# ── Prescription Upload Endpoint (No OCR required) ────────────────
+
+@app.post('/api/prescriptions')
+def upload_prescription():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file uploaded.'}), 400
+
+    f = request.files['file']
+    if not f.filename:
+        return jsonify({'error': 'Empty filename.'}), 400
+
+    if not allowed_file(f.filename):
+        return jsonify({
+            'error': 'Unsupported file type. Upload a PDF or image (JPG, PNG, TIFF, BMP, WebP).'
+        }), 415
+
+    file_bytes = f.read()
+    file_size = len(file_bytes)
+    if file_size > MAX_FILE_MB * 1024 * 1024:
+        return jsonify({'error': f'File too large. Maximum size is {MAX_FILE_MB} MB.'}), 413
+
+    ext = Path(f.filename).suffix.lower()
+    file_type = 'PDF' if ext == '.pdf' else ext.replace('.', '').upper()
+    file_size_kb = round(file_size / 1024, 1)
+
+    title = (request.form.get('title') or '').strip() or Path(f.filename).stem
+    doctor = (request.form.get('doctor') or '').strip() or None
+    facility = (request.form.get('facility') or '').strip() or None
+    date = (request.form.get('date') or '').strip() or None
+    patient_name = (request.form.get('patient_name') or '').strip() or None
+    notes = (request.form.get('notes') or '').strip() or None
+
+    payload = {
+        'title': title,
+        'document_type': 'Prescription',
+        'doctor': doctor,
+        'facility': facility,
+        'date': date,
+        'patient_name': patient_name,
+        'notes': notes,
+        'metadata': {
+            'filename': f.filename,
+            'file_type': file_type,
+            'file_size_kb': file_size_kb,
+            'page_count': 1,
+            'ocr_confidence': 'Skipped (Prescription)',
+        },
+    }
+
+    record = add_record('prescription', file_bytes, f.filename, payload)
+    logger.info(f"Prescription saved: {f.filename!r} (id={record['id']})")
+    return jsonify({'success': True, 'record': record}), 201
 
 
 # ── Process Document Endpoint ─────────────────────────────────────
@@ -122,9 +197,9 @@ def process():
                     'raw_text':        digital_text[:1500],
                 }), 200
 
-            # It IS a digital medical document! Extract directly:
+            # It IS a digital medical document! Extract directly and save:
             extracted = extract_medical_data(digital_text, validation['document_type'])
-            return jsonify({
+            response_payload = {
                 'is_medical':            True,
                 'rejection_reason':      None,
                 'validation_confidence': validation.get('confidence'),
@@ -147,7 +222,10 @@ def process():
                 'disease_summary': extracted.get('disease_summary'),
                 'test_results':    extracted.get('test_results', []),
                 'raw_text':        digital_text,
-            }), 200
+            }
+            saved_rec = add_record('test_report', file_bytes, f.filename, response_payload)
+            response_payload['saved_record'] = saved_rec
+            return jsonify(response_payload), 200
 
     # ── 3. Pre-OCR Visual Check for Images (Anime/Photos in <5ms) ──
     if not is_pdf:
@@ -208,8 +286,8 @@ def process():
     if is_medical:
         extracted = extract_medical_data(raw_text, validation['document_type'])
 
-    # ── 7. Return Result ──────────────────────────────────────────
-    return jsonify({
+    # ── 7. Save if Medical & Return Result ────────────────────────
+    response_payload = {
         'is_medical':            is_medical,
         'rejection_reason':      validation.get('rejection_reason'),
         'validation_confidence': validation.get('confidence'),
@@ -235,7 +313,13 @@ def process():
         'test_results':    extracted.get('test_results', []) if is_medical else [],
 
         'raw_text': raw_text,
-    }), 200
+    }
+
+    if is_medical:
+        saved_rec = add_record('test_report', file_bytes, f.filename, response_payload)
+        response_payload['saved_record'] = saved_rec
+
+    return jsonify(response_payload), 200
 
 
 if __name__ == '__main__':

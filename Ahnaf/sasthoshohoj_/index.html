@@ -46,7 +46,7 @@
             </svg>
             <div>
               <h4>Backend not running</h4>
-              <p>Follow these steps to start the OCR server</p>
+              <p>Follow these steps to start the server</p>
             </div>
           </div>
           <div class="offline-guide-body">
@@ -70,7 +70,7 @@
               <li class="offline-step">
                 <span class="step-num">3</span>
                 <div class="step-content">
-                  <div class="step-label">Start the Flask OCR server</div>
+                  <div class="step-label">Start the Flask server</div>
                   <div class="step-cmd"><span>python app.py</span></div>
                   <div class="step-note">Server runs on http://localhost:5001 — keep terminal open.</div>
                 </div>
@@ -113,9 +113,71 @@
       <section id="tabUpload" class="tab-content active">
         <h2 class="section-title">Document Upload</h2>
         <p class="section-desc">
-          Upload a scanned or printed PDF or image (MRI, CT, Ultrasonography, Blood Test, Prescription).
-          The backend validates whether it's a genuine medical document and extracts structured data.
+          Choose what you are uploading. Prescriptions are saved directly without OCR; medical test reports run through EasyOCR &amp; validation.
         </p>
+
+        <!-- Upload Type Selector (2 Options) -->
+        <div class="upload-mode-grid">
+          <button type="button" class="upload-mode-card active" data-mode="test_report" id="modeTestReport">
+            <div class="mode-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+            </div>
+            <div class="mode-info">
+              <div class="mode-title">Medical Test Report Upload</div>
+              <div class="mode-sub">MRI, CT, USG, CBC &amp; Lab Reports · Runs EasyOCR &amp; extracts data</div>
+            </div>
+            <span class="mode-badge ocr">EasyOCR</span>
+          </button>
+
+          <button type="button" class="upload-mode-card" data-mode="prescription" id="modePrescription">
+            <div class="mode-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="9" y1="15" x2="15" y2="15"/>
+                <line x1="12" y1="12" x2="12" y2="18"/>
+              </svg>
+            </div>
+            <div class="mode-info">
+              <div class="mode-title">Prescription Upload</div>
+              <div class="mode-sub">Doctor prescriptions · Instant save, no OCR required</div>
+            </div>
+            <span class="mode-badge fast">No OCR</span>
+          </button>
+        </div>
+
+        <!-- Optional Metadata Form (Shown only for Prescription Upload) -->
+        <div id="prescriptionForm" class="rx-form-card hidden">
+          <div class="rx-form-header">Prescription Details <span>(Optional — fill what you'd like to search by later)</span></div>
+          <div class="rx-form-grid">
+            <div class="form-field">
+              <label for="rxTitle">Title / Reason</label>
+              <input id="rxTitle" type="text" placeholder="e.g. Fever & Cough Consultation" />
+            </div>
+            <div class="form-field">
+              <label for="rxDate">Date</label>
+              <input id="rxDate" type="date" />
+            </div>
+            <div class="form-field">
+              <label for="rxDoctor">Doctor Name</label>
+              <input id="rxDoctor" type="text" placeholder="e.g. Dr. Farhan Islam" />
+            </div>
+            <div class="form-field">
+              <label for="rxFacility">Hospital / Clinic</label>
+              <input id="rxFacility" type="text" placeholder="e.g. Square Hospitals Ltd." />
+            </div>
+            <div class="form-field">
+              <label for="rxPatient">Patient Name</label>
+              <input id="rxPatient" type="text" placeholder="e.g. Ahnaf Rahman" />
+            </div>
+            <div class="form-field">
+              <label for="rxNotes">Notes</label>
+              <input id="rxNotes" type="text" placeholder="e.g. Follow-up in 7 days" />
+            </div>
+          </div>
+        </div>
 
         <!-- Drop Zone -->
         <div id="dropZone" class="upload-card">
@@ -126,8 +188,8 @@
               <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
             </svg>
           </div>
-          <p class="upload-label">Drop your medical document here</p>
-          <p class="upload-hint"><span>Click to browse files</span> &nbsp;· Scanned or digital PDFs & images accepted</p>
+          <p id="dropLabel" class="upload-label">Drop your medical test report here</p>
+          <p class="upload-hint"><span>Click to browse files</span> &nbsp;· Scanned or digital PDFs &amp; images accepted</p>
           <div class="upload-formats">
             <span class="fmt-badge">PDF</span>
             <span class="fmt-badge">JPG</span>
@@ -169,9 +231,12 @@
               <polyline points="20 17 20 20 17 20"/><polyline points="7 20 4 20 4 17"/>
               <line x1="4" y1="12" x2="20" y2="12"/>
             </svg>
-            Analyse Document
+            Analyse &amp; Save Report
           </button>
           <span id="processPill" class="status-pill" style="display:none;"></span>
+          <button id="goToReportsBtn" class="btn-outline hidden" type="button">
+            View in Medical Reports →
+          </button>
         </div>
 
         <!-- Processing Banner -->
@@ -204,7 +269,7 @@
               </svg>
             </div>
             <div>
-              <h3>Analysis Complete</h3>
+              <h3>Analysis Complete &amp; Saved</h3>
               <p id="resultFilename">—</p>
             </div>
             <div id="resultConf" class="confidence-badge">OCR 95%</div>
@@ -317,28 +382,114 @@
 
       <!-- ═════════ Tab 2: Medical Reports ═════════ -->
       <section id="tabReports" class="tab-content">
-        <h2 class="section-title">Medical Reports</h2>
-        <p class="section-desc">View and manage your saved and processed medical documents.</p>
-
-        <div class="reports-placeholder">
-          <div class="reports-placeholder-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-            </svg>
+        <div class="reports-top-row">
+          <div>
+            <h2 class="section-title">Medical Reports</h2>
+            <p class="section-desc" style="margin-bottom:0;">
+              Browse, search, and filter your prescriptions and test reports grouped by month and date range.
+            </p>
           </div>
-          <h3>No reports saved yet</h3>
-          <p>Processed documents will be archived here once report storage is connected.</p>
-          <button class="btn-primary" type="button" style="margin: 0 auto;">
+        </div>
+
+        <!-- Sub-tabs: Test Reports vs Prescriptions -->
+        <div class="subtab-bar">
+          <button type="button" class="subtab-btn active" data-subtab="test_report" id="subtabTestReports">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
-              <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
             </svg>
-            Access Medical Reports
+            Test Reports
+            <span id="countTestReports" class="subtab-count">0</span>
+          </button>
+          <button type="button" class="subtab-btn" data-subtab="prescription" id="subtabPrescriptions">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="9" y1="15" x2="15" y2="15"/>
+              <line x1="12" y1="12" x2="12" y2="18"/>
+            </svg>
+            Prescriptions
+            <span id="countPrescriptions" class="subtab-count">0</span>
           </button>
         </div>
+
+        <!-- Search & Filter Bar -->
+        <div class="filter-bar">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input id="filterSearch" type="text" placeholder="Search test name, doctor, hospital, patient…" />
+          </div>
+
+          <div class="filter-controls">
+            <select id="filterHospital" class="filter-select" title="Filter by Hospital / Clinic">
+              <option value="">All Hospitals / Clinics</option>
+            </select>
+
+            <select id="filterDoctor" class="filter-select" title="Filter by Doctor">
+              <option value="">All Doctors</option>
+            </select>
+
+            <select id="filterMonth" class="filter-select" title="Filter by Month">
+              <option value="">All Months</option>
+            </select>
+
+            <div class="date-range-inputs">
+              <input id="filterDateFrom" type="date" class="filter-date" title="From Date" />
+              <span class="date-sep">to</span>
+              <input id="filterDateTo" type="date" class="filter-date" title="To Date" />
+            </div>
+
+            <select id="filterSort" class="filter-select" title="Sort Order">
+              <option value="desc">Newest First</option>
+              <option value="asc">Oldest First</option>
+            </select>
+
+            <button id="clearFiltersBtn" type="button" class="btn-clear-filters">Reset</button>
+          </div>
+        </div>
+
+        <!-- Reports List Container (Grouped by Month -> Sub-grouped by Date Range) -->
+        <div id="reportsContainer" class="reports-container"></div>
       </section>
 
     </main>
+  </div>
+
+  <!-- ═════════ Big Split-View Details Dialog Modal ═════════ -->
+  <div id="detailModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-header-info">
+          <span id="modalBadge" class="modal-badge">Test Report</span>
+          <h3 id="modalTitle">Document Details</h3>
+          <span id="modalDate" class="modal-date">—</span>
+        </div>
+        <button id="modalCloseBtn" class="modal-close-btn" type="button" title="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-split-body">
+        <!-- Left Pane: Original Uploaded Document Viewer -->
+        <div class="modal-left-pane">
+          <div class="pane-toolbar">
+            <span class="pane-label">Original Uploaded Document</span>
+            <a id="modalOpenNewTab" href="#" target="_blank" rel="noopener" class="pane-link">
+              Open in new tab ↗
+            </a>
+          </div>
+          <div id="modalDocViewer" class="doc-viewer-box"></div>
+        </div>
+
+        <!-- Right Pane: Extracted / Entered Details -->
+        <div class="modal-right-pane">
+          <div id="modalDetailsContent" class="modal-details-scroll"></div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="js/app.js"></script>
