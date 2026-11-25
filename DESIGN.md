@@ -13,31 +13,7 @@
 
 ## 2. Project Architecture & Directory Structure
 
-```text
-sasthoshohoj_/
-├── index.html                   # Single-page semantic HTML5 shell, inline SVGs, theme bootstrapper
-├── css/
-│   └── style.css                # Design tokens, glassmorphism, animations, light & dark themes
-├── js/
-│   └── app.js                   # State management, health polling, upload flows, filtering & modal
-├── backend/
-│   ├── app.py                   # Flask REST API + static frontend host (port 5001)
-│   ├── ocr_processor.py         # PyMuPDF digital PDF fast-path + image preprocessing + EasyOCR
-│   ├── medical_validator.py     # Pre-OCR visual classifier + semantic medical/non-medical scorer
-│   ├── data_extractor.py        # OCR-resilient regex extractors for demographics, findings & labs
-│   ├── storage.py               # Local JSON metadata store + uploaded file persistence
-│   ├── requirements.txt         # Python dependencies (Flask, EasyOCR, PyMuPDF, Pillow, NumPy)
-│   ├── start_backend.bat        # Windows one-click server launcher
-│   ├── uploads/                 # Stored original PDFs and images (created at runtime)
-│   └── data/
-│       └── records.json         # Persisted metadata records (created at runtime)
-├── public/
-│   ├── favicon.svg
-│   └── icons.svg
-├── DESIGN.md                    # This document
-└── README.md                    # Quick-start guide
-```
-
+As the project is constantly evolving, so the architecture is not provided yet.
 ---
 
 ## 3. Visual Design System & UI Architecture
