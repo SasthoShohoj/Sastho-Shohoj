@@ -23,8 +23,10 @@
       brandTitle: "EasyHealth · স্বাস্থ্য-সহজ",
       brandSubtitle: "Clinical Healthcare Portal",
       navHome: "Home",
+      navProfile: "Personal Profile",
       navMap: "Clinical Map",
       navEmergency: "Emergency Support",
+      navMenu: "Menu",
       call999: "SOS 999",
 
       // Landing Hub
@@ -171,8 +173,10 @@
       brandTitle: "স্বাস্থ্য-সহজ · EasyHealth",
       brandSubtitle: "ক্লিনিক্যাল স্বাস্থ্যসেবা পোর্টাল",
       navHome: "হোম",
+      navProfile: "ব্যক্তিগত প্রোফাইল",
       navMap: "স্বাস্থ্যসেবা ম্যাপ",
       navEmergency: "জরুরি সেবা",
+      navMenu: "মেনু",
       call999: "জরুরি ৯৯৯",
 
       // Landing Hub
