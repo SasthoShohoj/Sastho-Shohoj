@@ -12,13 +12,20 @@
   <link rel="stylesheet" href="emergency.css">
 
   <script>
+    (function() {
+      var saved = localStorage.getItem('eh-theme');
+      var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
     if (window.self !== window.top || window.location.search.includes('embed=')) {
       document.documentElement.classList.add('is-embedded');
     }
   </script>
   <style>
     .app-header { display: none !important; }
-    body { background: var(--eh-bg); }
+    body { background: var(--eh-page-bg); background-attachment: fixed; }
     html.is-embedded .site-header, body.is-embedded .site-header,
     html.is-embedded .app-header, body.is-embedded .app-header,
     html.is-embedded .welcome-panel, body.is-embedded .welcome-panel,
@@ -73,6 +80,15 @@
       background: #fde68a !important;
       color: #92400e !important;
     }
+    [data-theme="dark"] .safety-note {
+      border-color: rgba(245, 158, 11, 0.3) !important;
+      background: rgba(245, 158, 11, 0.12) !important;
+      color: #fcd34d !important;
+    }
+    [data-theme="dark"] .safety-note strong {
+      background: rgba(245, 158, 11, 0.25) !important;
+      color: #fde68a !important;
+    }
   </style>
 </head>
 <body>
@@ -94,6 +110,11 @@
     </nav>
 
     <div class="header-actions">
+      <!-- Dark Mode Toggle -->
+      <button type="button" class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Dark Mode" aria-label="Toggle dark mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
       <!-- Universal Language Switcher Pill -->
       <div class="lang-toggle" role="group" aria-label="Select language">
         <button type="button" class="lang-opt" id="btnLangEn" data-lang="en">EN</button>
@@ -197,6 +218,7 @@
 
     <footer class="app-footer"><span>© 2026 EasyHealth · Sastho-Shohoj</span><span data-i18n="footerText">জরুরি সহায়তা · সমন্বিত ফ্রন্টএন্ড</span><a href="tel:999">999 · Emergency</a></footer>
   </main>
+  <script src="../js/theme.js"></script>
   <script src="../js/i18n.js"></script>
   <script src="emergency.js"></script>
 </body>

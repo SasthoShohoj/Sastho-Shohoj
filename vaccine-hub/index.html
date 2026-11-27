@@ -1,0 +1,301 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Vaccine information and personal vaccination records.">
+  <title>Vaccine Hub | Shastho Shohoj</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="vaccine.css">
+  <script>
+    (function() {
+      var saved = localStorage.getItem('eh-theme');
+      var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+  <script src="vaccine.js" defer></script>
+</head>
+<body>
+  <header class="vh-header">
+    <a class="vh-brand" href="../index.html">
+      <span class="vh-logo">+</span>
+      <span>Shastho Shohoj<small>Vaccine Hub</small></span>
+    </a>
+
+    <nav class="vh-nav" aria-label="Main navigation">
+      <button class="vh-nav-btn active" data-page="dashboard">Overview</button>
+      <button class="vh-nav-btn" data-page="information">Vaccine Information</button>
+      <button class="vh-nav-btn" data-page="schedule">My Schedule</button>
+      <button class="vh-nav-btn" data-page="centers">Centers</button>
+      <button class="vh-nav-btn" data-page="records">My Records</button>
+    </nav>
+
+    <div class="vh-header-actions">
+      <button type="button" class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Dark Mode" aria-label="Toggle dark mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <div class="vh-language">
+        <button id="language-en" class="active">EN</button>
+        <button id="language-bn">বাংলা</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="vh-container">
+    <!-- OVERVIEW -->
+    <section class="vh-page active" id="dashboard">
+      <div class="vh-hero">
+        <div>
+          <span class="vh-eyebrow" data-en="YOUR VACCINATION COMPANION" data-bn="আপনার টিকাদান সহায়ক">YOUR VACCINATION COMPANION</span>
+          <h1 data-en="Stay protected. Stay informed." data-bn="সুরক্ষিত থাকুন। সচেতন থাকুন।">Stay protected. Stay informed.</h1>
+          <p data-en="Explore vaccine information and keep your vaccination records organized in one place."
+             data-bn="টিকার তথ্য জানুন এবং আপনার টিকাদানের রেকর্ড এক জায়গায় গুছিয়ে রাখুন।">
+            Explore vaccine information and keep your vaccination records organized in one place.
+          </p>
+          <button class="vh-btn" data-go="information">Explore Vaccines</button>
+        </div>
+        <div class="vh-hero-art" aria-hidden="true">💉</div>
+      </div>
+
+      <div class="vh-section-heading">
+        <div>
+          <h2 data-en="Explore Vaccine Hub" data-bn="ভ্যাকসিন হাব ঘুরে দেখুন">Explore Vaccine Hub</h2>
+          <p data-en="Everything you need to organize your vaccination information."
+             data-bn="আপনার টিকার তথ্য গুছিয়ে রাখার প্রয়োজনীয় বিষয়গুলো।">
+            Everything you need to organize your vaccination information.
+          </p>
+        </div>
+      </div>
+
+      <div class="vh-grid">
+        <button class="vh-card vh-card-button" data-go="information">
+          <span class="vh-card-icon">📘</span>
+          <h3 data-en="Vaccine Information" data-bn="টিকার তথ্য">Vaccine Information</h3>
+          <p data-en="Learn about common vaccines and their purpose."
+             data-bn="সাধারণ টিকা ও সেগুলোর উদ্দেশ্য সম্পর্কে জানুন।">
+            Learn about common vaccines and their purpose.
+          </p>
+          <span class="vh-card-link">Explore →</span>
+        </button>
+
+        <button class="vh-card vh-card-button" data-go="schedule">
+          <span class="vh-card-icon">🗓️</span>
+          <h3 data-en="My Vaccine Schedule" data-bn="আমার টিকার সময়সূচি">My Vaccine Schedule</h3>
+          <p data-en="Add and manage your personal vaccine entries."
+             data-bn="আপনার ব্যক্তিগত টিকার এন্ট্রি যোগ ও পরিচালনা করুন।">
+            Add and manage your personal vaccine entries.
+          </p>
+          <span class="vh-card-link">Manage schedule →</span>
+        </button>
+
+        <button class="vh-card vh-card-button" data-go="centers">
+          <span class="vh-card-icon">📍</span>
+          <h3 data-en="Vaccination Centers" data-bn="টিকাদান কেন্দ্র">Vaccination Centers</h3>
+          <p data-en="Find out where to confirm local vaccination services."
+             data-bn="স্থানীয় টিকাদান সেবা কোথায় পাওয়া যায় তা জানুন।">
+            Find out where to confirm local vaccination services.
+          </p>
+          <span class="vh-card-link">Find services →</span>
+        </button>
+
+        <button class="vh-card vh-card-button" data-go="records">
+          <span class="vh-card-icon">📄</span>
+          <h3 data-en="My Vaccine Records" data-bn="আমার টিকার রেকর্ড">My Vaccine Records</h3>
+          <p data-en="Review and print your completed entries."
+             data-bn="আপনার সম্পন্ন টিকার এন্ট্রি দেখুন ও প্রিন্ট করুন।">
+            Review and print your completed entries.
+          </p>
+          <span class="vh-card-link">View records →</span>
+        </button>
+      </div>
+
+      <div class="vh-notice">
+        <strong data-en="Health reminder" data-bn="স্বাস্থ্য পরামর্শ">Health reminder</strong>
+        <p data-en="Always confirm vaccine eligibility and timing with an authorized healthcare professional or official health source."
+           data-bn="টিকার যোগ্যতা ও সময়সূচি অনুমোদিত স্বাস্থ্যকর্মী বা সরকারি স্বাস্থ্যসূত্র থেকে নিশ্চিত করুন।">
+          Always confirm vaccine eligibility and timing with an authorized healthcare professional or official health source.
+        </p>
+      </div>
+    </section>
+
+    <!-- VACCINE INFORMATION -->
+    <section class="vh-page" id="information">
+      <div class="vh-page-heading">
+        <span class="vh-eyebrow">LEARN AND EXPLORE</span>
+        <h1 data-en="Vaccine Information" data-bn="টিকার তথ্য">Vaccine Information</h1>
+        <p data-en="Explore general information about different vaccines."
+           data-bn="বিভিন্ন টিকা সম্পর্কে সাধারণ তথ্য জানুন।">
+          Explore general information about different vaccines.
+        </p>
+      </div>
+
+      <div class="vh-split">
+        <div class="vh-panel">
+          <input id="vaccine-search" type="search" placeholder="Search vaccines..." aria-label="Search vaccines">
+          <div id="vaccine-list" class="vh-vaccine-list"></div>
+        </div>
+        <article id="vaccine-detail" class="vh-panel vh-detail">
+          <div class="vh-empty-icon">💉</div>
+          <h2>Select a vaccine</h2>
+          <p>Choose a vaccine from the list to read its general description.</p>
+        </article>
+      </div>
+
+      <div class="vh-notice">
+        Vaccine descriptions are general educational information, not personal medical advice or a complete official vaccination schedule.
+      </div>
+    </section>
+
+    <!-- SCHEDULE -->
+    <section class="vh-page" id="schedule">
+      <div class="vh-page-heading">
+        <span class="vh-eyebrow">KEEP THINGS ORGANIZED</span>
+        <h1 data-en="My Vaccine Schedule" data-bn="আমার টিকার সময়সূচি">My Vaccine Schedule</h1>
+        <p data-en="Save dates and notes provided by your healthcare professional."
+           data-bn="স্বাস্থ্যকর্মীর দেওয়া তারিখ ও নোট সংরক্ষণ করুন।">
+          Save dates and notes provided by your healthcare professional.
+        </p>
+      </div>
+
+      <div class="vh-toolbar">
+        <div>
+          <h2>My Entries</h2>
+          <p>Manage your personal vaccination entries.</p>
+        </div>
+        <button class="vh-btn" id="add-entry-btn">+ Add Entry</button>
+      </div>
+
+      <div class="vh-panel">
+        <div class="vh-filters">
+          <button class="active" data-filter="all">All</button>
+          <button data-filter="upcoming">Upcoming</button>
+          <button data-filter="completed">Completed</button>
+        </div>
+
+        <div class="vh-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Vaccine</th>
+                <th>Dose / Note</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="schedule-body"></tbody>
+          </table>
+        </div>
+        <p class="vh-empty" id="schedule-empty">No entries yet. Add your first entry.</p>
+      </div>
+    </section>
+
+    <!-- CENTERS -->
+    <section class="vh-page" id="centers">
+      <div class="vh-page-heading">
+        <span class="vh-eyebrow">VACCINATION SERVICES</span>
+        <h1 data-en="Vaccination Centers" data-bn="টিকাদান কেন্দ্র">Vaccination Centers</h1>
+        <p data-en="Information about finding vaccination services."
+           data-bn="টিকাদান সেবা খুঁজে পাওয়ার তথ্য।">
+          Information about finding vaccination services.
+        </p>
+      </div>
+
+      <div class="vh-panel vh-center-panel">
+        <div class="vh-empty-icon">📍</div>
+        <h2>Find vaccination services</h2>
+        <p>
+          A verified center directory is not connected yet. Contact your local health office or an authorized healthcare provider to confirm available services, location and opening hours.
+        </p>
+        <a class="vh-btn vh-link-btn" href="https://www.dghs.gov.bd/" target="_blank" rel="noopener noreferrer">
+          Visit DGHS Website ↗
+        </a>
+      </div>
+    </section>
+
+    <!-- RECORDS -->
+    <section class="vh-page" id="records">
+      <div class="vh-page-heading">
+        <span class="vh-eyebrow">YOUR PERSONAL HISTORY</span>
+        <h1 data-en="My Vaccine Records" data-bn="আমার টিকার রেকর্ড">My Vaccine Records</h1>
+        <p data-en="Review your entries marked as completed."
+           data-bn="সম্পন্ন হিসেবে চিহ্নিত আপনার এন্ট্রিগুলো দেখুন।">
+          Review your entries marked as completed.
+        </p>
+      </div>
+
+      <div class="vh-toolbar">
+        <h2>Completed Entries</h2>
+        <button class="vh-btn vh-btn-outline" id="print-records">Print Records</button>
+      </div>
+
+      <div class="vh-panel">
+        <div class="vh-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Vaccine</th>
+                <th>Dose / Note</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="records-body"></tbody>
+          </table>
+        </div>
+        <p class="vh-empty" id="records-empty">No completed entries yet.</p>
+      </div>
+
+      <div class="vh-notice">
+        These are personal entries saved in this browser, not an official vaccination certificate.
+      </div>
+    </section>
+  </main>
+
+  <!-- ADD ENTRY DIALOG -->
+  <div class="vh-modal" id="entry-modal" aria-hidden="true">
+    <form class="vh-modal-box" id="entry-form">
+      <div class="vh-modal-heading">
+        <div>
+          <span class="vh-eyebrow">PERSONAL RECORD</span>
+          <h2>Add Vaccine Entry</h2>
+        </div>
+        <button type="button" class="vh-close" id="close-modal" aria-label="Close">×</button>
+      </div>
+
+      <label for="entry-vaccine">Vaccine</label>
+      <select id="entry-vaccine" required></select>
+
+      <label for="entry-note">Dose / Note</label>
+      <input id="entry-note" type="text" maxlength="80" placeholder="Example: Dose 1" required>
+
+      <label for="entry-date">Date</label>
+      <input id="entry-date" type="date" required>
+
+      <label for="entry-status">Status</label>
+      <select id="entry-status">
+        <option value="upcoming">Upcoming</option>
+        <option value="completed">Completed</option>
+      </select>
+
+      <div class="vh-modal-actions">
+        <button type="button" class="vh-btn vh-btn-outline" id="cancel-entry">Cancel</button>
+        <button type="submit" class="vh-btn">Save Entry</button>
+      </div>
+    </form>
+  </div>
+
+  <footer class="vh-footer">
+    <p>© Shastho Shohoj | Vaccine Hub</p>
+  </footer>
+  <script src="../js/theme.js"></script>
+</body>
+</html>

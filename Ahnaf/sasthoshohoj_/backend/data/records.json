@@ -1,0 +1,60 @@
+[
+  {
+    "id": "eb96c24f2e82",
+    "category": "prescription",
+    "stored_filename": "bbbe1394b1b0_Screenshot_2026-08-27_212521.png",
+    "file_url": "/api/files/bbbe1394b1b0_Screenshot_2026-08-27_212521.png",
+    "original_filename": "Screenshot 2026-08-27 212521.png",
+    "created_at": "2026-11-25T10:39:40",
+    "iso_date": "2026-11-11",
+    "display_date": "2026-11-11",
+    "title": "dsb",
+    "document_type": "Prescription",
+    "patient_name": "xf",
+    "patient_age": null,
+    "patient_sex": null,
+    "facility": "sq",
+    "doctor": "ds",
+    "findings": null,
+    "disease_summary": null,
+    "notes": "ds",
+    "test_results": [],
+    "metadata": {
+      "filename": "Screenshot 2026-08-27 212521.png",
+      "file_type": "PNG",
+      "file_size_kb": 486.7,
+      "page_count": 1,
+      "ocr_confidence": "Skipped (Prescription)"
+    },
+    "raw_text": ""
+  },
+  {
+    "id": "9747e0399636",
+    "category": "prescription",
+    "stored_filename": "8fd17d33095e_Screenshot_2026-08-27_210803.png",
+    "file_url": "/api/files/8fd17d33095e_Screenshot_2026-08-27_210803.png",
+    "original_filename": "Screenshot 2026-08-27 210803.png",
+    "created_at": "2026-11-25T10:57:05",
+    "iso_date": "2026-11-12",
+    "display_date": "2026-11-12",
+    "title": "xb",
+    "document_type": "Prescription",
+    "patient_name": "xb",
+    "patient_age": null,
+    "patient_sex": null,
+    "facility": "v",
+    "doctor": "cf",
+    "findings": null,
+    "disease_summary": null,
+    "notes": "nx",
+    "test_results": [],
+    "metadata": {
+      "filename": "Screenshot 2026-08-27 210803.png",
+      "file_type": "PNG",
+      "file_size_kb": 474.0,
+      "page_count": 1,
+      "ocr_confidence": "Skipped (Prescription)"
+    },
+    "raw_text": ""
+  }
+]

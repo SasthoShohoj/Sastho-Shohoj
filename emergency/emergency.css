@@ -47,3 +47,180 @@ body.is-embedded .workspace {
   margin-top: 14px !important;
 }
 
+
+
+/* ==========================================================================
+   EasyHealth — Dark Mode & UI Consistency Overrides
+   ========================================================================== */
+[data-theme="dark"] body {
+  background: var(--eh-page-bg);
+  background-attachment: fixed;
+  color: var(--eh-ink);
+}
+
+[data-theme="dark"] .welcome-panel,
+[data-theme="dark"] .workspace,
+[data-theme="dark"] .feature-card,
+[data-theme="dark"] .helpline-card,
+[data-theme="dark"] .subpanel {
+  background: var(--eh-surface);
+  border-color: var(--eh-border);
+  color: var(--eh-ink);
+  box-shadow: var(--eh-shadow-sm);
+}
+
+[data-theme="dark"] .feature-card:hover {
+  box-shadow: var(--eh-shadow-md);
+  border-color: var(--eh-glass-border);
+}
+
+[data-theme="dark"] .feature-number { color: var(--eh-subtle); }
+[data-theme="dark"] .feature-card small,
+[data-theme="dark"] .workspace-heading p,
+[data-theme="dark"] .helpline-card .bn-name,
+[data-theme="dark"] .helpline-card p,
+[data-theme="dark"] .map-intro p,
+[data-theme="dark"] .map-below,
+[data-theme="dark"] .selected-hospital-card p,
+[data-theme="dark"] .choice-item small,
+[data-theme="dark"] .ambulance-option small,
+[data-theme="dark"] .detail-card dt,
+[data-theme="dark"] .driver-empty,
+[data-theme="dark"] .driver-card p,
+[data-theme="dark"] .dispatch-footer p,
+[data-theme="dark"] .form-footer p,
+[data-theme="dark"] .upload-zone small,
+[data-theme="dark"] .photo-names,
+[data-theme="dark"] .field-label span,
+[data-theme="dark"] .footnote,
+[data-theme="dark"] .muted,
+[data-theme="dark"] .app-footer {
+  color: var(--eh-muted);
+}
+
+[data-theme="dark"] .feature-red { color: var(--eh-crimson); }
+[data-theme="dark"] .feature-red .feature-icon { background: var(--eh-crimson-bg); }
+[data-theme="dark"] .feature-blue { color: var(--eh-blue); }
+[data-theme="dark"] .feature-blue .feature-icon { background: var(--eh-blue-bg); }
+[data-theme="dark"] .feature-green { color: var(--eh-teal); }
+[data-theme="dark"] .feature-green .feature-icon { background: var(--eh-teal-bg); }
+[data-theme="dark"] .feature-purple { color: var(--eh-purple); }
+[data-theme="dark"] .feature-purple .feature-icon { background: var(--eh-purple-bg); }
+
+[data-theme="dark"] .workspace-heading {
+  border-bottom-color: var(--eh-border);
+}
+
+[data-theme="dark"] .back-button,
+[data-theme="dark"] .secondary-button {
+  background: var(--eh-surface-subtle);
+  border-color: var(--eh-border);
+  color: var(--eh-ink);
+}
+
+[data-theme="dark"] .back-button:hover,
+[data-theme="dark"] .secondary-button:hover {
+  background: var(--eh-surface-hover);
+  border-color: var(--eh-teal-mid);
+}
+
+[data-theme="dark"] .toolbar input,
+[data-theme="dark"] .field-label textarea {
+  background: var(--eh-surface-subtle);
+  border-color: var(--eh-border-strong);
+  color: var(--eh-ink);
+}
+
+[data-theme="dark"] .toolbar input::placeholder,
+[data-theme="dark"] .field-label textarea::placeholder {
+  color: var(--eh-subtle);
+}
+
+[data-theme="dark"] .call-link {
+  background: var(--eh-teal-bg);
+  color: var(--eh-teal);
+}
+
+[data-theme="dark"] .map-frame-wrap {
+  border-color: var(--eh-border);
+  background: var(--eh-surface-subtle);
+}
+
+[data-theme="dark"] .selected-hospital-card,
+[data-theme="dark"] .detail-card,
+[data-theme="dark"] .driver-empty {
+  background: var(--eh-surface-subtle);
+  border-color: var(--eh-border);
+}
+
+[data-theme="dark"] .empty-icon {
+  background: var(--eh-blue-bg);
+  color: var(--eh-blue);
+}
+
+[data-theme="dark"] .notice-inline {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.28);
+  color: #fcd34d;
+}
+
+[data-theme="dark"] .step-tag {
+  background: var(--eh-teal-bg);
+  color: var(--eh-teal);
+}
+
+[data-theme="dark"] .demo-tag {
+  background: rgba(245, 158, 11, 0.16);
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .choice-item,
+[data-theme="dark"] .ambulance-option {
+  background: var(--eh-surface-subtle);
+  border-color: var(--eh-border);
+  color: var(--eh-ink);
+}
+
+[data-theme="dark"] .choice-item.selected,
+[data-theme="dark"] .ambulance-option.selected {
+  border-color: var(--eh-teal-mid);
+  background: var(--eh-teal-bg);
+}
+
+[data-theme="dark"] .driver-avatar {
+  background: var(--eh-surface-hover);
+}
+
+[data-theme="dark"] .primary-button {
+  background: linear-gradient(135deg, var(--eh-teal-mid), var(--eh-teal-hover));
+}
+
+[data-theme="dark"] .form-message {
+  background: var(--eh-blue-bg);
+  color: var(--eh-blue);
+}
+
+[data-theme="dark"] .upload-zone {
+  background: var(--eh-surface-subtle);
+  border-color: var(--eh-border-strong);
+  color: var(--eh-ink);
+}
+
+[data-theme="dark"] .upload-zone:hover {
+  border-color: var(--eh-teal-mid);
+  background: var(--eh-surface-hover);
+}
+
+[data-theme="dark"] .upload-icon {
+  background: var(--eh-teal-bg);
+  color: var(--eh-teal);
+}
+
+[data-theme="dark"] .app-footer a {
+  color: var(--eh-crimson);
+}
+
+[data-theme="dark"] html.is-embedded,
+[data-theme="dark"] body.is-embedded {
+  background: var(--eh-bg) !important;
+}
