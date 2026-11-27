@@ -1,15 +1,18 @@
 
+@import url('../css/tokens.css');
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+
 :root {
-  --vh-primary: #087f73;
-  --vh-primary-dark: #06665e;
-  --vh-mint: #e1f5ef;
-  --vh-background: #f5faf8;
-  --vh-white: #ffffff;
-  --vh-text: #183b39;
-  --vh-muted: #718582;
-  --vh-border: #e3eeeb;
+  --vh-primary: var(--eh-teal);
+  --vh-primary-dark: var(--eh-teal-hover);
+  --vh-mint: var(--eh-teal-bg);
+  --vh-background: var(--eh-bg);
+  --vh-white: var(--eh-surface);
+  --vh-text: var(--eh-ink);
+  --vh-muted: var(--eh-muted);
+  --vh-border: var(--eh-border);
   --vh-warning: #fff5dc;
-  --vh-shadow: 0 5px 22px rgba(28, 75, 67, 0.07);
+  --vh-shadow: var(--eh-shadow-sm);
 }
 
 * {
@@ -18,9 +21,12 @@
 
 body {
   margin: 0;
-  background: var(--vh-background);
+  background: var(--eh-page-bg);
+  background-attachment: fixed;
   color: var(--vh-text);
-  font-family: Inter, "Noto Sans Bengali", Arial, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 button, input, select {
@@ -32,14 +38,63 @@ button {
 }
 
 .vh-header {
-  min-height: 82px;
-  padding: 14px 5%;
+  position: sticky;
+  top: 12px;
+  z-index: 150;
+  width: calc(100% - 32px);
+  max-width: 1240px;
+  margin: 12px auto 0;
+  min-height: 68px;
+  padding: 10px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
-  background: var(--vh-white);
-  border-bottom: 1px solid var(--vh-border);
+  gap: 18px;
+  border-radius: var(--eh-radius-xl);
+  background: var(--eh-glass-bg);
+  backdrop-filter: blur(18px) saturate(170%);
+  -webkit-backdrop-filter: blur(18px) saturate(170%);
+  border: 1px solid var(--eh-glass-border);
+  box-shadow: var(--eh-glass-shadow);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.vh-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.theme-toggle-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--eh-glass-border);
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--eh-teal);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.theme-toggle-btn:hover {
+  transform: translateY(-2px) scale(1.08);
+  background: var(--eh-teal-bg);
+  border-color: var(--eh-teal-mid);
+  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.22);
+}
+
+.theme-toggle-btn:active { transform: scale(0.94); }
+.theme-toggle-btn svg { width: 17px; height: 17px; }
+.theme-toggle-btn .icon-sun { display: none; }
+.theme-toggle-btn .icon-moon { display: block; }
+[data-theme="dark"] .theme-toggle-btn .icon-sun { display: block; }
+[data-theme="dark"] .theme-toggle-btn .icon-moon { display: none; }
+[data-theme="dark"] .theme-toggle-btn {
+  background: rgba(20, 48, 52, 0.75);
+  color: var(--eh-teal);
 }
 
 .vh-brand {
@@ -63,12 +118,13 @@ button {
 .vh-logo {
   display: grid;
   place-items: center;
-  width: 43px;
-  height: 43px;
-  border-radius: 13px;
-  background: var(--vh-primary);
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--eh-teal-mid), var(--eh-teal-hover));
   color: white;
-  font-size: 27px;
+  font-size: 24px;
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.28);
 }
 
 .vh-nav {
@@ -125,6 +181,12 @@ button {
 
 .vh-page.active {
   display: block;
+  animation: tabFadeSlide 0.28s ease both;
+}
+
+@keyframes tabFadeSlide {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .vh-hero {
@@ -600,4 +662,113 @@ button {
   .vh-panel {
     box-shadow: none;
   }
+}
+
+
+/* ==========================================================================
+   Dark Mode Overrides (Vaccine Hub)
+   ========================================================================== */
+[data-theme="dark"] .vh-language {
+  border-color: var(--eh-border);
+  background: var(--eh-surface-subtle);
+}
+
+[data-theme="dark"] .vh-hero {
+  background: linear-gradient(115deg, rgba(13, 148, 136, 0.22), rgba(15, 34, 37, 0.92));
+  border: 1px solid var(--eh-glass-border);
+}
+
+[data-theme="dark"] .vh-hero-art {
+  background: rgba(20, 48, 52, 0.65);
+}
+
+[data-theme="dark"] .vh-btn {
+  background: linear-gradient(135deg, var(--eh-teal-mid), var(--eh-teal-hover));
+  border-color: transparent;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .vh-btn-outline {
+  background: var(--eh-surface-subtle);
+  border-color: var(--eh-border);
+  color: var(--eh-teal);
+}
+
+[data-theme="dark"] .vh-btn-outline:hover {
+  background: var(--eh-teal-bg);
+}
+
+[data-theme="dark"] .vh-card-button:hover {
+  border-color: var(--eh-teal-mid);
+  box-shadow: var(--eh-shadow-md);
+}
+
+[data-theme="dark"] .vh-notice {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.28);
+  color: #fcd34d;
+}
+
+[data-theme="dark"] .vh-panel input,
+[data-theme="dark"] .vh-panel select,
+[data-theme="dark"] .vh-modal-box input,
+[data-theme="dark"] .vh-modal-box select {
+  background: var(--eh-surface-subtle);
+  border-color: var(--eh-border-strong);
+  color: var(--eh-ink);
+}
+
+[data-theme="dark"] .vh-vaccine-item {
+  background: var(--eh-surface-subtle);
+  color: var(--eh-ink);
+}
+
+[data-theme="dark"] .vh-vaccine-item:hover,
+[data-theme="dark"] .vh-vaccine-item.active {
+  background: var(--eh-teal-bg);
+  color: var(--eh-teal);
+}
+
+[data-theme="dark"] .vh-filters button {
+  background: var(--eh-surface-subtle);
+  border-color: var(--eh-border);
+  color: var(--eh-muted);
+}
+
+[data-theme="dark"] .vh-filters button.active {
+  background: var(--eh-teal);
+  border-color: var(--eh-teal);
+  color: #061012;
+  font-weight: 700;
+}
+
+[data-theme="dark"] .vh-table-wrap th {
+  background: var(--eh-surface-subtle);
+  color: var(--eh-muted);
+}
+
+[data-theme="dark"] .vh-status {
+  background: rgba(245, 158, 11, 0.16);
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .vh-status.completed {
+  background: var(--eh-green-bg);
+  color: var(--eh-green);
+}
+
+[data-theme="dark"] .vh-delete {
+  color: var(--eh-crimson);
+}
+
+[data-theme="dark"] .vh-modal-box {
+  background: var(--eh-surface);
+  border: 1px solid var(--eh-border);
+  color: var(--eh-ink);
+}
+
+[data-theme="dark"] .vh-footer {
+  background: var(--eh-surface);
+  border-top-color: var(--eh-border);
+  color: var(--eh-muted);
 }
