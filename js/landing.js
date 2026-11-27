@@ -22,8 +22,10 @@
       brandTitle: 'EasyHealth · স্বাস্থ্য-সহজ',
       brandSubtitle: 'Clinical Healthcare Portal',
       navHome: 'Home',
+      navProfile: 'Personal Profile',
       navMap: 'Clinical Map',
       navEmergency: 'Emergency Support',
+      navMenu: 'Menu',
       call999: 'SOS 999',
       heroBadge: 'Verified Clinical Directory · Khulna Corridor',
       heroTitle: 'Clinical Health Hub',
@@ -46,8 +48,10 @@
       brandTitle: 'স্বাস্থ্য-সহজ · EasyHealth',
       brandSubtitle: 'ক্লিনিক্যাল স্বাস্থ্যসেবা পোর্টাল',
       navHome: 'হোম',
+      navProfile: 'ব্যক্তিগত প্রোফাইল',
       navMap: 'স্বাস্থ্যসেবা ম্যাপ',
       navEmergency: 'জরুরি সেবা',
+      navMenu: 'মেনু',
       call999: 'জরুরি ৯৯৯',
       heroBadge: 'যাচাইকৃত স্বাস্থ্যসেবা কেন্দ্র · খুলনা করিডোর',
       heroTitle: 'ক্লিনিক্যাল হেলথ হাব',
@@ -229,6 +233,7 @@
       let iconColorClass = 'icon-muted';
       if (mod.id === 'emergency') iconColorClass = 'icon-crimson';
       else if (mod.id === 'map') iconColorClass = 'icon-blue';
+      else if (mod.id === 'vaccine') iconColorClass = 'icon-green';
 
       const iconSvg = ICONS[mod.icon] || '';
       const arrowSvg = ICONS.arrowUpRight || '';
@@ -307,7 +312,7 @@
       DOM.globalSearchInput.addEventListener('input', e => {
         state.searchQuery = e.target.value;
         if (DOM.searchClearBtn) {
-          DOM.searchClearBtn.style.display = state.searchQuery ? 'block' : 'none';
+          DOM.searchClearBtn.style.display = state.searchQuery ? 'grid' : 'none';
         }
         renderModules();
 

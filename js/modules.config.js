@@ -137,7 +137,7 @@
         bn: 'টিকার তথ্য, ব্যক্তিগত সময়সূচি ও টিকাদানের রেকর্ড।'
       },
       icon: 'bloodDrop',
-      path: 'vaccine/index.html',
+      path: 'vaccine-hub/index.html',
       status: 'ACTIVE',
       badge: { en: 'New', bn: 'নতুন' },
       badgeType: 'badge-green',

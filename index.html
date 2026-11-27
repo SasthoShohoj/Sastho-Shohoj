@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EasyHealth (স্বাস্থ্য-সহজ) — Clinical Health Hub</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d9488'/%3E%3Cpath d='M16 8v16M8 16h16' stroke='%23fff' stroke-width='3.5' stroke-linecap='round'/%3E%3C/svg%3E">
 
   <!-- Google Fonts: Inter & Hind Siliguri -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,8 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Application Stylesheets -->
-  <link rel="stylesheet" href="css/tokens.css">
-  <link rel="stylesheet" href="css/landing.css">
+  <link rel="stylesheet" href="css/tokens.css?v=20261127">
+  <link rel="stylesheet" href="css/landing.css?v=20261127">
 
   <script>
     /* Theme init — must run before first paint */
@@ -41,11 +42,25 @@
     </a>
 
     <!-- Main Navigation Links -->
-    <nav class="header-nav">
-      <a href="index.html" class="nav-link active" data-i18n="navHome">Home</a>
-      <a href="profile-module/index.html" class="nav-link">Personal Profile</a>
-      <a href="map/index.html" class="nav-link" data-i18n="navMap">Clinical Map</a>
-      <a href="emergency/emergency.html" class="nav-link" data-i18n="navEmergency">Emergency Support</a>
+    <nav class="header-nav" aria-label="Primary">
+      <button
+        type="button"
+        class="menu-button"
+        popovertarget="site-menu"
+        popovertargetaction="toggle"
+        aria-controls="site-menu"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/>
+        </svg>
+        <span data-i18n="navMenu">Menu</span>
+      </button>
+      <ul id="site-menu" class="site-menu" popover="auto">
+        <li><a href="index.html" class="nav-link active" aria-current="page" data-i18n="navHome">Home</a></li>
+        <li><a href="profile-module/index.html" class="nav-link" data-i18n="navProfile">Personal Profile</a></li>
+        <li><a href="map/index.html" class="nav-link" data-i18n="navMap">Clinical Map</a></li>
+        <li><a href="emergency/emergency.html" class="nav-link" data-i18n="navEmergency">Emergency Support</a></li>
+      </ul>
     </nav>
 
     <div class="header-actions">
@@ -177,9 +192,10 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="js/i18n.js"></script>
-  <script src="js/modules.config.js"></script>
-  <script src="js/landing.js"></script>
-  <script src="js/theme.js"></script>
+  <script src="js/i18n.js?v=20261127"></script>
+  <script src="js/header.js?v=20261127"></script>
+  <script src="js/modules.config.js?v=20261127"></script>
+  <script src="js/landing.js?v=20261127"></script>
+  <script src="js/theme.js?v=20261127"></script>
 </body>
 </html>
