@@ -37,35 +37,35 @@
       label: { en: 'Hospitals', bn: 'হাসপাতাল' },
       icon: 'hospital',
       colorClass: 'chip-blue',
-      route: 'map/index.html?category=HOSPITAL'
+      route: 'modules/map/index.html?category=HOSPITAL'
     },
     {
       id: 'EMERGENCY',
       label: { en: 'Emergency 999', bn: 'জরুরি ৯৯৯' },
       icon: 'ambulance',
       colorClass: 'chip-crimson',
-      route: 'emergency/emergency.html'
+      route: 'modules/emergency/emergency.html'
     },
     {
       id: 'PHARMACY',
       label: { en: 'Pharmacies', bn: 'ফার্মেসি' },
       icon: 'capsule',
       colorClass: 'chip-green',
-      route: 'map/index.html?category=PHARMACY'
+      route: 'modules/map/index.html?category=PHARMACY'
     },
     {
       id: 'DIAGNOSTIC',
       label: { en: 'Diagnostics', bn: 'ডায়াগনস্টিক' },
       icon: 'microscope',
       colorClass: 'chip-purple',
-      route: 'map/index.html?category=DIAGNOSTIC'
+      route: 'modules/map/index.html?category=DIAGNOSTIC'
     },
     {
       id: 'BLOOD_BANK',
       label: { en: 'Blood Banks', bn: 'ব্লাড ব্যাংক' },
       icon: 'bloodDrop',
       colorClass: 'chip-rose',
-      route: 'map/index.html?category=BLOOD_BANK'
+      route: 'modules/map/index.html?category=BLOOD_BANK'
     }
   ];
 
@@ -79,7 +79,7 @@
         bn: 'জাতীয় জরুরি কল, অ্যাম্বুলেন্স প্রস্তুতি ও রোগী বিবরণ প্রস্তুত।'
       },
       icon: 'ambulance',
-      path: 'emergency/emergency.html',
+      path: 'modules/emergency/emergency.html',
       status: 'ACTIVE',
       badge: { en: 'Active Beta', bn: 'চালু রয়েছে' },
       badgeType: 'badge-crimson',
@@ -94,7 +94,7 @@
         bn: 'খুলনা ও আশেপাশের যাচাইকৃত হাসপাতাল, ফার্মেসি ও আইসিইউ ম্যাপ।'
       },
       icon: 'mapPin',
-      path: 'map/index.html',
+      path: 'modules/map/index.html',
       status: 'ACTIVE',
       badge: { en: 'Active Beta', bn: 'চালু রয়েছে' },
       badgeType: 'badge-blue',
@@ -108,7 +108,7 @@
         bn: 'বিশেষজ্ঞ চিকিৎসক খুঁজুন ও চেম্বারের সময়সূচী দেখে সরাসরি বুক করুন।'
       },
       icon: 'stethoscope',
-      path: 'appointments/index.html',
+      path: 'modules/appointment-module/index.html',
       status: 'PLANNED',
       badge: { en: 'Phase 2', bn: 'পরিকল্পনাধীন' },
       badgeType: 'badge-muted',
@@ -119,14 +119,14 @@
       id: 'records',
       title: { en: 'Medical Records & EHR', bn: 'মেডিকেল রেকর্ড ও প্রেসক্রিপশন' },
       subtitle: {
-        en: 'Encrypted prescriptions archive, diagnostic reports, and medical history.',
-        bn: 'প্রেসক্রিপশন ও টেস্ট রিপোর্ট ডিজিটাল উপায়ে নিরাপদ সংরক্ষণ।'
+        en: 'Upload, OCR-extract, and manage medical test reports and prescriptions.',
+        bn: 'মেডিকেল টেস্ট রিপোর্ট ও প্রেসক্রিপশন আপলোড, OCR এক্সট্র্যাক্ট ও পরিচালনা করুন।'
       },
       icon: 'fileText',
-      path: 'records/index.html',
-      status: 'PLANNED',
-      badge: { en: 'Phase 4', bn: 'পরিকল্পনাধীন' },
-      badgeType: 'badge-muted',
+      path: 'modules/medical-records-and-ehr/index.html',
+      status: 'ACTIVE',
+      badge: { en: 'Active', bn: 'চালু' },
+      badgeType: 'badge-purple',
       team: 'Records Team'
     },
     {
@@ -137,11 +137,39 @@
         bn: 'টিকার তথ্য, ব্যক্তিগত সময়সূচি ও টিকাদানের রেকর্ড।'
       },
       icon: 'bloodDrop',
-      path: 'vaccine-hub/index.html',
+      path: 'modules/vaccine-hub/index.html',
       status: 'ACTIVE',
       badge: { en: 'New', bn: 'নতুন' },
       badgeType: 'badge-green',
       team: 'Vaccine Hub Team'
+    },
+    {
+      id: 'profile',
+      title: { en: 'Personal Profile', bn: 'ব্যক্তিগত প্রোফাইল' },
+      subtitle: {
+        en: 'Manage your health profile, medical records, and healthcare providers.',
+        bn: 'আপনার স্বাস্থ্য প্রোফাইল, মেডিকেল রেকর্ড ও হেলথকেয়ার প্রোভাইডার সংরক্ষণ করুন।'
+      },
+      icon: 'stethoscope',
+      path: 'modules/profile-module/index.html',
+      status: 'ACTIVE',
+      badge: { en: 'Active', bn: 'চালু' },
+      badgeType: 'badge-blue',
+      team: 'Profile Team'
+    },
+    {
+      id: 'auth',
+      title: { en: 'Authentication', bn: 'প্রমাণীকরণ' },
+      subtitle: {
+        en: 'Secure login, registration, and account management.',
+        bn: 'নিরাপদ লগইন, নিবন্ধন ও অ্যাকাউন্ট পরিচালনা।'
+      },
+      icon: 'phoneCall',
+      path: 'modules/auth-module/login.html',
+      status: 'ACTIVE',
+      badge: { en: 'Active', bn: 'চালু' },
+      badgeType: 'badge-teal',
+      team: 'Auth Team'
     }
   ];
 

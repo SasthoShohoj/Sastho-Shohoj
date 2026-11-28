@@ -1,5 +1,5 @@
 
-@import url('../css/tokens.css');
+@import url('../../css/tokens.css');
 @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
@@ -70,7 +70,9 @@ button {
   height: 36px;
   border-radius: 50%;
   border: 1.5px solid var(--eh-glass-border);
-  background: rgba(255, 255, 255, 0.6);
+  background: var(--eh-glass-bg);
+  backdrop-filter: var(--eh-glass-blur);
+  -webkit-backdrop-filter: var(--eh-glass-blur);
   color: var(--eh-teal);
   display: grid;
   place-items: center;
@@ -93,7 +95,9 @@ button {
 [data-theme="dark"] .theme-toggle-btn .icon-sun { display: block; }
 [data-theme="dark"] .theme-toggle-btn .icon-moon { display: none; }
 [data-theme="dark"] .theme-toggle-btn {
-  background: rgba(20, 48, 52, 0.75);
+  background: var(--eh-glass-bg);
+  backdrop-filter: var(--eh-glass-blur);
+  -webkit-backdrop-filter: var(--eh-glass-blur);
   color: var(--eh-teal);
 }
 

@@ -7,24 +7,26 @@ A minimal aesthetic medical document processing portal built with **Vanilla Java
 ## Architecture Overview
 
 ```
-sasthoshohoj_/
-├── index.html                 # Main single-page interface (Semantic HTML5)
+modules/medical-records-and-ehr/
+├── index.html                 # Module page — uses the shared EasyHealth header
 ├── css/
 │   └── style.css              # Medical teal/mint palette, animations, responsive design
 ├── js/
 │   └── app.js                 # Vanilla JS: DOM manipulation, health check, drag-and-drop, API requests
 ├── backend/
-│   ├── app.py                 # Flask REST API + static server (serves frontend & /api endpoints)
+│   ├── app.py                 # Flask REST API + static server (serves the repo root & /api endpoints)
 │   ├── medical_validator.py   # Multi-stage validation: visual check (anime/photos) & text classifier
 │   ├── data_extractor.py      # OCR-resilient field extractor (Patient name, age, sex, doctor, labs)
 │   ├── ocr_processor.py       # PyMuPDF PDF parser + Pillow preprocessing + EasyOCR engine
 │   ├── requirements.txt       # Python dependencies
 │   ├── start_backend.bat      # 1-click Windows starter script
 │   └── README.md              # Backend documentation
-└── public/
-    ├── favicon.svg
-    └── icons.svg
+└── assets/                    # Sample documents used for manual testing
 ```
+
+Shared styles, tokens and scripts (`css/tokens.css`, `css/landing.css`, `js/theme.js`,
+`js/i18n.js`, `js/header.js`) live at the repository root and are loaded with `../../`
+paths, so the module must be served from the repo root (see below).
 
 ---
 
@@ -54,15 +56,24 @@ sasthoshohoj_/
 
 ### 1. Start the Backend
 ```bash
-cd backend
+cd modules/medical-records-and-ehr/backend
 pip install -r requirements.txt
 python app.py
 ```
 *(Or double-click `backend/start_backend.bat` on Windows)*
 
-The backend will start at **http://localhost:5001** and will also automatically serve the frontend!
+The backend will start at **http://localhost:5001** and serves the whole repository as
+static root, so both the hub (`/`) and this module
+(`/modules/medical-records-and-ehr/index.html`) load with all shared assets intact.
 
 ### 2. Open the Frontend
 You have two convenient options:
-* **Option A**: Navigate directly to **http://localhost:5001** in your browser.
-* **Option B**: Double-click `index.html` or open it with VS Code Live Server (`http://127.0.0.1:5500`). Open CORS is enabled, so it connects seamlessly either way.
+* **Option A (recommended)**: Navigate directly to
+  **http://localhost:5001/modules/medical-records-and-ehr/index.html** (or
+  **http://localhost:5001/records**, which redirects here).
+* **Option B**: Serve the repository root with VS Code Live Server
+  (`http://127.0.0.1:5500/modules/medical-records-and-ehr/index.html`). CORS is enabled for
+  `/api/*`, so the page connects to the backend on port 5001 either way.
+
+> Opening `index.html` directly from the filesystem (`file://`) is not supported because the
+> shared `../../css` / `../../js` assets need an HTTP server.

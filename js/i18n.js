@@ -26,6 +26,10 @@
       navProfile: "Personal Profile",
       navMap: "Clinical Map",
       navEmergency: "Emergency Support",
+      navVaccine: "Vaccine Hub",
+      navAppointments: "Appointments",
+      navRecords: "Medical Records & EHR",
+      navAuth: "Login",
       navMenu: "Menu",
       call999: "SOS 999",
 
@@ -176,6 +180,10 @@
       navProfile: "ব্যক্তিগত প্রোফাইল",
       navMap: "স্বাস্থ্যসেবা ম্যাপ",
       navEmergency: "জরুরি সেবা",
+      navVaccine: "ভ্যাকসিন হাব",
+      navAppointments: "অ্যাপয়েন্টমেন্ট",
+      navRecords: "মেডিকেল রেকর্ড ও EHR",
+      navAuth: "লগইন",
       navMenu: "মেনু",
       call999: "জরুরি ৯৯৯",
 

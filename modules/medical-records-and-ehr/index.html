@@ -3,52 +3,75 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SasthoShohoj — Medical Document Portal</title>
-  <link rel="icon" type="image/svg+xml" href="public/favicon.svg" />
-  <link rel="stylesheet" href="css/style.css" />
+  <title>Medical Records &amp; EHR | EasyHealth (স্বাস্থ্য-সহজ)</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d9488'/%3E%3Cpath d='M16 8v16M8 16h16' stroke='%23fff' stroke-width='3.5' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <!-- Google Fonts: Inter & Hind Siliguri -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Shared Clinical Design Tokens -->
+  <link rel="stylesheet" href="../../css/tokens.css?v=20261127">
+  <link rel="stylesheet" href="../../css/landing.css?v=20261127">
+
+  <!-- Module Stylesheet -->
+  <link rel="stylesheet" href="css/style.css?v=20261127">
+
   <script>
     (function() {
-      var saved = localStorage.getItem('sasthoshohoj-theme');
+      var saved = localStorage.getItem('eh-theme');
       var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
       if (saved === 'dark' || (!saved && prefersDark)) {
         document.documentElement.setAttribute('data-theme', 'dark');
       }
     })();
+    if (window.self !== window.top || window.location.search.includes('embed=')) {
+      document.documentElement.classList.add('is-embedded');
+    }
   </script>
 </head>
 <body>
-  <div class="app">
-    <!-- ─── Navbar ──────────────────────────────────────────────────── -->
-    <header class="navbar">
-      <div class="navbar-logo" onclick="location.reload()">
-        <div class="navbar-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-          </svg>
-        </div>
-        <div class="navbar-brand">
-          <span class="navbar-title">SasthoShohoj</span>
-          <span class="navbar-subtitle">Medical Document Portal</span>
-        </div>
+  <!-- Unified Application Header -->
+  <header class="site-header">
+    <a class="brand" href="../../index.html" aria-label="EasyHealth Home">
+      <div class="brand-icon">+</div>
+      <div class="brand-text">
+        <strong data-i18n="brandTitle">EasyHealth · স্বাস্থ্য-সহজ</strong>
+        <small data-i18n="brandSubtitle">Clinical Healthcare Portal</small>
       </div>
+    </a>
 
-      <!-- Top-right Controls: Theme Toggle & Backend Status -->
-      <div class="navbar-actions">
-        <button id="themeToggleBtn" class="theme-toggle-btn" type="button" title="Toggle Dark Mode" aria-label="Toggle Dark Mode">
-          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="5"/>
-            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-          </svg>
-          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-        </button>
+    <!-- Main Navigation Links -->
+    <nav class="header-nav" aria-label="Primary">
+      <button
+        type="button"
+        class="menu-button"
+        popovertarget="site-menu"
+        popovertargetaction="toggle"
+        aria-controls="site-menu"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/>
+        </svg>
+        <span data-i18n="navMenu">Menu</span>
+      </button>
+      <ul id="site-menu" class="site-menu" popover="auto">
+        <li><a href="../../index.html" class="nav-link" data-i18n="navHome">Home</a></li>
+        <li><a href="../profile-module/index.html" class="nav-link" data-i18n="navProfile">Personal Profile</a></li>
+        <li><a href="../map/index.html" class="nav-link" data-i18n="navMap">Clinical Map</a></li>
+        <li><a href="../emergency/emergency.html" class="nav-link" data-i18n="navEmergency">Emergency Support</a></li>
+        <li><a href="../vaccine-hub/index.html" class="nav-link" data-i18n="navVaccine">Vaccine Hub</a></li>
+        <li><a href="../appointment-module/index.html" class="nav-link" data-i18n="navAppointments">Appointments</a></li>
+        <li><a href="../auth-module/login.html" class="nav-link" data-i18n="navAuth">Login</a></li>
+        <li><a href="index.html" class="nav-link active" aria-current="page" data-i18n="navRecords">Medical Records &amp; EHR</a></li>
+      </ul>
+    </nav>
 
-        <div class="backend-status-widget">
-        <button id="statusBtn" class="backend-status-btn checking" type="button" title="Backend Server Status">
+    <div class="header-actions">
+      <!-- Backend Status Monitor (module-specific, required by js/app.js) -->
+      <div class="backend-status-widget">
+        <button id="statusBtn" class="backend-status-btn checking" type="button" title="Backend Server Status" aria-haspopup="true" aria-expanded="false">
           <span class="status-indicator">
             <span id="statusDot" class="status-dot checking"></span>
             <span id="statusText">Checking…</span>
@@ -78,8 +101,8 @@
                 <span class="step-num">1</span>
                 <div class="step-content">
                   <div class="step-label">Open a terminal in the backend directory</div>
-                  <div class="step-cmd"><span>cd backend</span></div>
-                  <div class="step-note">Or double-click start_backend.bat in the backend folder.</div>
+                  <div class="step-cmd"><span>cd modules/medical-records-and-ehr/backend</span></div>
+                  <div class="step-note">Or double-click start_backend.bat in that folder.</div>
                 </div>
               </li>
               <li class="offline-step">
@@ -95,7 +118,7 @@
                 <div class="step-content">
                   <div class="step-label">Start the Flask server</div>
                   <div class="step-cmd"><span>python app.py</span></div>
-                  <div class="step-note">Server runs on http://localhost:5001 — keep terminal open.</div>
+                  <div class="step-note">Server runs on http://localhost:5001 — keep the terminal open.</div>
                 </div>
               </li>
             </ol>
@@ -110,8 +133,27 @@
           </div>
         </div>
       </div>
+
+      <!-- Dark Mode Toggle -->
+      <button type="button" class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Dark Mode" aria-label="Toggle dark mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <!-- Universal Language Switcher Pill -->
+      <div class="lang-toggle" role="group" aria-label="Select language">
+        <button type="button" class="lang-opt" id="btnLangEn" data-lang="en">EN</button>
+        <button type="button" class="lang-opt" id="btnLangBn" data-lang="bn">বাংলা</button>
       </div>
-    </header>
+
+      <!-- Quick 999 Dial Action -->
+      <a class="sos-header-btn" href="tel:999" aria-label="Call 999 National Emergency">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15.05 5A5 5 0 0119 8.95M15.05 1A9 9 0 0123 8.94m-1 7.98v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+        <span data-i18n="call999">SOS 999</span>
+      </a>
+    </div>
+  </header>
+
+  <div class="app">
 
     <!-- ─── Tab Bar ─────────────────────────────────────────────────── -->
     <nav class="tab-bar">
@@ -516,6 +558,10 @@
     </div>
   </div>
 
-  <script src="js/app.js"></script>
+<!-- Application Logic -->
+  <script src="../../js/theme.js?v=20261127" defer></script>
+  <script src="../../js/i18n.js?v=20261127" defer></script>
+  <script src="../../js/header.js?v=20261127" defer></script>
+  <script src="js/app.js?v=20261127" defer></script>
 </body>
 </html>

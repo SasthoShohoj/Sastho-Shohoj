@@ -4,13 +4,18 @@ A Flask-based OCR API that processes medical documents (PDFs and images).
 
 ## Setup
 
+From the repository root:
+
 ```bash
-cd backend
+cd modules/medical-records-and-ehr/backend
 pip install -r requirements.txt
 python app.py
 ```
 
-The server starts at **http://localhost:5001**
+The server starts at **http://localhost:5001** and serves the repository root as its static
+folder, so the hub (`/`) and the module page
+(`/modules/medical-records-and-ehr/index.html`, also reachable via `/records`) work with the
+shared `../../css` and `../../js` assets.
 
 ## API
 
@@ -60,6 +65,30 @@ Upload a PDF or image file for processing.
 ```json
 { "status": "ok", "service": "SasthoShohoj OCR API" }
 ```
+
+### `GET /api/records`
+Returns every stored record (`{ "records": [ ... ] }`), newest first.
+
+### `DELETE /api/records/<record_id>`
+Removes a record and its uploaded file. Returns `{ "deleted": true }`.
+
+### `GET /api/files/<filename>`
+Serves an uploaded document so the reports modal can preview it.
+
+### `POST /api/prescriptions`
+Saves a prescription without OCR. Multipart form data: `file`, plus optional
+`title`, `date`, `doctor`, `facility`, `patient`, `notes`. Returns `201` with the new record.
+
+## Frontend routes served by Flask
+| Path | Purpose |
+| --- | --- |
+| `/` | Unified EasyHealth hub |
+| `/records` | Redirects to the module page |
+| `/modules/medical-records-and-ehr/index.html` | Medical Records & EHR module |
+
+The Flask static folder is the **repository root**, so shared assets such as
+`/css/tokens.css` and `/js/theme.js` resolve correctly. Backend sources, `.git` and
+`node_modules` are blocked by a `before_request` guard.
 
 ## Notes for prototype phase
 - EasyOCR downloads language models on first run (~200 MB). Subsequent runs are fast.

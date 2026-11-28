@@ -18,7 +18,7 @@ import io
 import logging
 import traceback
 from pathlib import Path
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, redirect, abort
 from flask_cors import CORS
 from PIL import Image
 
@@ -34,12 +34,33 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-app = Flask(__name__, static_folder=str(PROJECT_ROOT), static_url_path='')
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+# The module now lives inside the unified repository:
+#   <repo>/modules/medical-records-and-ehr/backend/app.py
+# Serving the whole repo as static root keeps the shared assets working
+# (../../css/tokens.css, ../../js/theme.js, etc.).
+MODULE_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = MODULE_ROOT.parent.parent
+MODULE_URL = '/modules/medical-records-and-ehr'
 
 ALLOWED_EXT = {'.pdf', '.jpg', '.jpeg', '.png', '.tiff', '.tif', '.bmp', '.webp'}
 MAX_FILE_MB = 20
+
+app = Flask(__name__, static_folder=str(REPO_ROOT), static_url_path='')
+app.config['MAX_CONTENT_LENGTH'] = (MAX_FILE_MB + 5) * 1024 * 1024
+CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+
+@app.before_request
+def block_sensitive_paths():
+    """Never expose the Python backend sources, git data, or node_modules."""
+    path = request.path
+    blocked = (
+        f'{MODULE_URL}/backend/',
+        '/.git/',
+        '/node_modules/',
+    )
+    if any(path.startswith(prefix) for prefix in blocked) or path.startswith('/.'):
+        abort(404)
 
 
 def allowed_file(filename: str) -> bool:
@@ -51,7 +72,19 @@ def allowed_file(filename: str) -> bool:
 
 @app.get('/')
 def serve_index():
-    return send_from_directory(PROJECT_ROOT, 'index.html')
+    """Serve the unified EasyHealth hub (records module is linked in the nav)."""
+    return send_from_directory(REPO_ROOT, 'index.html')
+
+
+@app.get('/records')
+def serve_records_module():
+    """Convenience entry point straight to the Medical Records & EHR module."""
+    return redirect(f'{MODULE_URL}/index.html')
+
+
+@app.get(f'{MODULE_URL}/')
+def serve_module_index():
+    return send_from_directory(MODULE_ROOT, 'index.html')
 
 
 @app.get('/api/health')

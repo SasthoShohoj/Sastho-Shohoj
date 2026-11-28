@@ -1,0 +1,246 @@
+[
+  {
+    "id": "eb96c24f2e82",
+    "category": "prescription",
+    "stored_filename": "bbbe1394b1b0_Screenshot_2026-08-27_212521.png",
+    "file_url": "/api/files/bbbe1394b1b0_Screenshot_2026-08-27_212521.png",
+    "original_filename": "Screenshot 2026-08-27 212521.png",
+    "created_at": "2026-11-25T10:39:40",
+    "iso_date": "2026-11-11",
+    "display_date": "2026-11-11",
+    "title": "dsb",
+    "document_type": "Prescription",
+    "patient_name": "xf",
+    "patient_age": null,
+    "patient_sex": null,
+    "facility": "sq",
+    "doctor": "ds",
+    "findings": null,
+    "disease_summary": null,
+    "notes": "ds",
+    "test_results": [],
+    "metadata": {
+      "filename": "Screenshot 2026-08-27 212521.png",
+      "file_type": "PNG",
+      "file_size_kb": 486.7,
+      "page_count": 1,
+      "ocr_confidence": "Skipped (Prescription)"
+    },
+    "raw_text": ""
+  },
+  {
+    "id": "9747e0399636",
+    "category": "prescription",
+    "stored_filename": "8fd17d33095e_Screenshot_2026-08-27_210803.png",
+    "file_url": "/api/files/8fd17d33095e_Screenshot_2026-08-27_210803.png",
+    "original_filename": "Screenshot 2026-08-27 210803.png",
+    "created_at": "2026-11-25T10:57:05",
+    "iso_date": "2026-11-12",
+    "display_date": "2026-11-12",
+    "title": "xb",
+    "document_type": "Prescription",
+    "patient_name": "xb",
+    "patient_age": null,
+    "patient_sex": null,
+    "facility": "v",
+    "doctor": "cf",
+    "findings": null,
+    "disease_summary": null,
+    "notes": "nx",
+    "test_results": [],
+    "metadata": {
+      "filename": "Screenshot 2026-08-27 210803.png",
+      "file_type": "PNG",
+      "file_size_kb": 474.0,
+      "page_count": 1,
+      "ocr_confidence": "Skipped (Prescription)"
+    },
+    "raw_text": ""
+  },
+  {
+    "id": "266cb4a2c7d0",
+    "category": "test_report",
+    "stored_filename": "0dd78c52895e_MRI_Brain_Report_1.png",
+    "file_url": "/api/files/0dd78c52895e_MRI_Brain_Report_1.png",
+    "original_filename": "MRI Brain Report 1.png",
+    "created_at": "2026-11-28T13:06:37",
+    "iso_date": "2025-04-24",
+    "display_date": "24-04-2025",
+    "title": "MRI Report",
+    "document_type": "MRI Report",
+    "patient_name": "Muhammad Tahmid Ahnaf",
+    "patient_age": "21 years",
+    "patient_sex": "Male",
+    "facility": "Hospital",
+    "doctor": "Dr. Neurologist",
+    "findings": null,
+    "disease_summary": null,
+    "notes": null,
+    "test_results": [
+      {
+        "parameter": "Dhaka",
+        "value": "1212,",
+        "unit": "",
+        "reference_range": null
+      },
+      {
+        "parameter": "Date of Exam",
+        "value": "24-04-2025",
+        "unit": "",
+        "reference_range": null
+      },
+      {
+        "parameter": "Time of Exam",
+        "value": "11.32",
+        "unit": "",
+        "reference_range": null
+      },
+      {
+        "parameter": "UH-2025",
+        "value": "104732",
+        "unit": "",
+        "reference_range": null
+      },
+      {
+        "parameter": "Report Date",
+        "value": "24-04-2025",
+        "unit": "",
+        "reference_range": null
+      },
+      {
+        "parameter": "No enhancing lesion is seen",
+        "value": "3",
+        "unit": "",
+        "reference_range": null
+      }
+    ],
+    "metadata": {
+      "filename": "MRI Brain Report 1.png",
+      "file_type": "IMAGE",
+      "file_size_kb": 2204.0,
+      "page_count": 1,
+      "ocr_confidence": "79.5%"
+    },
+    "raw_text": "Plot # 15,Road # 71, Gulshan-2\nDhaka-1212, Bangladesh\nUnited\n+88 09666 787878\nHospital\nwww.unitedhospital com bd\nExceptional Care. Always:\nMRI REPORT\nPatient\nMuhammad Tahmid Ahnaf\nDate of Exam\n24-04-2025\nAge\nSex\n21 Years\nMale\nTime of Exam\n11.32 AM\nUHID\nUH-2025-104732\nReport Date\n24-04-2025\nRef: By\nDr: Farhana Rahman\nExam Type\nMRI Brain with and without\nConsultant Neurologist\nContrast\nCLINICAL INFORMATION:\nKnown case of Multiple Sclerosis. Presented with intermittent neurological symptoms for follow-up_\nMRI BRAIN FINDINGS:\nMultiple T2/FLAIR hyperintense lesions are noted in the periventricular white matter; juxtacortical\nregions, and callososeptal interface: Some of the lesions show ovoid morphology, oriented\nperpendicular to the lateral ventricles, consistent with demyelinating plaques_\nThere is no definite diffusion restriction_\nNo associated mass effect or midline shift is seen.\nThe corpus callosum shows focal areas of signal abnormality: The infratentorial region demonstrates\nfew small hyperintense foci in the cerebellar white matter and brainstem:\nPost-contrast images show no significant abnormal enhancement:\nThe ventricles are normal in size and configuration. No hydrocephalus is seen. The major intracranial\nvessels demonstrate normal\nvoids\nNo evidence of acute hemorrhage or extra-axial collection is noted:\nIMPRESSION:\nMultiple hyperintense demyelinating plaques in periventricular; juxtacortical, callososeptal,\ninfratentorial regions, in keeping with Multiple Sclerosis.\nNo enhancing lesion is seen\n3_\nNo acute intracranial abnormality:\nCorrelation with clinical and previous imaging is advised\nhme\nDr: Sayeed Ahmed\nConsultant\nRadiologist\nMBBS, FCPS (Radiology)\nBangladesh College of Physicians & Surgeons (BCPS)\nJoint Commission\nAustralian Council\nInternational\nACHS\non Healthcare Standards\nBetter Health\nBrighter Tomorrow:\n(JCI) Accredited\nAccredited\nName\nflow"
+  },
+  {
+    "id": "2cbd3bb95584",
+    "category": "test_report",
+    "stored_filename": "b9ba354e7f07_National_Hospital_MRI_Report_2.png",
+    "file_url": "/api/files/b9ba354e7f07_National_Hospital_MRI_Report_2.png",
+    "original_filename": "National Hospital MRI Report 2.png",
+    "created_at": "2026-11-28T13:07:03",
+    "iso_date": "2026-11-28",
+    "display_date": "2026-11-28",
+    "title": "MRI Report",
+    "document_type": "MRI Report",
+    "patient_name": "Muhammad Tahmid Ahnaf",
+    "patient_age": "21 years",
+    "patient_sex": "Male",
+    "facility": "Hospital",
+    "doctor": "Dr. Afsana Rahman",
+    "findings": null,
+    "disease_summary": null,
+    "notes": null,
+    "test_results": [
+      {
+        "parameter": "Dhaka",
+        "value": "1209,",
+        "unit": "",
+        "reference_range": null
+      },
+      {
+        "parameter": "Date of Exam",
+        "value": "14",
+        "unit": "",
+        "reference_range": null
+      },
+      {
+        "parameter": "Time of Exam",
+        "value": "10.26",
+        "unit": "",
+        "reference_range": null
+      },
+      {
+        "parameter": "NH-2025",
+        "value": "11014",
+        "unit": "",
+        "reference_range": null
+      },
+      {
+        "parameter": "Report Date",
+        "value": "14",
+        "unit": "",
+        "reference_range": null
+      }
+    ],
+    "metadata": {
+      "filename": "National Hospital MRI Report 2.png",
+      "file_type": "IMAGE",
+      "file_size_kb": 2259.8,
+      "page_count": 1,
+      "ocr_confidence": "78.2%"
+    },
+    "raw_text": "National\nPlot # 57, Road # 12, Dhanmondi\nDhaka-1209, Bangladesh\n+880 2 8123 4567\nHospital\ninfo@nationalhospitalbd.com\nCare Today: Healthier Tomorrow:\nwwwnationalhospitalbd.com\nMRI BRAIN REPORT\nPatient Name\nMuhammad Tahmid Ahnaf\nDate of Exam\n14th November; 2025\nAge\nSex\n21 Years\nMale\nTime of Exam\n10.26 AM\nPatient ID\nNH-2025-11014\nReport Date\n14th November; 2025\nReferred By\nDr: Afsana Rahman\nExam Type\nMRI Brain with\nConsultant Neurologist\nSpectroscopy\nCLINICAL INFORMATION:\n~standing clinical depression\n2 years\nwith recent complaints of persistent low mood,\npoor concentration and memory difficulties. Rule out neuropsychiatric sequelae.\nMRI FINDINGS:\nBrain parenchyma shows no evidence of acute infarct; hemorrhage O mass lesion.\nMild diffuse cerebral atrophy is noted, predominantly in the frontal and temporal lobes,\nwith mild prominence of the ventricular system and cortical sulci.\nFLAIR images demonstrate subtle hyperintensities in the periventricular white matter;\nlikely representing chronic microvascular changes.\nNo abnormal enhancement is seen post-contrast.\nMR\nSpectroscopy (single voxel, left frontal region) shows reduced NAA/Cr ratio (1.2;\nnormal ~1.6-2.0) with relative increase in choline (Cho/Cr: 1.4), suggestive of neuronal\ndysfunction, which can be seen in chronic depression\nNo evidence of demyelinating plaques Or other focal pathology:\nIMPRESSION:\nMild cerebral atrophy with subtle periventricular white matter changes, likely related to\nchronic depressive disorder:\nMR Spectroscopy findings suggest neuronal dysfunction with reduced NAA and\nincreased choline, consistent with long-term clinical depression:\nNo evidence of acute intracranial pathology:\nCorrelation with clinical findings is advised\nDr: Tanvir Hossain\nConsultant\nRadiologist\nMBBS, FCPS (Radiology)\nNational Hospital, Dhaka\nTo g e th er f or\nHe a lthier B a n g la de $ h\nLong-S"
+  },
+  {
+    "id": "48cc9ec66e66",
+    "category": "test_report",
+    "stored_filename": "26be51995671_National_Hospital_MRI_Report_2.png",
+    "file_url": "/api/files/26be51995671_National_Hospital_MRI_Report_2.png",
+    "original_filename": "National Hospital MRI Report 2.png",
+    "created_at": "2026-11-28T13:19:09",
+    "iso_date": "2026-11-28",
+    "display_date": "2026-11-28",
+    "title": "MRI Report",
+    "document_type": "MRI Report",
+    "patient_name": "Muhammad Tahmid Ahnaf",
+    "patient_age": "21 years",
+    "patient_sex": "Male",
+    "facility": "Hospital",
+    "doctor": "Dr. Afsana Rahman",
+    "findings": null,
+    "disease_summary": null,
+    "notes": null,
+    "test_results": [
+      {
+        "parameter": "Dhaka",
+        "value": "1209,",
+        "unit": "",
+        "reference_range": null
+      },
+      {
+        "parameter": "Date of Exam",
+        "value": "14",
+        "unit": "",
+        "reference_range": null
+      },
+      {
+        "parameter": "Time of Exam",
+        "value": "10.26",
+        "unit": "",
+        "reference_range": null
+      },
+      {
+        "parameter": "NH-2025",
+        "value": "11014",
+        "unit": "",
+        "reference_range": null
+      },
+      {
+        "parameter": "Report Date",
+        "value": "14",
+        "unit": "",
+        "reference_range": null
+      }
+    ],
+    "metadata": {
+      "filename": "National Hospital MRI Report 2.png",
+      "file_type": "IMAGE",
+      "file_size_kb": 2259.8,
+      "page_count": 1,
+      "ocr_confidence": "78.2%"
+    },
+    "raw_text": "National\nPlot # 57, Road # 12, Dhanmondi\nDhaka-1209, Bangladesh\n+880 2 8123 4567\nHospital\ninfo@nationalhospitalbd.com\nCare Today: Healthier Tomorrow:\nwwwnationalhospitalbd.com\nMRI BRAIN REPORT\nPatient Name\nMuhammad Tahmid Ahnaf\nDate of Exam\n14th November; 2025\nAge\nSex\n21 Years\nMale\nTime of Exam\n10.26 AM\nPatient ID\nNH-2025-11014\nReport Date\n14th November; 2025\nReferred By\nDr: Afsana Rahman\nExam Type\nMRI Brain with\nConsultant Neurologist\nSpectroscopy\nCLINICAL INFORMATION:\n~standing clinical depression\n2 years\nwith recent complaints of persistent low mood,\npoor concentration and memory difficulties. Rule out neuropsychiatric sequelae.\nMRI FINDINGS:\nBrain parenchyma shows no evidence of acute infarct; hemorrhage O mass lesion.\nMild diffuse cerebral atrophy is noted, predominantly in the frontal and temporal lobes,\nwith mild prominence of the ventricular system and cortical sulci.\nFLAIR images demonstrate subtle hyperintensities in the periventricular white matter;\nlikely representing chronic microvascular changes.\nNo abnormal enhancement is seen post-contrast.\nMR\nSpectroscopy (single voxel, left frontal region) shows reduced NAA/Cr ratio (1.2;\nnormal ~1.6-2.0) with relative increase in choline (Cho/Cr: 1.4), suggestive of neuronal\ndysfunction, which can be seen in chronic depression\nNo evidence of demyelinating plaques Or other focal pathology:\nIMPRESSION:\nMild cerebral atrophy with subtle periventricular white matter changes, likely related to\nchronic depressive disorder:\nMR Spectroscopy findings suggest neuronal dysfunction with reduced NAA and\nincreased choline, consistent with long-term clinical depression:\nNo evidence of acute intracranial pathology:\nCorrelation with clinical findings is advised\nDr: Tanvir Hossain\nConsultant\nRadiologist\nMBBS, FCPS (Radiology)\nNational Hospital, Dhaka\nTo g e th er f or\nHe a lthier B a n g la de $ h\nLong-S"
+  }
+]

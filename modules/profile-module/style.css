@@ -128,9 +128,11 @@ button, input, select { font: inherit; cursor: pointer; }
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 1.5px solid var(--glass-border);
-  background: rgba(255,255,255,0.60);
-  color: var(--teal-dark);
+  border: 1.5px solid var(--eh-glass-border);
+  background: var(--eh-glass-bg);
+  backdrop-filter: var(--eh-glass-blur);
+  -webkit-backdrop-filter: var(--eh-glass-blur);
+  color: var(--eh-teal);
   display: grid;
   place-items: center;
   flex-shrink: 0;
@@ -139,9 +141,9 @@ button, input, select { font: inherit; cursor: pointer; }
 }
 .theme-toggle-btn:hover {
   transform: translateY(-2px) scale(1.08);
-  background: var(--pale);
-  border-color: var(--teal-mid);
-  box-shadow: 0 4px 12px rgba(20,184,166,.22);
+  background: var(--eh-teal-bg);
+  border-color: var(--eh-teal-mid);
+  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.22);
 }
 .theme-toggle-btn:active { transform: scale(0.94); }
 .theme-toggle-btn svg { width: 17px; height: 17px; }
@@ -580,10 +582,12 @@ button, input, select { font: inherit; cursor: pointer; }
 }
 
 [data-theme="dark"] .theme-toggle-btn {
-  background: rgba(20,48,52,.75);
-  color: var(--teal);
+  background: var(--eh-glass-bg);
+  backdrop-filter: var(--eh-glass-blur);
+  -webkit-backdrop-filter: var(--eh-glass-blur);
+  color: var(--eh-teal);
 }
-[data-theme="dark"] .theme-toggle-btn:hover { background: rgba(20,184,166,.22); }
+[data-theme="dark"] .theme-toggle-btn:hover { background: var(--eh-teal-bg); }
 
 [data-theme="dark"] .panel,
 [data-theme="dark"] .record-card,

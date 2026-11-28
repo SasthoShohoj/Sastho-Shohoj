@@ -18,7 +18,13 @@
 (function () {
   'use strict';
 
-  const API_BASE = 'http://localhost:5001';
+  // Resolve the backend origin so the module works both when served by Flask
+  // (same origin, port 5001) and when opened through Live Server / file://.
+  const API_BASE = (function () {
+    if (window.location.port === '5001') return '';
+    const host = window.location.hostname || 'localhost';
+    return `${window.location.protocol === 'https:' ? 'https' : 'http'}://${host}:5001`;
+  })();
   const ACCEPTED_TYPES = [
     'application/pdf',
     'image/jpeg', 'image/jpg', 'image/png',
@@ -190,39 +196,46 @@
     const wasOffline = state.backendOnline !== true;
     state.backendOnline = online;
 
-    dom.statusBtn.className = 'backend-status-btn';
-    dom.statusDot.className = 'status-dot';
+    // The status widget lives in the shared header. Guard against it being
+    // removed by a future layout change so the rest of the page keeps working.
+    if (dom.statusBtn && dom.statusDot && dom.statusText && dom.statusChevron) {
+      dom.statusBtn.className = 'backend-status-btn';
+      dom.statusDot.className = 'status-dot';
 
-    if (online === true) {
-      dom.statusBtn.classList.add('online');
-      dom.statusDot.classList.add('online');
-      dom.statusText.textContent = 'Backend Online';
-      dom.statusChevron.style.display = 'none';
-      closeOfflineGuide();
-      if (wasOffline && state.activeTab === 'reports') {
-        fetchAndRenderRecords();
+      if (online === true) {
+        dom.statusBtn.classList.add('online');
+        dom.statusDot.classList.add('online');
+        dom.statusText.textContent = 'Backend Online';
+        dom.statusChevron.style.display = 'none';
+        dom.statusBtn.setAttribute('aria-expanded', 'false');
+        closeOfflineGuide();
+        if (wasOffline && state.activeTab === 'reports') {
+          fetchAndRenderRecords();
+        }
+      } else if (online === false) {
+        dom.statusBtn.classList.add('offline');
+        dom.statusDot.classList.add('offline');
+        dom.statusText.textContent = 'Backend Offline';
+        dom.statusChevron.style.display = 'inline-block';
+      } else {
+        dom.statusBtn.classList.add('checking');
+        dom.statusDot.classList.add('checking');
+        dom.statusText.textContent = 'Checking…';
+        dom.statusChevron.style.display = 'none';
+        dom.statusBtn.setAttribute('aria-expanded', 'false');
       }
-    } else if (online === false) {
-      dom.statusBtn.classList.add('offline');
-      dom.statusDot.classList.add('offline');
-      dom.statusText.textContent = 'Backend Offline';
-      dom.statusChevron.style.display = 'inline-block';
-    } else {
-      dom.statusBtn.classList.add('checking');
-      dom.statusDot.classList.add('checking');
-      dom.statusText.textContent = 'Checking…';
-      dom.statusChevron.style.display = 'none';
     }
 
     updateProcessBtnState();
   }
 
   function toggleOfflineGuide() {
-    if (state.backendOnline === false) {
+    if (state.backendOnline === false && dom.offlineGuide && dom.statusOverlay) {
       const isHidden = dom.offlineGuide.classList.contains('hidden');
       if (isHidden) {
         dom.offlineGuide.classList.remove('hidden');
         dom.statusOverlay.classList.remove('hidden');
+        if (dom.statusBtn) dom.statusBtn.setAttribute('aria-expanded', 'true');
       } else {
         closeOfflineGuide();
       }
@@ -230,8 +243,9 @@
   }
 
   function closeOfflineGuide() {
-    dom.offlineGuide.classList.add('hidden');
-    dom.statusOverlay.classList.add('hidden');
+    if (dom.offlineGuide) dom.offlineGuide.classList.add('hidden');
+    if (dom.statusOverlay) dom.statusOverlay.classList.add('hidden');
+    if (dom.statusBtn) dom.statusBtn.setAttribute('aria-expanded', 'false');
   }
 
   // ─── Main Tab Switching ──────────────────────────────────────────
@@ -472,7 +486,8 @@
     startTimer();
 
     const controller = new AbortController();
-    const abortTimeout = setTimeout(() => controller.abort(), 60000);
+    // CPU OCR on large scans can legitimately take a while; give it 3 minutes.
+    const abortTimeout = setTimeout(() => controller.abort(), 180000);
 
     try {
       const formData = new FormData();
@@ -999,34 +1014,26 @@
   }
 
   // ─── Event Listeners Setup ───────────────────────────────────────
-  function toggleTheme() {
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    const next = isDark ? 'light' : 'dark';
-    if (next === 'dark') {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    } else {
-      document.documentElement.removeAttribute('data-theme');
-    }
-    localStorage.setItem('sasthoshohoj-theme', next);
-  }
-
+  // Note: the shared js/theme.js already owns the #themeToggleBtn listener,
+  // so app.js must not attach a second one (that would cancel the toggle).
   function initEvents() {
-    // Theme toggle
-    if (dom.themeToggleBtn) {
-      dom.themeToggleBtn.addEventListener('click', toggleTheme);
-    }
-
     // Backend guide toggle
-    dom.statusBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleOfflineGuide();
-    });
-    dom.statusOverlay.addEventListener('click', closeOfflineGuide);
-    dom.retryBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      setBackendStatus(null);
-      checkBackendHealth();
-    });
+    if (dom.statusBtn) {
+      dom.statusBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleOfflineGuide();
+      });
+    }
+    if (dom.statusOverlay) {
+      dom.statusOverlay.addEventListener('click', closeOfflineGuide);
+    }
+    if (dom.retryBtn) {
+      dom.retryBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setBackendStatus(null);
+        checkBackendHealth();
+      });
+    }
 
     // Main Tabs
     dom.tabBtns.forEach(btn => {

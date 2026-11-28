@@ -99,15 +99,23 @@ def extract_patient_name(text: str) -> str | None:
 
 def extract_patient_age(text: str) -> str | None:
     patterns = [
-        # Age: 24 Years / Pge: 24 Y / Age - 24 yrs
+        # Age: 24 Years / Pge: 24 Y / Age - 24 yrs (inline on same line)
         r"\b[ap]ge\s*[:\-/]?\s*(\d{1,3})\s*(?:years?|yrs?|y\b)?",
+        # Age/Sex: 21 Years / Male (compound inline)
+        r"\b[ap]ge\s*[/\\]\s*s[eoa]x\s*[:\-\.]?\s*(\d{1,3})\s*(?:years?|yrs?|y\b)?",
         # Inline shorthand: 24 Y / M or 24Y/M or PgelSex 26 Y
         r"\b(\d{1,3})\s*[Yy](?:[\/\s\|]|$)",
         # Standalone Age : 24
         r"\b[ap]ge\s*[:\-/]\s*(\d{1,3})\b",
+        # Separated labels on same line: "Sex: Female Age: 22" or "Age:22 Sex:Male"
+        r"\b(?:s[eoa]x|gender)\s*[:\-\.]?\s*(?:male|female|m|f)\s*[,;\s]+[ap]ge\s*[:\-\.]?\s*(\d{1,3})\b",
+        r"\b[ap]ge\s*[:\-\.]?\s*(\d{1,3})\s*[,;\s]+(?:s[eoa]x|gender)\s*[:\-\.]?\s*(?:male|female|m|f)\b",
+        # Split-row layout: "Age\nSex\n21 Years\nMale" or "Age\n21 Years"
+        # Match "Age" or "Age/Sex" on a line, then find the number on a following line
+        r"(?:^|\n)\s*[ap]ge(?:\s*[/\\]\s*s[eoa]x)?\s*\n(?:[^\n]*\n){0,2}?\s*(\d{1,3})\s*(?:years?|yrs?|y\b)",
     ]
     for pat in patterns:
-        m = re.search(pat, text, re.IGNORECASE)
+        m = re.search(pat, text, re.IGNORECASE | re.MULTILINE)
         if m:
             val_str = m.group(1)
             try:
@@ -133,7 +141,7 @@ def extract_patient_sex(text: str) -> str | None:
         if re.search(r'\b(male|m)\b', segment):
             return 'Male'
 
-    # 2. Labelled: Sex: Male, Sox: Female, Gender: M, Sex-F, Sex Male
+    # 2. Labelled inline: Sex: Male, Sox: Female, Gender: M, Sex-F, Sex Male
     m_label = re.search(r'\b(?:s[eoa]x|gender)\s*[:\-\.\s]\s*(male|female|m\b|f\b)', text, re.I)
     if m_label:
         v = m_label.group(1).lower()
@@ -150,7 +158,38 @@ def extract_patient_sex(text: str) -> str | None:
         v = m_short2.group(1).lower()
         return 'Female' if v.startswith('f') else 'Male'
 
-    # 4. Standalone MALE / FEMALE near demographic info
+    # 4. Separated labels on the same line (any order):
+    #    "Sex: Female Age: 22"  /  "Age: 22 Sex: Female"  /  "Sex Female, Age 22"
+    m_sep = re.search(
+        r'\b(?:s[eoa]x|gender)\s*[:\-\.]?\s*(male|female)\b[^.\n]{0,40}\b[ap]ge\s*[:\-\.]?\s*\d{1,3}\b'
+        r'|\b[ap]ge\s*[:\-\.]?\s*\d{1,3}\b[^.\n]{0,40}\b(?:s[eoa]x|gender)\s*[:\-\.]?\s*(male|female)\b',
+        text, re.I
+    )
+    if m_sep:
+        v = (m_sep.group(1) or m_sep.group(2) or '').lower()
+        if v:
+            return 'Female' if v.startswith('f') else 'Male'
+
+    # 5. Split-row layout: "Age\nSex\n21 Years\nMale" – find "Sex" or "Gender" on its own line,
+    #    then scan the next 1-3 lines for a Male/Female token (skipping the age line).
+    m_split = re.search(
+        r'(?:^|\n)\s*(?:s[eoa]x|gender)\s*\n'
+        r'(?:[^\n]*\n){0,2}?\s*(male|female)\b',
+        text, re.I | re.MULTILINE
+    )
+    if m_split:
+        return m_split.group(1).capitalize()
+
+    # Also handle the reverse split: "Age/Sex" label on own line, values follow
+    m_split_compound = re.search(
+        r'(?:^|\n)\s*[ap]ge\s*[/\\]\s*s[eoa]x\s*\n'
+        r'(?:[^\n]*\n){0,2}?\s*(?:\d{1,3}\s*(?:years?|yrs?|y)?\s*[/\\]?\s*)?(male|female)\b',
+        text, re.I | re.MULTILINE
+    )
+    if m_split_compound:
+        return m_split_compound.group(1).capitalize()
+
+    # 6. Standalone MALE / FEMALE near demographic info
     m_demo = re.search(r'(?:patient|name|age|\d{1,2}\s*y)[^\n\r]{0,60}?\b(male|female)\b', text, re.I)
     if m_demo:
         return m_demo.group(1).capitalize()
@@ -210,14 +249,83 @@ def extract_date(text: str) -> str | None:
 def extract_facility(text: str) -> str | None:
     lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
 
-    # Check header lines (first 5 lines)
-    for line in lines[:5]:
-        if re.search(r'\b(h[o0c]spital|cl[i1l]n[i1]c|d[i1]agnost[i1]c|med[i1]cal|health\s*care|pathology)\b', line, re.I):
-            clean_line = re.sub(r'^(?:hospital|clinic|facility|center|centre|lab)\s*[:\-]\s*', '', line, flags=re.I).strip(' :;,-')
+    _HOSP_KW = re.compile(
+        r'\b(h[o0c]spitals?|cl[i1l]n[i1]cs?|d[i1]agnost[i1]c(?:\s+cent(?:er|re))?|med[i1]cal|health\s*care|pathology|laborator(?:y|ies))\b',
+        re.I,
+    )
+
+    def _is_noise(s: str) -> bool:
+        """True for phone-only, URL, e-mail, or pure-number lines."""
+        return bool(re.match(
+            r'^[\+\d\s\(\)\-\.]+$'
+            r'|^www\.'
+            r'|^https?://'
+            r'|.*@',
+            s, re.I,
+        ))
+
+    def _is_skip_word(s: str) -> bool:
+        """True for boilerplate slogans we don't want as prefixes."""
+        return bool(re.match(
+            r'^(?:exceptional|care|always|together|healthier|tomorrow)',
+            s, re.I,
+        ))
+
+    header = lines[:8]
+
+    for idx, line in enumerate(header):
+        if not _HOSP_KW.search(line):
+            continue
+
+        # ── Does a real brand word come BEFORE the keyword in this line? ──────
+        # e.g. "Apollo Hospitals Dhaka" or "National Hospital"
+        kw_m = _HOSP_KW.search(line)
+        prefix_text = line[:kw_m.start()]
+        prefix_words = re.findall(r'[A-Za-z]{2,}', prefix_text)
+        if prefix_words:
+            # Keyword is embedded – the whole line IS the name.
+            # But first strip any leading label word like "Facility: " or "Hospital: ".
+            clean_line = re.sub(
+                r'^\s*(?:facility|hospital|clinic|diagnostic\s+cent(?:er|re)|center|centre|lab)\s*[:\-]\s*',
+                '', line, flags=re.I,
+            ).strip(' :;,-')
             return clean_line[:75]
 
-    # Check inline label
-    m = re.search(r"(?:hospital|clinic|center|centre|diagnostic\s+cent(?:er|re))\s*[:\-\.]?\s*([A-Za-z][A-Za-z \t\.\,\&]{3,60})", text, re.I)
+        # ── Is there meaningful text AFTER the keyword? ───────────────────────
+        # e.g. "Hospital: Square Hospital Ltd"  or  "Clinic: Green Life"
+        # Strip a leading "Hospital: " / "Facility: " label prefix first.
+        stripped_prefix = re.sub(
+            r'^\s*(?:hospital|clinic|facility|diagnostic\s+cent(?:er|re)|center|centre|lab)\s*[:\-]\s*',
+            '', line, flags=re.I,
+        ).strip(' :;,-')
+        # Remove the keyword itself before counting words, so a bare "Hospital" line
+        # doesn't falsely look like it has content.
+        no_kw = _HOSP_KW.sub('', stripped_prefix).strip()
+        suffix_words = re.findall(r'[A-Za-z]{2,}', no_kw)
+        if suffix_words and not _is_noise(stripped_prefix):
+            return stripped_prefix[:75]
+
+        # ── Line is just the bare keyword (e.g. "Hospital") – look backward ──
+        for prev_idx in range(idx - 1, max(idx - 4, -1), -1):
+            prev = header[prev_idx]
+            if not prev or _is_noise(prev) or _is_skip_word(prev):
+                continue
+            # Skip pure-number / address fragments
+            if re.match(r'^[\d\s\+\-\(\)\.\/,]+$', prev):
+                continue
+            return f"{prev} {line}"[:75]
+
+        # Fallback: bare keyword line
+        return line[:75]
+
+    # ── No keyword in header – try an inline label anywhere in the text ───────
+    # e.g. "Facility: Dhaka Medical College Hospital"
+    # Require a colon/dash after the label word to avoid false matches inside names.
+    m = re.search(
+        r'\b(?:facility|hospital|clinic|center|centre|diagnostic\s+cent(?:er|re))\b\s*[:\-\.]\s*'
+        r'([A-Za-z][A-Za-z \t\.\,\&]{3,70})',
+        text, re.I,
+    )
     if m:
         return _clean(m.group(1)[:75])
 
@@ -333,9 +441,13 @@ def extract_test_results(text: str) -> list[dict]:
             unit = (m.group(3) or '').strip()
             ref = (m.group(4) or '').strip(' ()[]') or None
 
-            if param and len(param) >= 2 and param.lower() not in (
-                'findings', 'impression', 'technique', 'patient name', 'referred by', 'date', 'pge sex', 'age sex', 'page'
-            ):
+            _DEMO_SKIP = {
+                'findings', 'impression', 'technique', 'patient name', 'referred by',
+                'date', 'pge sex', 'age sex', 'page',
+                'sex', 'age', 'gender', 'age sex', 'sex age', 'age/sex', 'sex/age',
+                'pge', 'name', 'patient', 'dob', 'ref by', 'uhid', 'id',
+            }
+            if param and len(param) >= 2 and param.lower() not in _DEMO_SKIP:
                 key = param.lower()
                 if key not in seen:
                     seen.add(key)
@@ -358,7 +470,9 @@ def extract_test_results(text: str) -> list[dict]:
                 ref = (m_next.group(3) or '').strip(' ()[]') or None
 
                 if param and param.lower() not in (
-                    'findings', 'impression', 'technique', 'complete bloodcount', 'metabolic panel', 'date', 'date of test', 'patient name'
+                    'findings', 'impression', 'technique', 'complete bloodcount', 'metabolic panel',
+                    'date', 'date of test', 'patient name',
+                    'sex', 'age', 'gender', 'name', 'patient', 'dob', 'ref by', 'uhid', 'id', 'pge',
                 ):
                     key = param.lower()
                     if key not in seen:
